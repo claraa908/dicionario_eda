@@ -2,18 +2,19 @@
 #define NODE_RBT_HPP
 #include <string>
 
-#define red true
-#define black false
+#define RED true
+#define BLACK false
 
+template <typename T, typename K>
 struct Node{
-    std::string key;
-    int value;
+    T key;
+    K value;
     bool color;
     Node* right;
     Node* left;
     Node* pai;
 
-    Node(std::string k, int v, bool c, Node* r, Node* l, Node* p){
+    Node(T k, K v, bool c, Node* r, Node* l, Node* p){
         key = k;
         value = v;
         color = c;

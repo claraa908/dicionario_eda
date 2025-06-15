@@ -5,9 +5,10 @@
 template <typename T, typename K>
 class AVL{
     private:
-    Node * root;
+    using Node = Node<T, K>;
+    Node* root;
         //fução que calcula a altura da arvore/subarvore
-        int height (Node * node ){
+        int height (Node * node){
             return (_empty(node)) ? 0 : node->height;
         }
 
