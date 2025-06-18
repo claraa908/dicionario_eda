@@ -1,6 +1,23 @@
 #ifndef AVL_HPP
 #define AVL_HPP
-#include "NodeAVL.hpp"
+#include <string>
+
+template <typename T, typename K>
+struct Node{
+    T key;
+    K value;
+    int height;
+    Node* left;
+    Node* right;
+
+    Node (T k, K v, int h, Node* l, Node* r) {
+        key = k;
+        value = v;
+        left = l;
+        right = r;
+        height = h;
+    }
+};
 
 template <typename T, typename K>
 class AVL{
@@ -45,6 +62,7 @@ class AVL{
             if(_empty(p)){
                 return new Node{key, value, 1, nullptr, nullptr};
             }
+            
             if(key == p->key){
                 return p;
             }
@@ -181,6 +199,7 @@ class AVL{
         }
 
     public:
+    int contador_comparacoes = 0;
     //construtor
         AVL() {
             root = nullptr;
