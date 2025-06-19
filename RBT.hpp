@@ -328,11 +328,12 @@ class RBT{
         nil->left = nil->right = nil;
         root = nil;
         root->parent = nil;
+        contador_comparacoes = 0;
     }
 
     //destrutor
     ~RBT(){
-        root = _clear(this);
+        root = _clear(this->root);
     }
 
     void insert(T key, K value){

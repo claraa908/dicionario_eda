@@ -27,7 +27,7 @@ class AVL{
 
         //variáveis
         Node* root;
-        int contador_comparacoes = 0;
+        int contador_comparacoes;
 
 
         //fução que calcula a altura da arvore/subarvore
@@ -228,6 +228,7 @@ class AVL{
     //construtor
         AVL() {
             root = nullptr;
+            contador_comparacoes = 0;
         }
 
         //destrutor

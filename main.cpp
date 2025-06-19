@@ -13,8 +13,9 @@ int main(){
     for(int i = 0; i < 10; i++){
         teste2.insert(i, i+3);
     }
-    RBT<std::string, int> teste3;
 
+    std::cout << teste2.getContador() << std::endl;
+    std::cout << teste.getContador() << std::endl;
     teste2.show();
     teste2.contains(10) ? std::cout << "tem sim, vei" << std::endl : std::cout << "tem nao" << std::endl;
     teste2.erase(3);
