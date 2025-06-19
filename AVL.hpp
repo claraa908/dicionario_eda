@@ -1,29 +1,35 @@
 #ifndef AVL_HPP
 #define AVL_HPP
 #include <string>
-
-template <typename T, typename K>
-struct Node{
-    T key;
-    K value;
-    int height;
-    Node* left;
-    Node* right;
-
-    Node (T k, K v, int h, Node* l, Node* r) {
-        key = k;
-        value = v;
-        left = l;
-        right = r;
-        height = h;
-    }
-};
+#include <utility>
+#include <stdexcept>
+#include <algorithm>
 
 template <typename T, typename K>
 class AVL{
     private:
-    using Node = Node<T, K>;
-    Node* root;
+
+        //node
+        struct Node{
+            std::pair <T, K> tuple;
+            int height;
+            Node* left;
+            Node* right;
+
+            Node (T k, K v, int h, Node* l, Node* r) {
+                tuple.first = k;
+                tuple.second = v;
+                left = l;
+                right = r;
+                height = h;
+            }
+        };
+
+        //variáveis
+        Node* root;
+        int contador_comparacoes = 0;
+
+
         //fução que calcula a altura da arvore/subarvore
         int height (Node * node){
             return (_empty(node)) ? 0 : node->height;
@@ -40,8 +46,8 @@ class AVL{
             p->left = u->right;
             u->right = p;
 
-            p->height = 1 +  max(height(p->left), height(p->right));
-            u->height = 1 +  max(height(u->left), height(u->right));
+            p->height = 1 +  std::max(height(p->left), height(p->right));
+            u->height = 1 +  std::max(height(u->left), height(u->right));
             return u;
         }
 
@@ -51,8 +57,8 @@ class AVL{
             p->right = u->left;
             u->left = p;
 
-            p->height = 1 +  max(height(p->left), height(p->right));
-            u->height = 1 +  max(height(u->left), height(u->right));
+            p->height = 1 +  std::max(height(p->left), height(p->right));
+            u->height = 1 +  std::max(height(u->left), height(u->right));
             return u;
         }
 
@@ -63,37 +69,40 @@ class AVL{
                 return new Node{key, value, 1, nullptr, nullptr};
             }
             
-            if(key == p->key){
+            if(key == p->tuple.first){
+                contador_comparacoes++;
                 return p;
             }
-            if(key < p->key){
-                p->left = _insert(p->left, key);
+            if(key < p->tuple.first){
+                contador_comparacoes++;
+                p->left = _insert(p->left, key, value);
             }
-            else if(key>p->key){
-                p->right = _insert(p->right, key);
+            else if(key>p->tuple.first){
+                contador_comparacoes++;
+                p->right = _insert(p->right, key, value);
             }
             p = fixup_insertion(p, key);
             return p;
         }
         
         //função que conserta o balanço da arvore após uma inserção
-        Node* fixup_insertion(Node *p , T key){
+        Node* fixup_insertion(Node *p, T key){
             int bal = balance(p);
-            if(bal < -1 && key < p->left->key){
+            if(bal < -1 && key < p->left->tuple.first){
                 return rightRotation(p);
             }
-            if(bal < -1 && key > p->left->key){
+            if(bal < -1 && key > p->left->tuple.first){
                 p->left = leftRotation(p->left);
                 return rightRotation(p);
             }
-            if(bal > 1 && key > p->right->key){
+            if(bal > 1 && key > p->right->tuple.first){
                 return leftRotation(p);
             }
-            if(bal > 1 && key < p->right->key){
+            if(bal > 1 && key < p->right->tuple.first){
                 p->right = rightRotation(p->right);
                 return leftRotation(p);
             }
-            p->height = 1 + max(height(p->left), height(p->right));
+            p->height = 1 + std::max(height(p->left), height(p->right));
             return p;
         }
 
@@ -103,9 +112,9 @@ class AVL{
             if(_empty(p)){
                 return nullptr;
             }
-            if(key < p->key){
+            if(key < p->tuple.first){
                 p->left = _erase(p->left, key);
-            }else if(key > p->key){
+            }else if(key > p->tuple.first){
                 p->right = _erase(p->right, key);
             }else if(p->right == nullptr){
                 Node* aux = p->left;
@@ -114,7 +123,7 @@ class AVL{
             }else{
                 p->right = remove_successor(p, p->right);
             }
-
+            p->height = 1 + std::max(height(p->left), height(p->right));
             p = fixup_erase(p);
             return p;
         }
@@ -124,7 +133,7 @@ class AVL{
             if(!_empty(p->left)){
                 p = remove_successor(node, p->left);
             }else{
-                node->key = p->key;
+                node->tuple = p->tuple;
                 Node* aux = p->right;
                 delete p;
                 return aux;
@@ -140,31 +149,31 @@ class AVL{
                 return rightRotation(p);
             }
             if(bal < -1 && balance(p->left) > 0){
-                p->left = leftRotation(p);
+                p->left = leftRotation(p->left);
                 return rightRotation(p);
             }
             if(bal > 1 && balance(p->right) >= 0){
                 return leftRotation(p);
             }
             if(bal > 1 && balance(p->right) < 0){
-                p->right = rightRotation(p);
+                p->right = rightRotation(p->right);
                 return leftRotation(p);
             }
-            p->height = 1 + max(height(p->left), height(p->right));
+            p->height = 1 + std::max(height(p->left), height(p->right));
             return p;
         }
 
         //contains
         //função booleana que recebe o primeiro nó da árvore e um determinado valor e verifica se este está na árvore
-        bool _contains(int key, Node* p){
+        bool _contains(T key, Node* p){
             if(_empty(p)){
                 return false;
             }
-            if(key == p->key){
+            if(key == p->tuple.first){
                 return true;
             }
 
-            if(key < p->key){
+            if(key < p->tuple.first){
                 return _contains(key, p->left);
             }else{
                 return _contains(key, p->right);
@@ -198,8 +207,24 @@ class AVL{
             return 1 + _size(p->left) + _size(p->right);
         }
 
+        void bshow(Node *node, std::string heranca) const {
+            if(node != nullptr && (node->left != nullptr || node->right != nullptr))
+                bshow(node->right , heranca + "r");
+            for(int i = 0; i < (int) heranca.size() - 1; i++)
+                std::cout << (heranca[i] != heranca[i + 1] ? "|   " : "    ");
+            if(heranca != "")
+                std::cout << (heranca.back() == 'r' ? "|--" : "|--");
+            if(node == nullptr){
+                std::cout << "#" << std::endl;
+                return;
+            }
+            std::cout << node->tuple.first << ": " << node->tuple.second<< std::endl;
+            if(node != nullptr && (node->left != nullptr || node->right != nullptr))
+                bshow(node->left, heranca + "l");
+        }
+
     public:
-    int contador_comparacoes = 0;
+    
     //construtor
         AVL() {
             root = nullptr;
@@ -216,22 +241,22 @@ class AVL{
         }
 
         //função publica que apaga um no
-        void erase(int key){
+        void erase(T key){
             if(!contains(key)){
-                throw invalid_argument("esse valor nao existe na arvore para remocao");
+                throw std::invalid_argument("esse valor nao existe na arvore para remocao");
             }
             root = _erase(root, key);
         }
 
         //função publica que retorna se um nó está ou não na árvore
-        bool contains(int key){
+        bool contains(T key){
             return _contains(key, root);
         }
 
         //função publica que limpa a arvore
         void clear(){
             if(_empty(root)){
-                throw runtime_error("nao ha o que limpar");
+                throw std::runtime_error("nao ha o que limpar");
             }
             root = _clear(root);
         }
@@ -246,13 +271,13 @@ class AVL{
             return _empty(root) ? 0 : _size(root);
         }
 
-        //sobrecarga do operador de atribuição
-        Set& operator=(const Set& var){
-            if(this != &var){
-                this->_clear(root);
-                root = copy(var.root);
-            }
-            return *this;
+        void show(){
+            bshow(root, "");
+        }
+
+        int getContador(){
+            return contador_comparacoes;
         }
 };
+
 #endif
