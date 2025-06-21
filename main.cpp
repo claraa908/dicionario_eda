@@ -17,6 +17,8 @@ int main(){
         testeRBT.insert(i,i);
     }
 
+    
+
     teste.show();
     testedefault.show();
     testeRBT.show();

@@ -8,7 +8,6 @@ namespace d_rbt{
         private:
             RBT<Key, Value> rbt_tree;
         public:
- 
             //construtor default, cria um dicionário vazio
             Dictionary() = default;
 
