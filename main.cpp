@@ -25,7 +25,8 @@ int main(){
     teste2.show();
 
     teste2.contains(2) ? std::cout << "tem sim, vei" << std::endl : std::cout << "tem nao" << std::endl;
-    /*teste.show();
+
+    teste.show();
     teste.empty() ? std::cout << "true" << std::endl : std::cout << "false" << std::endl;
     teste.contains(4) ? std::cout << "Possui" << std::endl : std::cout << "Nao possui" << std::endl;
     teste.contains(42) ? std::cout << "Possui" << std::endl : std::cout << "Nao possui" << std::endl;
@@ -35,5 +36,5 @@ int main(){
     
     teste.show();
     teste.empty() ? std::cout << "true" << std::endl : std::cout << "false" << std::endl;
-    std::cout << teste.size() << std::endl;*/
+    std::cout << teste.size() << std::endl;
 }

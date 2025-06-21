@@ -8,7 +8,6 @@
 template <typename T, typename K>
 class AVL{
     private:
-
         //node
         struct Node{
             std::pair <T, K> tuple;
