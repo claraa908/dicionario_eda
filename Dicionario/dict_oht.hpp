@@ -1,7 +1,7 @@
-#ifndef DICT_AVL_HPP
-#define DICT_AVL_HPP
+#ifndef DICT_OHT_HPP
+#define DICT_OHT_HPP
 
-namespace AVL{
+namespace OHT{
     template <typename Key, typename Value>
     class Dictionary{
         private:
