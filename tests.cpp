@@ -5,7 +5,7 @@
 #include "estruturas/OHT.hpp"
 #include "estruturas/RBT.hpp"
 
-int main(){
+int teste(){
     AVL<int, int> teste;
     for(int i = 0; i < 10; i++){
         teste.insert(i, i+3);

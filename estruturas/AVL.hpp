@@ -70,6 +70,7 @@ class AVL{
             
             if(key == p->tuple.first){
                 contador_comparacoes++;
+                p->tuple.second = value;
                 return p;
             }
             if(key < p->tuple.first){
@@ -103,6 +104,35 @@ class AVL{
             }
             p->height = 1 + std::max(height(p->left), height(p->right));
             return p;
+        }
+
+        K& _getValue(Node* p, T key){
+            if(p == nullptr){
+                throw std::invalid_argument("chave nao encontrada na arvore");
+            }
+
+            if(key == p->tuple.first){
+                return p->tuple.second;
+            }else if(key < p->tuple.first){
+                return _getValue(p->left, key);
+            }else{
+                return _getValue(p->right, key);
+            }
+            return p->tuple.second;
+        }
+
+        const K& _getValue(Node* p, const T& key) const {
+            if (p == nullptr) {
+                throw std::invalid_argument("chave nao encontrada na arvore");
+            }
+
+            if (key == p->tuple.first) {
+                return p->tuple.second;
+            } else if (key < p->tuple.first) {
+                return _getValue(p->left, key);
+            } else {
+                return _getValue(p->right, key);
+            }
         }
 
         //erase
@@ -223,7 +253,6 @@ class AVL{
         }
 
     public:
-    
     //construtor
         AVL() {
             root = nullptr;
@@ -238,6 +267,22 @@ class AVL{
         //função publica que insere um no
         void insert(T key, K value){
             root = _insert(root, key, value);
+        }
+
+        //função que retorna o valor de um par baseado na chave
+        K& getValue(const T& k){
+            if(root == nullptr){
+                throw std::invalid_argument("árvore vazia");
+            }
+            return _getValue(root, k);
+        }
+
+        //função constante que retorna o valor de um par baseado na chave
+        const K& getValue(const T& k) const{
+            if(root == nullptr){
+                throw std::invalid_argument("árvore vazia");
+            }
+            return _getValue(root, k);
         }
 
         //função publica que apaga um no

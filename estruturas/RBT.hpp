@@ -144,6 +144,35 @@ class RBT{
             Tree->root->color = BLACK;
         }
 
+        K& _getValue(Node* p, T key){
+            if(p == nullptr){
+                throw std::invalid_argument("chave nao encontrada na arvore");
+            }
+
+            if(key == p->tuple.first){
+                return p->tuple.second;
+            }else if(key < p->tuple.first){
+                return _getValue(p->left, key);
+            }else{
+                return _getValue(p->right, key);
+            }
+            return p->tuple.second;
+        }
+
+        const K& _getValue(Node* p, const T& key) const {
+            if (p == nullptr) {
+                throw std::invalid_argument("chave nao encontrada na arvore");
+            }
+
+            if (key == p->tuple.first) {
+                return p->tuple.second;
+            } else if (key < p->tuple.first) {
+                return _getValue(p->left, key);
+            } else {
+                return _getValue(p->right, key);
+            }
+        }
+
         // função que percorre a árvore em busca de um nó que contenha a chave pedida, 
         // se existir chama a função que vai remover esse nó
         void _erase(RBT* Tree, T key){
@@ -338,6 +367,22 @@ class RBT{
 
     void insert(T key, K value){
         _insert(this, key, value);
+    }
+
+    //função que retorna o valor de um par baseado na chave
+    K& getValue(const T& k){
+        if(root == nullptr){
+            throw std::invalid_argument("árvore vazia");
+        }
+        return _getValue(root, k);
+    }
+
+    //função constante que retorna o valor de um par baseado na chave
+    const K& getValue(const T& k) const{
+        if(root == nullptr){
+            throw std::invalid_argument("árvore vazia");
+        }
+        return _getValue(root, k);
     }
 
     void erase(T key){

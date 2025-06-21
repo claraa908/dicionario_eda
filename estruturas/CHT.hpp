@@ -77,6 +77,30 @@ class CHT{
         return true;
     }
 
+    //função que retorna o valor de um par baseado na chave
+    Value& getValue(const Key& k){
+        size_t slot = compress(k);
+
+        for(auto p = table[slot]){
+            if(p.first == k){
+                return p.second;
+            }
+        }
+        throw std::invalid_argument();
+    }
+
+    //função constante que retorna o valor de um par baseado na chave
+    const Value& getValue(const Key& k) const{
+        size_t slot = compress(k);
+
+        for(auto p = table[slot]){
+            if(p.first == k){
+                return p.second;
+            }
+        }
+        throw std::invalid_argument();
+    }
+
     //função que recebe uma chave k faz a busca na tabela e caso exista exclui o par e retorna verdadeiro
     //caso não exista retorna falso
     bool erase(const Key& k){
@@ -159,30 +183,6 @@ class CHT{
         reserve(numElem);
     }
 
-    Value& at(const Key& k){
-        size_t slot = compress(k);
-
-        for(auto p = table[slot]){
-            if(p.first == k){
-                return p.second;
-            }
-        }
-
-        throw std::invalid_argument();
-    }
-
-    const Value& at(const Key& k) const{
-        size_t slot = compress(k);
-
-        for(auto p = table[slot]){
-            if(p.first == k){
-                return p.second;
-            }
-        }
-
-        throw std::invalid_argument();
-    }
-
     void rehash(size_t m) {
         size_t newTableSize = get_next_prime(m);
         if(newTableSize > tableSize) {
@@ -226,7 +226,7 @@ class CHT{
 
     //sobrecarga do operador de colchetes constante
     const Value& operator[](const Key& k) const{
-        return at(k);
+        return getValue(k);
     }
 };
 
