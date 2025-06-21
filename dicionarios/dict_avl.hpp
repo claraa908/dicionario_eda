@@ -1,6 +1,6 @@
 #ifndef DICT_AVL_HPP
 #define DICT_AVL_HPP
-#include "estruturas/AVL.hpp"
+#include "../estruturas/AVL.hpp"
 
 namespace d_avl{
     template <typename Key, typename Value>
@@ -48,6 +48,11 @@ namespace d_avl{
 
         void clear(){
             avl_tree.clear();
+        }
+
+        //teste
+        void show(){
+            avl_tree.show();
         }
 
         /*funções pra implementar:

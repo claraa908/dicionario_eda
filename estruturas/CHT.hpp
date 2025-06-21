@@ -1,6 +1,7 @@
 #ifndef CHT_HPP
 #define CHT_HPP
 #include <iostream>
+#include <stdexcept>
 #include <cmath>
 #include <string>
 #include <list>
@@ -14,7 +15,7 @@ class CHT{
     private:
     //variáveis
     size_t numElem;
-    size_t maxLoadFactor;
+    float maxLoadFactor;
     size_t tableSize;
     Hash hashing;
     std::vector<std::list<std::pair<Key, Value>>> table;
@@ -61,12 +62,12 @@ class CHT{
     //função que vai fazer uma busca na tabela para ver se encontra a chave k, caso já exista na tabela retorna falso
     //caso não exista adiciona o par na tabela e retorna verdadeiro
     bool insert(const Key& k, const Value& v){
-        if(load_factor() >= max_load_factor){
+        if(load_factor() >= max_load_factor()){
             rehash(2 * tableSize);
         }
 
         size_t slot  = compress(k);
-        for(auto p : table[slot]){
+        for(auto& p : table[slot]){
             if(p.first == k){
                 return false;
             }
@@ -81,31 +82,31 @@ class CHT{
     Value& getValue(const Key& k){
         size_t slot = compress(k);
 
-        for(auto p = table[slot]){
+        for(auto& p : table[slot]){
             if(p.first == k){
                 return p.second;
             }
         }
-        throw std::invalid_argument();
+        throw std::invalid_argument("chave nao encontrada");
     }
 
     //função constante que retorna o valor de um par baseado na chave
     const Value& getValue(const Key& k) const{
         size_t slot = compress(k);
 
-        for(auto p = table[slot]){
+        for(const auto& p : table[slot]){
             if(p.first == k){
                 return p.second;
             }
         }
-        throw std::invalid_argument();
+        throw std::invalid_argument("chave nao encontrada");
     }
 
     //função que recebe uma chave k faz a busca na tabela e caso exista exclui o par e retorna verdadeiro
     //caso não exista retorna falso
     bool erase(const Key& k){
         size_t slot = compress(k);
-        for(size_t it = table[slot].begin(); it != table[slot].end(); it++){
+        for(auto it = table[slot].begin(); it != table[slot].end(); it++){
             if(it.first == k){
                 table[slot].erase(it);
                 numElem--;
@@ -194,7 +195,7 @@ class CHT{
             tableSize = newTableSize;
             for(size_t i = 0; i < old_vec.size(); ++i) {
                 for(auto& par : old_vec[i]) {
-                    add(par.first, par.second);
+                    insert(par.first, par.second);
                 }
                 old_vec[i].clear();
             }            
@@ -213,7 +214,7 @@ class CHT{
         if(load_factor() >= maxLoadFactor) {
             rehash(2 * tableSize);
         }
-        size_t slot = hash_code(k);
+        size_t slot = compress(k);
         for(auto& par : table[slot]) {
             if(par.first == k) {
                 return par.second;
