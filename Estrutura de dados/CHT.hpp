@@ -57,6 +57,9 @@ class CHT{
     }
 
     //funções gerais
+
+    //função que vai fazer uma busca na tabela para ver se encontra a chave k, caso já exista na tabela retorna falso
+    //caso não exista adiciona o par na tabela e retorna verdadeiro
     bool insert(const Key& k, const Value& v){
         if(load_factor() >= max_load_factor){
             rehash(2 * tableSize);
@@ -74,6 +77,8 @@ class CHT{
         return true;
     }
 
+    //função que recebe uma chave k faz a busca na tabela e caso exista exclui o par e retorna verdadeiro
+    //caso não exista retorna falso
     bool erase(const Key& k){
         size_t slot = compress(k);
         for(size_t it = table[slot].begin(); it != table[slot].end(); it++){
@@ -86,6 +91,7 @@ class CHT{
         return false;
     }
 
+    //função que diz se um par de chave k existe ou não na tabela
     bool contains(const Key& k){
         size_t slot = compress(k);
 
@@ -98,6 +104,7 @@ class CHT{
         return false;
     }
 
+    //função que limpa todas listas de cada slot na tabela
     void clear(){
         for(size_t i = 0; i < tableSize; i++){
             table[i].clear();
@@ -105,22 +112,24 @@ class CHT{
         numElem = 0;
     }
 
+    //função que verifica se a tabela possui ou não elementos
     bool empty() const{
         return numElem == 0;
     }
 
+    //função que retorna quantos elementos uma tabela possui no total, ou seja, seu tamanho
     size_t size() const{
         return numElem;
     }
 
     //funções da hash
 
-    //retorna quantos slots tem disponivel na tabela hash
+    //função que retorna quantos slots tem disponivel na tabela hash
     size_t num_slot() const{
         return tableSize;
     }
 
-    //retorna quantos elementos estão dentro de um determinado slot
+    //função que retorna quantos elementos estão dentro de um determinado slot
     size_t slot_size(size_t n) const{
         if(n >= tableSize){
             throw std::out_of_range("invalid index");
@@ -132,6 +141,7 @@ class CHT{
     size_t getSlot(const Key& k) const{
         return compress(k);
     }
+
 
     float load_factor() const{
         return static_cast<float>(numElem) / tableSize;
@@ -191,12 +201,14 @@ class CHT{
         }
     }
 
+    
     void reserve(size_t n){
         if(n > tableSize * maxLoadFactor){
             rehash( n / maxLoadFactor);
         }
     }
 
+    //sobrecarga do operador de colchetes, permitindo a criação de hash no formato de Hash[chave] = valor
     Value& operator[](const Key& k){
         if(load_factor() >= maxLoadFactor) {
             rehash(2 * tableSize);
@@ -212,6 +224,7 @@ class CHT{
         return table[slot].back().second;
     }
 
+    //sobrecarga do operador de colchetes constante
     const Value& operator[](const Key& k) const{
         return at(k);
     }
