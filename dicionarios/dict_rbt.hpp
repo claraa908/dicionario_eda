@@ -24,45 +24,38 @@ namespace d_rbt{
                 insert(k, newValue);
             }
 
-            Value& getValue(Key& k){
-                rbt_tree.getValue(k);
+            Value& getValue(const Key& k){
+                return rbt_tree.getValue(k);
             }
 
             const Value& getValue(const Key& k) const{
-                rbt_tree.getValue(k);
+                return rbt_tree.getValue(k);
             }
 
-            void erase(Key k){
+            void erase(const Key& k){
                 rbt_tree.erase(k);
             }
 
-            bool contains(Key k){
-                rbt_tree.contains(k);
+            bool contains(const Key& k){
+                return rbt_tree.contains(k);
             }
 
             int size(){
-                rbt_tree.size();
+                return rbt_tree.size();
             }
 
             void clear(){
                 rbt_tree.clear();
             }
 
-            //teste
             void show(){
                 rbt_tree.show();
+                std::cout << std::endl;
             }
-        /*funções pra implementar:
-        * criacao = construtor
-        * inserção = insert
-        * atualização = ??
-        * acesso = pegar um valor baseado na chave
-        * remoção = erase
-        * verificação = contains
-        * iteração = percorre os pares da estrutura(talvez imprimir???)
-        * Tamanho = size
-        * Limpeza = remover todos os pares de chave
-        */
+
+            /*
+            * TODO: iteração = percorre os pares da estrutura
+            */
     };
 }
 

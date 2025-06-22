@@ -319,8 +319,13 @@ class RBT{
             return nil;
         }
 
-        bool _empty(RBT* Tree){
-            return Tree->root == Tree->nil;
+        bool _empty(Node* p){
+            return p == nil;
+        }
+
+        int _size(Node* p) {
+            if (p == nil) return 0;
+            return 1 + _size(p->left) + _size(p->right);
         }
 
         void bshow(Node *node, std::string heranca) {
@@ -338,12 +343,10 @@ class RBT{
                 return;
             }
 
-            std::cout << node->tuple.first;
-            if(node->color == RED){
-                std::cout << "(red)" << std::endl;
-            } else {
-                std::cout << "(black)" << std::endl;
-            }
+            if (node->color == RED)
+                std::cout << "\033[1;31m" << node->tuple.first << ": " << node->tuple.second << "\033[0m" << std::endl ;
+            else
+                std::cout << "\033[1;30m" << node->tuple.first << ": " << node->tuple.second << "\033[0m" << std::endl;
 
             if(node != nil && (node->left != nil || node->right != nil))
                 bshow(node->left, heranca + "l");
@@ -398,7 +401,11 @@ class RBT{
     }
 
     bool empty(){
-        _empty(this);
+        _empty(root);
+    }
+
+    int size(){
+        return _size(root);
     }
 
     void show(){

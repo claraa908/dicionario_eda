@@ -17,6 +17,7 @@ namespace d_avl{
                 insert(k, v);
             }
 
+            //função de inserção no dicionario
             void insert(Key k, Value v){
                 avl_tree.insert(k, v);
             }
@@ -25,24 +26,24 @@ namespace d_avl{
                 insert(k, newValue);
             }
 
-            Value& getValue(Key& k){
-                avl_tree.getValue(k);
+            Value& getValue(const Key& k){
+                return avl_tree.getValue(k);
             }
 
             const Value& getValue(const Key& k) const{
-                avl_tree.getValue(k);
+                return avl_tree.getValue(k);
             }
 
-            void erase(Key k){
+            void erase(const Key k){
                 avl_tree.erase(k);
             }
 
-            bool contains(Key k){
-                avl_tree.contains(k);
+            bool contains(const Key k){
+                return avl_tree.contains(k);
             }
 
             int size(){
-                avl_tree.size();
+                return avl_tree.size();
             }
 
             void clear(){
@@ -54,16 +55,8 @@ namespace d_avl{
                 avl_tree.show();
             }
 
-            /*funções pra implementar:
-            * -- criacao = construtor
-            * -- inserção = insert
-            * -- atualização = ??
-            * -- acesso = pegar um valor baseado na chave
-            * -- remoção = erase
-            * -- verificação = contains
-            * iteração = percorre os pares da estrutura(talvez imprimir???)
-            * -- Tamanho = size
-            * -- Limpeza = remover todos os pares de chave
+            /*
+            * TODO: iteração = percorre os pares da estrutura
             */
     }; 
 }

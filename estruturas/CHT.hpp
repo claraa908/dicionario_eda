@@ -46,7 +46,7 @@ class CHT{
 
     public:
     //construtor 
-    CHT(size_t table_size, float load_factor = 1.0){
+    CHT(size_t table_size = 10, float load_factor = 1.0){
         numElem = 0;
         tableSize = get_next_prime(table_size);
         table.resize(tableSize);
@@ -69,6 +69,7 @@ class CHT{
         size_t slot  = compress(k);
         for(auto& p : table[slot]){
             if(p.first == k){
+                p.second = v;
                 return false;
             }
         }
@@ -107,7 +108,7 @@ class CHT{
     bool erase(const Key& k){
         size_t slot = compress(k);
         for(auto it = table[slot].begin(); it != table[slot].end(); it++){
-            if(it.first == k){
+            if(it->first == k){
                 table[slot].erase(it);
                 numElem--;
                 return true;
@@ -201,7 +202,6 @@ class CHT{
             }            
         }
     }
-
     
     void reserve(size_t n){
         if(n > tableSize * maxLoadFactor){
@@ -228,6 +228,23 @@ class CHT{
     //sobrecarga do operador de colchetes constante
     const Value& operator[](const Key& k) const{
         return getValue(k);
+    }
+
+    void show(){
+        if(empty()){
+            std::cout << "'Hash sem elementos'";
+        }else{
+            bool first = true;
+            for (size_t i = 0; i < tableSize; i++) {
+                for (const auto& p : table[i]) {
+                    if (!first) {
+                        std::cout << ", ";
+                    }
+                    std::cout << "(" << p.first << ": " << p.second << ")";
+                    first = false;
+                }
+            }
+        }
     }
 };
 

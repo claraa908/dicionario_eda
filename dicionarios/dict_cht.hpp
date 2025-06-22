@@ -1,6 +1,7 @@
 #ifndef DICT_CHT_HPP
 #define DICT_CHT_HPP
 #include "../estruturas/CHT.hpp"
+#include <stdexcept>
 
 namespace d_cht{
     template <typename Key, typename Value>
@@ -24,12 +25,12 @@ namespace d_cht{
                 insert(k, newValue);
             }
 
-            Value& getValue(Key& k){
-                c_hash.getValue(k);
+            Value& getValue(const Key& k){
+                return c_hash.getValue(k);
             }
 
             const Value& getValue(const Key& k) const{
-                c_hash.getValue(k);
+                return c_hash.getValue(k);
             }
 
             void erase(Key k){
@@ -37,27 +38,38 @@ namespace d_cht{
             }
 
             bool contains(Key k){
-                c_hash.contains(k);
+                return c_hash.contains(k);
             }
 
             int size(){
-                c_hash.size();
+                return c_hash.size();
             }
 
             void clear(){
                 c_hash.clear();
             }
 
-            /*funções pra implementar:
-            * criacao = construtor
-            * inserção = insert
-            * atualização = ??
-            * acesso = pegar um valor baseado na chave
-            * remoção = erase
-            * verificação = contains
-            * iteração = percorre os pares da estrutura(talvez imprimir???)
-            * Tamanho = size
-            * Limpeza = remover todos os pares de chave
+            void show(){
+                c_hash.show();
+                std::cout << std::endl;
+            }
+
+            const Value& operator[](const Key& k) const{
+                if(!c_hash.contains(k)){
+                    throw std::invalid_argument("chave inexistente");
+                }
+                return c_hash.getValue(k);
+            }
+
+            Value& operator[](const Key& k){
+                if(!c_hash.contains(k)){
+                    c_hash.insert(k, Value());
+                }
+                return c_hash.getValue(k);
+            }
+
+            /*
+            * TODO: iteração = percorre os pares da estrutura(talvez imprimir???)
             */
     };
 }
