@@ -69,7 +69,7 @@ namespace d_cht{
             }
 
             /*
-            * TODO: iteração = percorre os pares da estrutura(talvez imprimir???)
+            * TODO: iteração = percorre os pares da estrutura
             */
     };
 }

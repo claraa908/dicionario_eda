@@ -33,7 +33,8 @@ class RBT{
         //variáveis
         Node* root;
         Node* nil;
-        int contador_comparacoes;
+        mutable int count_comp;
+        mutable int count_recolor;
 
         //funções privadas
         Node* rightRotation(RBT* Tree, Node* x){
@@ -79,13 +80,13 @@ class RBT{
             while(node != Tree->nil){
                 pai = node;
                 if(key < node->tuple.first){
-                    contador_comparacoes++;
+                    count_comp++;
                     node = node->left;
                 }else if(key > node->tuple.first){
-                    contador_comparacoes++;
+                    count_comp++;
                     node = node->right;
                 }else{
-                    contador_comparacoes++;
+                    count_comp++;
                     return;
                 }
             }
@@ -96,8 +97,10 @@ class RBT{
             }else{
                 novoNo->parent = pai;
                 if(key < pai->tuple.first){
+                    count_comp++;
                     pai->left = novoNo;
                 }else{
+                    count_comp++;
                     pai->right = novoNo;
                 }
             }
@@ -112,6 +115,7 @@ class RBT{
                         x->parent->parent->color = RED;
                         x->parent->color = BLACK;
                         tio->color = BLACK;
+                        count_recolor += 3;
                         x = x->parent->parent;
                     }
                     else{
@@ -121,6 +125,7 @@ class RBT{
                         }
                         x->parent->color = BLACK;
                         x->parent->parent->color = RED;
+                        count_recolor += 2;
                         rightRotation(Tree, x->parent->parent);
                     }
                 }else if(x->parent == x->parent->parent->right){
@@ -129,6 +134,7 @@ class RBT{
                         x->parent->parent->color = RED;
                         x->parent->color = BLACK;
                         tio->color = BLACK;
+                        count_recolor += 3;
                         x = x->parent->parent;
                     }else{
                         if(x == x->parent->left){
@@ -137,11 +143,13 @@ class RBT{
                         }
                         x->parent->color = BLACK;
                         x->parent->parent->color = RED;
+                        count_recolor += 2;
                         leftRotation(Tree, x->parent->parent);
                     }
                 }
             }
             Tree->root->color = BLACK;
+            count_recolor++;
         }
 
         K& _getValue(Node* p, T key){
@@ -150,10 +158,13 @@ class RBT{
             }
 
             if(key == p->tuple.first){
+                count_comp++;
                 return p->tuple.second;
             }else if(key < p->tuple.first){
+                count_comp++;
                 return _getValue(p->left, key);
             }else{
+                count_comp++;
                 return _getValue(p->right, key);
             }
             return p->tuple.second;
@@ -165,10 +176,13 @@ class RBT{
             }
 
             if (key == p->tuple.first) {
+                count_comp++;
                 return p->tuple.second;
             } else if (key < p->tuple.first) {
+                count_comp++;
                 return _getValue(p->left, key);
             } else {
+                count_comp++;
                 return _getValue(p->right, key);
             }
         }
@@ -179,8 +193,10 @@ class RBT{
             Node* p = Tree->root;
             while (p != Tree->nil && p->tuple.first != key){
                 if(p->tuple.first > key){
+                    count_comp++;
                     p = p->left;
                 }else{
+                    count_comp++;
                     p = p->right;
                 }
             }
@@ -245,10 +261,12 @@ class RBT{
                         x->parent->color = RED;
                         leftRotation(Tree, x->parent);
                         w = x->parent->right;
+                        count_recolor += 2;
                     }
                     if(w->left->color == BLACK && w->right->color == BLACK){
                         w->color = RED;
                         x = x->parent;
+                        count_recolor++;
                     }
                     else{
                         if(w->right->color == BLACK){
@@ -256,12 +274,14 @@ class RBT{
                             w->color = RED;
                             rightRotation(Tree, w);
                             w = x->parent->right;
+                            count_recolor += 2;
                         }
                         w->color = x->parent->color;
                         x->parent->color = BLACK;
                         w->right->color = BLACK;
                         leftRotation(Tree, x->parent);
                         x = Tree->root;
+                        count_recolor += 3;
                     }
                 } else {
                     Node* w = x->parent->left;
@@ -270,10 +290,12 @@ class RBT{
                         x->parent->color = RED;
                         rightRotation(Tree, x->parent);
                         w = x->parent->left;
+                        count_recolor += 2;
                     }
                     if(w->right->color == BLACK && w->left->color == BLACK){
                         w->color = RED;
                         x = x->parent;
+                        count_recolor++;
                     }
                     else{
                         if(w->left->color == BLACK){
@@ -281,16 +303,19 @@ class RBT{
                             w->color = RED;
                             leftRotation(Tree, w);
                             w = x->parent->left;
+                            count_recolor += 2;
                         }
                         w->color = x->parent->color;
                         x->parent->color = BLACK;
                         w->left->color = BLACK;
                         rightRotation(Tree, x->parent);
                         x = Tree->root;
+                        count_recolor += 3;
                     }
                 }
             }
             x->color = BLACK;
+            count_recolor++;
         }
 
         bool _contains(RBT* Tree, T key){
@@ -301,8 +326,10 @@ class RBT{
             Node* p = Tree->root;
             while(p != Tree->nil && p->tuple.first != key){
                 if(key < p->tuple.first){
+                    count_comp++;
                     p = p->left;
                 }else{
+                    count_comp++;
                     p = p->right;
                 }
             }
@@ -360,7 +387,8 @@ class RBT{
         nil->left = nil->right = nil;
         root = nil;
         root->parent = nil;
-        contador_comparacoes = 0;
+        count_comp = 0;
+        count_recolor = 0;
     }
 
     //destrutor
@@ -374,7 +402,7 @@ class RBT{
 
     //função que retorna o valor de um par baseado na chave
     K& getValue(const T& k){
-        if(root == nullptr){
+        if(root == nil){
             throw std::invalid_argument("árvore vazia");
         }
         return _getValue(root, k);
@@ -382,7 +410,7 @@ class RBT{
 
     //função constante que retorna o valor de um par baseado na chave
     const K& getValue(const T& k) const{
-        if(root == nullptr){
+        if(root == nil){
             throw std::invalid_argument("árvore vazia");
         }
         return _getValue(root, k);
@@ -401,7 +429,7 @@ class RBT{
     }
 
     bool empty(){
-        _empty(root);
+        return _empty(root);
     }
 
     int size(){
@@ -412,8 +440,12 @@ class RBT{
         bshow(this->root, "");
     }
 
-    int getContador(){
-        return contador_comparacoes;
+    int getCountComparation(){
+        return count_comp;
+    }
+
+    int getCountRecolor(){
+        return count_recolor;
     }
 };
 #endif

@@ -6,8 +6,6 @@
 #include "dicionarios/dict_rbt.hpp"
 
 int main(){
-
-    /*
     //teste da avl
     d_avl::Dictionary<std::string, int> testeAVL;
     int count = 0;
@@ -38,10 +36,9 @@ int main(){
     testeAVL.clear();
     std::cout << "tamanho: " << testeAVL.size() << std::endl;
     testeAVL.show();
-    */
 
 
-    /*
+
     //teste da rbt
     d_rbt::Dictionary<std::string, int> testeRBT;
     int count2 = 0;
@@ -72,7 +69,7 @@ int main(){
     testeRBT.clear();
     std::cout << "tamanho: " << testeRBT.size() << std::endl;
     testeRBT.show();
-    */
+
     
     //teste da cht
     d_cht::Dictionary<std::string, int> testeCHT1;

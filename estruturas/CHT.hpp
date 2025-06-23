@@ -19,6 +19,8 @@ class CHT{
     size_t tableSize;
     Hash hashing;
     std::vector<std::list<std::pair<Key, Value>>> table;
+    mutable int count_comp;
+    mutable int count_collisions;
 
     //função que vai receber o tamanho da tabela e pegar o próximo valor primo mais próximo dele
     size_t get_next_prime(size_t x) {
@@ -55,6 +57,8 @@ class CHT{
         } else {
             maxLoadFactor = load_factor;
         }
+        count_comp = 0;
+        count_collisions = 0;
     }
 
     //funções gerais
@@ -67,11 +71,18 @@ class CHT{
         }
 
         size_t slot  = compress(k);
+        bool colision = false;
         for(auto& p : table[slot]){
             if(p.first == k){
+                count_comp++;
                 p.second = v;
                 return false;
             }
+            colision = true; 
+        }
+
+        if(colision){
+            count_collisions++;
         }
 
         table[slot].push_back(std::make_pair(k, v));
@@ -85,6 +96,7 @@ class CHT{
 
         for(auto& p : table[slot]){
             if(p.first == k){
+                count_comp++;
                 return p.second;
             }
         }
@@ -97,6 +109,7 @@ class CHT{
 
         for(const auto& p : table[slot]){
             if(p.first == k){
+                count_comp++;
                 return p.second;
             }
         }
@@ -109,6 +122,7 @@ class CHT{
         size_t slot = compress(k);
         for(auto it = table[slot].begin(); it != table[slot].end(); it++){
             if(it->first == k){
+                count_comp++;
                 table[slot].erase(it);
                 numElem--;
                 return true;
@@ -123,6 +137,7 @@ class CHT{
 
         for(auto p : table[slot]){
             if(p.first == k){
+                count_comp++;
                 return true;
             }
         }
@@ -217,6 +232,7 @@ class CHT{
         size_t slot = compress(k);
         for(auto& par : table[slot]) {
             if(par.first == k) {
+                count_comp++;
                 return par.second;
             }
         }
@@ -245,6 +261,13 @@ class CHT{
                 }
             }
         }
+    }
+    int getCountComparation(){
+        return count_comp;
+    }
+
+    int getCountCollision(){
+        return count_collisions;
     }
 };
 

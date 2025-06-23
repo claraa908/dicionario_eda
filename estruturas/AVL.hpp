@@ -26,7 +26,8 @@ class AVL{
 
         //variáveis
         Node* root;
-        int contador_comparacoes;
+        mutable int count_comp;
+        mutable int count_rotation;
 
 
         //fução que calcula a altura da arvore/subarvore
@@ -69,16 +70,16 @@ class AVL{
             }
             
             if(key == p->tuple.first){
-                contador_comparacoes++;
+                count_comp++;
                 p->tuple.second = value;
                 return p;
             }
             if(key < p->tuple.first){
-                contador_comparacoes++;
+                count_comp++;
                 p->left = _insert(p->left, key, value);
             }
             else if(key>p->tuple.first){
-                contador_comparacoes++;
+                count_comp++;
                 p->right = _insert(p->right, key, value);
             }
             p = fixup_insertion(p, key);
@@ -89,16 +90,24 @@ class AVL{
         Node* fixup_insertion(Node *p, T key){
             int bal = balance(p);
             if(bal < -1 && key < p->left->tuple.first){
+                count_comp++;
+                count_rotation++;
                 return rightRotation(p);
             }
             if(bal < -1 && key > p->left->tuple.first){
+                count_comp++;
+                count_rotation += 2;
                 p->left = leftRotation(p->left);
                 return rightRotation(p);
             }
             if(bal > 1 && key > p->right->tuple.first){
+                count_comp++;
+                count_rotation++;
                 return leftRotation(p);
             }
             if(bal > 1 && key < p->right->tuple.first){
+                count_comp++;
+                count_rotation += 2;
                 p->right = rightRotation(p->right);
                 return leftRotation(p);
             }
@@ -112,10 +121,13 @@ class AVL{
             }
 
             if(key == p->tuple.first){
+                count_comp++;
                 return p->tuple.second;
             }else if(key < p->tuple.first){
+                count_comp++;
                 return _getValue(p->left, key);
             }else{
+                count_comp++;
                 return _getValue(p->right, key);
             }
             return p->tuple.second;
@@ -127,10 +139,13 @@ class AVL{
             }
 
             if (key == p->tuple.first) {
+                count_comp++;
                 return p->tuple.second;
             } else if (key < p->tuple.first) {
+                count_comp++;
                 return _getValue(p->left, key);
             } else {
+                count_comp++;
                 return _getValue(p->right, key);
             }
         }
@@ -141,33 +156,37 @@ class AVL{
             if(_empty(p)){
                 return nullptr;
             }
+
             if(key < p->tuple.first){
+                count_comp++;
                 p->left = _erase(p->left, key);
-            }else if(key > p->tuple.first){
+            } else if(key > p->tuple.first){
+                count_comp++;
                 p->right = _erase(p->right, key);
-            }else if(p->right == nullptr){
-                Node* aux = p->left;
-                delete p;
-                return aux;
-            }else{
-                p->right = remove_successor(p, p->right);
+            } else {
+                if(p->left == nullptr){
+                    Node* aux = p->right;
+                    delete p;
+                    return aux;
+                } else if(p->right == nullptr){
+                    Node* aux = p->left;
+                    delete p;
+                    return aux;
+                } else {
+                    Node* suc = getMin(p->right);
+                    p->tuple = suc->tuple;
+                    p->right = _erase(p->right, suc->tuple.first);
+                }
             }
+
             p->height = 1 + std::max(height(p->left), height(p->right));
-            p = fixup_erase(p);
-            return p;
+            return fixup_erase(p);
         }
 
-        //função que remove o sucessor de um nó
-        Node* remove_successor(Node* node, Node* p){
-            if(!_empty(p->left)){
-                p = remove_successor(node, p->left);
-            }else{
-                node->tuple = p->tuple;
-                Node* aux = p->right;
-                delete p;
-                return aux;
+        Node* getMin(Node* p){
+            while(p->left != nullptr){
+                p = p->left;
             }
-            p = fixup_erase(p);
             return p;
         }
 
@@ -175,16 +194,20 @@ class AVL{
         Node* fixup_erase(Node* p){
             int bal = balance(p);
             if(bal < -1 && balance(p->left) <= 0){
+                count_rotation++;
                 return rightRotation(p);
             }
             if(bal < -1 && balance(p->left) > 0){
+                count_rotation += 2;
                 p->left = leftRotation(p->left);
                 return rightRotation(p);
             }
             if(bal > 1 && balance(p->right) >= 0){
+                count_rotation++;
                 return leftRotation(p);
             }
             if(bal > 1 && balance(p->right) < 0){
+                count_rotation += 2;
                 p->right = rightRotation(p->right);
                 return leftRotation(p);
             }
@@ -199,12 +222,15 @@ class AVL{
                 return false;
             }
             if(key == p->tuple.first){
+                count_comp++;
                 return true;
             }
 
             if(key < p->tuple.first){
+                count_comp++;
                 return _contains(key, p->left);
             }else{
+                count_comp++;
                 return _contains(key, p->right);
             }
         }
@@ -256,7 +282,8 @@ class AVL{
     //construtor
         AVL() {
             root = nullptr;
-            contador_comparacoes = 0;
+            count_comp = 0;
+            count_rotation = 0;
         }
 
         //destrutor
@@ -320,8 +347,12 @@ class AVL{
             bshow(root, "");
         }
 
-        int getContador(){
-            return contador_comparacoes;
+        int getCountComparation(){
+            return count_comp;
+        }
+
+        int getCountRotation(){
+            return count_rotation;
         }
 };
 
