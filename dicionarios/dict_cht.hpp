@@ -17,6 +17,8 @@ namespace d_cht{
                 insert(k, v);
             }
 
+            ~Dictionary() = default;
+
             void insert(Key k, Value v){
                 c_hash.insert(k, v);
             }
@@ -70,6 +72,7 @@ namespace d_cht{
 
             /*
             * TODO: iteração = percorre os pares da estrutura
+            * talvez isso já esteja feito..
             */
     };
 }

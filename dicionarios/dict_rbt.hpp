@@ -16,6 +16,8 @@ namespace d_rbt{
                 insert(k, v);
             }
 
+            ~Dictionary() = default;
+
             void insert(Key k, Value v){
                 rbt_tree.insert(k, v);
             }
@@ -55,6 +57,8 @@ namespace d_rbt{
 
             /*
             * TODO: iteração = percorre os pares da estrutura
+            * na rbt provavelmente é para percorrer os pares em ordem simétrica e usar a chave como iterador
+            * talvez uma sobrecarga do operador [] (???)
             */
     };
 }

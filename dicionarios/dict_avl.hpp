@@ -17,6 +17,8 @@ namespace d_avl{
                 insert(k, v);
             }
 
+            ~Dictionary() = default;
+
             //função de inserção no dicionario
             void insert(Key k, Value v){
                 avl_tree.insert(k, v);
@@ -57,6 +59,8 @@ namespace d_avl{
 
             /*
             * TODO: iteração = percorre os pares da estrutura
+            * na avl provavelmente é para percorrer os pares em ordem simétrica e usar a chave como iterador
+            * talvez uma sobrecarga do operador [] (???)
             */
     }; 
 }
