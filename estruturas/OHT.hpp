@@ -132,7 +132,14 @@ class OHT{
     }
 
     bool erase(){
-
+        int aux = contains(k);
+        if(aux != -1){
+            table[aux] = Node();
+            table.n_status = DELETED;
+            numElem--;
+            return true;
+        }
+        return false;
     }
 
     int contains(Key& k){
