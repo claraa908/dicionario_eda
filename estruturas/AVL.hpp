@@ -31,17 +31,17 @@ class AVL{
 
 
         //fução que calcula a altura da arvore/subarvore
-        int height (Node * node){
+        int height (Node* node){
             return (_empty(node)) ? 0 : node->height;
         }
 
         //funão que calcula o balance da arvore/subarvore
-        int balance (Node * node){
+        int balance (Node* node){
             return height(node->right) - height(node->left);
         }
 
         //função que rotaciona uma arvore/subarvore para direita
-        Node * rightRotation (Node *p){
+        Node* rightRotation (Node* p){
             Node* u = p->left;
             p->left = u->right;
             u->right = p;
@@ -52,7 +52,7 @@ class AVL{
         }
 
         //função que rotaciona uma arvore/subarvore para esquerda
-        Node * leftRotation (Node *p){
+        Node* leftRotation (Node* p){
             Node* u = p->right;
             p->right = u->left;
             u->left = p;
@@ -115,7 +115,7 @@ class AVL{
             return p;
         }
 
-        K& _getValue(Node* p, T key){
+        K& _at(Node* p, T key){
             if(p == nullptr){
                 throw std::invalid_argument("chave nao encontrada na arvore");
             }
@@ -125,15 +125,15 @@ class AVL{
                 return p->tuple.second;
             }else if(key < p->tuple.first){
                 count_comp++;
-                return _getValue(p->left, key);
+                return _at(p->left, key);
             }else{
                 count_comp++;
-                return _getValue(p->right, key);
+                return _at(p->right, key);
             }
             return p->tuple.second;
         }
 
-        const K& _getValue(Node* p, const T& key) const {
+        const K& _at(Node* p, const T& key) const {
             if (p == nullptr) {
                 throw std::invalid_argument("chave nao encontrada na arvore");
             }
@@ -143,10 +143,10 @@ class AVL{
                 return p->tuple.second;
             } else if (key < p->tuple.first) {
                 count_comp++;
-                return _getValue(p->left, key);
+                return _at(p->left, key);
             } else {
                 count_comp++;
-                return _getValue(p->right, key);
+                return _at(p->right, key);
             }
         }
 
@@ -297,19 +297,19 @@ class AVL{
         }
 
         //função que retorna o valor de um par baseado na chave
-        K& getValue(const T& k){
+        K& at(const T& k){
             if(root == nullptr){
                 throw std::invalid_argument("árvore vazia");
             }
-            return _getValue(root, k);
+            return _at(root, k);
         }
 
         //função constante que retorna o valor de um par baseado na chave
-        const K& getValue(const T& k) const{
+        const K& at(const T& k) const{
             if(root == nullptr){
                 throw std::invalid_argument("árvore vazia");
             }
-            return _getValue(root, k);
+            return _at(root, k);
         }
 
         //função publica que apaga um no

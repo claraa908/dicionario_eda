@@ -152,7 +152,7 @@ class RBT{
             count_recolor++;
         }
 
-        K& _getValue(Node* p, T key){
+        K& _at(Node* p, T key){
             if(p == nullptr){
                 throw std::invalid_argument("chave nao encontrada na arvore");
             }
@@ -162,15 +162,15 @@ class RBT{
                 return p->tuple.second;
             }else if(key < p->tuple.first){
                 count_comp++;
-                return _getValue(p->left, key);
+                return _at(p->left, key);
             }else{
                 count_comp++;
-                return _getValue(p->right, key);
+                return _at(p->right, key);
             }
             return p->tuple.second;
         }
 
-        const K& _getValue(Node* p, const T& key) const {
+        const K& _at(Node* p, const T& key) const {
             if (p == nullptr) {
                 throw std::invalid_argument("chave nao encontrada na arvore");
             }
@@ -180,10 +180,10 @@ class RBT{
                 return p->tuple.second;
             } else if (key < p->tuple.first) {
                 count_comp++;
-                return _getValue(p->left, key);
+                return _at(p->left, key);
             } else {
                 count_comp++;
-                return _getValue(p->right, key);
+                return _at(p->right, key);
             }
         }
 
@@ -401,19 +401,19 @@ class RBT{
     }
 
     //função que retorna o valor de um par baseado na chave
-    K& getValue(const T& k){
+    K& at(const T& k){
         if(root == nil){
             throw std::invalid_argument("árvore vazia");
         }
-        return _getValue(root, k);
+        return _at(root, k);
     }
 
     //função constante que retorna o valor de um par baseado na chave
-    const K& getValue(const T& k) const{
+    const K& at(const T& k) const{
         if(root == nil){
             throw std::invalid_argument("árvore vazia");
         }
-        return _getValue(root, k);
+        return _at(root, k);
     }
 
     void erase(T key){

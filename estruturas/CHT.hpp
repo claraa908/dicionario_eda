@@ -91,7 +91,7 @@ class CHT{
     }
 
     //função que retorna o valor de um par baseado na chave
-    Value& getValue(const Key& k){
+    Value& at(const Key& k){
         size_t slot = compress(k);
 
         for(auto& p : table[slot]){
@@ -104,7 +104,7 @@ class CHT{
     }
 
     //função constante que retorna o valor de um par baseado na chave
-    const Value& getValue(const Key& k) const{
+    const Value& at(const Key& k) const{
         size_t slot = compress(k);
 
         for(const auto& p : table[slot]){
@@ -236,6 +236,7 @@ class CHT{
                 return par.second;
             }
         }
+        
         table[slot].push_back({k, Value()});
         numElem++;
         return table[slot].back().second;
@@ -243,7 +244,7 @@ class CHT{
 
     //sobrecarga do operador de colchetes constante
     const Value& operator[](const Key& k) const{
-        return getValue(k);
+        return at(k);
     }
 
     void show(){
