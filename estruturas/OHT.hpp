@@ -90,7 +90,7 @@ class OHT{
     }
 
     bool insert(const Key& k, const Value& v){
-        if(loadFactor() >= maxLoadFactor){
+        if(load_factor() >= maxLoadFactor){
             rehash(2 * tableSize);
         }
 
@@ -134,7 +134,6 @@ class OHT{
     bool erase(){
         int aux = contains(k);
         if(aux != -1){
-            table[aux] = Node();
             table.n_status = DELETED;
             numElem--;
             return true;
@@ -184,10 +183,14 @@ class OHT{
 
     //função que retorna o slot de uma determinada chave
     size_t getSlot(const Key& k) const{
-        return compress(k);
+        int aux = contains(k);
+        if(aux == -1){
+           throw std::invalid_argument("chave nao encontrada")
+        }
+        return aux;
     }
 
-    float loadFactor()const{
+    float load_factor()const{
         return static_cast<float>(numElem) / tableSize;
     }
 
