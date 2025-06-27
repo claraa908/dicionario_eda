@@ -1,6 +1,6 @@
 #ifndef DICT_OHT_HPP
 #define DICT_OHT_HPP
-#include "../estruturas/OHT.hpp"
+#include "..\estruturas\OHT.hpp"
 
 namespace d_oht{
     template <typename Key, typename Value>

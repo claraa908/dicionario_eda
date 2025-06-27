@@ -1,6 +1,6 @@
 #ifndef DICT_CHT_HPP
 #define DICT_CHT_HPP
-#include "../estruturas/CHT.hpp"
+#include "..\estruturas\CHT.hpp"
 #include <stdexcept>
 
 namespace d_cht{
