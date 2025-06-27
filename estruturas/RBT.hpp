@@ -35,9 +35,10 @@ class RBT{
         Node* nil;
         mutable int count_comp;
         mutable int count_recolor;
+        mutable int count_rotation;
 
         //funções privadas
-        Node* rightRotation(RBT* Tree, Node* x){
+        Node* rightRotation(Node* x){
             Node* y = x->left;
             x->left = y->right;
             y->right->parent = x;
@@ -45,8 +46,8 @@ class RBT{
             y->parent = x->parent;
             x->parent = y;
 
-            if(y->parent == Tree->nil){
-                Tree->root = y;
+            if(y->parent == nil){
+                root = y;
             }else if(y->tuple.first < y->parent->tuple.first){
                 y->parent->left = y;
             }else{
@@ -55,7 +56,7 @@ class RBT{
             return y;
         }
 
-        Node* leftRotation(RBT* Tree, Node* x){
+        Node* leftRotation(Node* x){
             Node* y = x->right;
             x->right = y->left;
             y->left->parent = x;
@@ -63,8 +64,8 @@ class RBT{
             y->parent = x->parent;
             x->parent = y;
 
-            if(y->parent == Tree->nil){
-                Tree->root = y;
+            if(y->parent == nil){
+                root = y;
             }else if(y->tuple.first < y->parent->tuple.first){
                 y->parent->left = y;
             }else{
@@ -73,41 +74,42 @@ class RBT{
             return y;
         }
 
-        void _insert(RBT* Tree, T key, K value){
-            Node* pai = Tree->nil;
-            Node* node = Tree->root;
+        void _insert(T key, K value){
+            Node* pai = nil;
+            Node* node = root;
 
-            while(node != Tree->nil){
+            while(node != nil){
                 pai = node;
                 if(key < node->tuple.first){
                     count_comp++;
                     node = node->left;
                 }else if(key > node->tuple.first){
-                    count_comp++;
+                    count_comp += 2;
                     node = node->right;
                 }else{
-                    count_comp++;
+                    node->tuple.second = value;
+                    count_comp += 3;
                     return;
                 }
             }
 
             Node* novoNo = new Node(key, value, RED, nil, nil, nil);
-            if(pai == Tree->nil){
-                Tree->root = novoNo;
+            if(pai == nil){
+                root = novoNo;
             }else{
                 novoNo->parent = pai;
                 if(key < pai->tuple.first){
                     count_comp++;
                     pai->left = novoNo;
                 }else{
-                    count_comp++;
+                    count_comp += 2;
                     pai->right = novoNo;
                 }
             }
-            fixup_insertion(Tree, novoNo);
+            fixup_insertion(novoNo);
         }
 
-        void fixup_insertion(RBT* Tree, Node* x){
+        void fixup_insertion(Node* x){
             while(x->parent->color == RED){
                 if(x->parent == x->parent->parent->left){
                     Node* tio = x->parent->parent->right;
@@ -121,12 +123,14 @@ class RBT{
                     else{
                         if(x == x->parent->right){
                             x = x->parent;
-                            leftRotation(Tree, x);
+                            leftRotation(x);
+                            count_rotation++;
                         }
                         x->parent->color = BLACK;
                         x->parent->parent->color = RED;
                         count_recolor += 2;
-                        rightRotation(Tree, x->parent->parent);
+                        rightRotation(x->parent->parent);
+                        count_rotation++;
                     }
                 }else if(x->parent == x->parent->parent->right){
                     Node* tio = x->parent->parent->left;
@@ -139,21 +143,23 @@ class RBT{
                     }else{
                         if(x == x->parent->left){
                             x = x->parent;
-                            rightRotation(Tree, x);
+                            rightRotation(x);
+                            count_rotation++;
                         }
                         x->parent->color = BLACK;
                         x->parent->parent->color = RED;
                         count_recolor += 2;
-                        leftRotation(Tree, x->parent->parent);
+                        leftRotation(x->parent->parent);
+                        count_rotation++;
                     }
                 }
             }
-            Tree->root->color = BLACK;
+            root->color = BLACK;
             count_recolor++;
         }
 
         K& _at(Node* p, T key){
-            if(p == nullptr){
+            if(p == nil){
                 throw std::invalid_argument("chave nao encontrada na arvore");
             }
 
@@ -161,17 +167,16 @@ class RBT{
                 count_comp++;
                 return p->tuple.second;
             }else if(key < p->tuple.first){
-                count_comp++;
+                count_comp += 2;
                 return _at(p->left, key);
             }else{
-                count_comp++;
+                count_comp += 3;
                 return _at(p->right, key);
             }
-            return p->tuple.second;
         }
 
         const K& _at(Node* p, const T& key) const {
-            if (p == nullptr) {
+            if (p == nil) {
                 throw std::invalid_argument("chave nao encontrada na arvore");
             }
 
@@ -179,54 +184,54 @@ class RBT{
                 count_comp++;
                 return p->tuple.second;
             } else if (key < p->tuple.first) {
-                count_comp++;
+                count_comp += 2;
                 return _at(p->left, key);
             } else {
-                count_comp++;
+                count_comp += 3;
                 return _at(p->right, key);
             }
         }
 
         // função que percorre a árvore em busca de um nó que contenha a chave pedida, 
         // se existir chama a função que vai remover esse nó
-        void _erase(RBT* Tree, T key){
-            Node* p = Tree->root;
-            while (p != Tree->nil && p->tuple.first != key){
+        void _erase(T key){
+            Node* p = root;
+            while (p != nil && p->tuple.first != key){
                 if(p->tuple.first > key){
                     count_comp++;
                     p = p->left;
                 }else{
-                    count_comp++;
+                    count_comp += 2;
                     p = p->right;
                 }
             }
 
-            if(p != Tree->nil){
-                delete_RB(Tree, p);
+            if(p != nil){
+                delete_RB(p);
             }
         }
 
-        void delete_RB(RBT* Tree, Node* p){
-            Node* y = Tree->nil;
-            if(p->left == Tree->nil || p->right == Tree->nil){
+        void delete_RB(Node* p){
+            Node* y = nil;
+            if(p->left == nil || p->right == nil){
                 y = p;
             }else{
-                y = minimum(Tree, p->right);
+                y = minimum(p->right);
             }
 
             Node* x;
-            if(y->right != Tree->nil){
+            if(y->right != nil){
                 x = y->right;
             }else{
                 x = y->left;
             }
 
-            if(x != Tree->nil){
+            if(x != nil){
                 x->parent = y->parent;
             }
 
-            if(y->parent == Tree->nil){
-                Tree->root = x;
+            if(y->parent == nil){
+                root = x;
             }else{
                 if(y == y->parent->left){
                     y->parent->left = x;
@@ -239,27 +244,28 @@ class RBT{
                 p->tuple = y->tuple;
             }
             if(y->color == BLACK){
-                fixup_erase(Tree, x);
+                fixup_erase(x);
             }
             delete y;
         }
 
-        Node* minimum(RBT* Tree, Node* p){
-            while(p->left != Tree->nil){
+        Node* minimum(Node* p){
+            while(p->left != nil){
                 p = p->left;
             }
             return p;
         }
 
 
-        void fixup_erase(RBT* Tree, Node* x){
-            while(x != Tree->root && x->color == BLACK){
+        void fixup_erase(Node* x){
+            while(x != root && x->color == BLACK){
                 if(x == x->parent->left){
                     Node* w = x->parent->right;
                     if(w->color == RED){
                         w->color = BLACK;
                         x->parent->color = RED;
-                        leftRotation(Tree, x->parent);
+                        leftRotation(x->parent);
+                        count_rotation++;
                         w = x->parent->right;
                         count_recolor += 2;
                     }
@@ -272,15 +278,17 @@ class RBT{
                         if(w->right->color == BLACK){
                             w->left->color = BLACK;
                             w->color = RED;
-                            rightRotation(Tree, w);
+                            rightRotation(w);
+                            count_rotation++;
                             w = x->parent->right;
                             count_recolor += 2;
                         }
                         w->color = x->parent->color;
                         x->parent->color = BLACK;
                         w->right->color = BLACK;
-                        leftRotation(Tree, x->parent);
-                        x = Tree->root;
+                        leftRotation(x->parent);
+                        count_rotation++;
+                        x = root;
                         count_recolor += 3;
                     }
                 } else {
@@ -288,7 +296,8 @@ class RBT{
                     if(w->color == RED){
                         w->color = BLACK;
                         x->parent->color = RED;
-                        rightRotation(Tree, x->parent);
+                        rightRotation(x->parent);
+                        count_rotation++;
                         w = x->parent->left;
                         count_recolor += 2;
                     }
@@ -301,15 +310,17 @@ class RBT{
                         if(w->left->color == BLACK){
                             w->right->color = BLACK;
                             w->color = RED;
-                            leftRotation(Tree, w);
+                            leftRotation(w);
+                            count_rotation++;
                             w = x->parent->left;
                             count_recolor += 2;
                         }
                         w->color = x->parent->color;
                         x->parent->color = BLACK;
                         w->left->color = BLACK;
-                        rightRotation(Tree, x->parent);
-                        x = Tree->root;
+                        rightRotation(x->parent);
+                        count_rotation++;;
+                        x = root;
                         count_recolor += 3;
                     }
                 }
@@ -318,22 +329,25 @@ class RBT{
             count_recolor++;
         }
 
-        bool _contains(RBT* Tree, T key){
-            if(Tree->root == Tree->nil){
+        bool _contains(T key){
+            if(root == nil){
                 return false;
             }
 
-            Node* p = Tree->root;
-            while(p != Tree->nil && p->tuple.first != key){
-                if(key < p->tuple.first){
+            Node* p = root;
+            while(p != nil && p->tuple.first != key){
+                if(key == p->tuple.first){
                     count_comp++;
+                    return true;
+                }else if(key < p->tuple.first){
+                    count_comp += 2;
                     p = p->left;
                 }else{
-                    count_comp++;
+                    count_comp += 3;
                     p = p->right;
                 }
             }
-            return p->tuple.first == key;
+            return false;
         }
 
         Node* _clear(Node* p){
@@ -389,15 +403,16 @@ class RBT{
         root->parent = nil;
         count_comp = 0;
         count_recolor = 0;
+        count_rotation = 0;
     }
 
     //destrutor
     ~RBT(){
-        root = _clear(this->root);
+        root = _clear(root);
     }
 
     void insert(T key, K value){
-        _insert(this, key, value);
+        _insert(key, value);
     }
 
     //função que retorna o valor de um par baseado na chave
@@ -417,15 +432,15 @@ class RBT{
     }
 
     void erase(T key){
-        _erase(this, key);
+        _erase(key);
     }
 
     bool contains(T key){
-        return _contains(this, key);
+        return _contains(key);
     }
 
     void clear(){
-        root = _clear(this->root);
+        root = _clear(root);
     }
 
     bool empty(){
@@ -436,8 +451,15 @@ class RBT{
         return _size(root);
     }
 
+    K& operator[](const T& key) {
+        if (!contains(key)) {
+            insert(key, K{});
+        }
+        return at(key);
+    }
+    
     void show(){
-        bshow(this->root, "");
+        bshow(root, "");
     }
 
     int getCountComparation(){
@@ -446,6 +468,10 @@ class RBT{
 
     int getCountRecolor(){
         return count_recolor;
+    }
+
+    int getCountRotation(){
+        return count_rotation;
     }
 };
 #endif

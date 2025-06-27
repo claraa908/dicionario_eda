@@ -38,6 +38,7 @@ class OHT{
     std::vector<Node> table;
     mutable int count_comp;
     mutable int count_collisions;
+    mutable int count_rehash;
 
     //função que vai receber o tamanho da tabela e pegar o próximo valor primo mais próximo dele
     size_t get_next_prime(size_t x) {
@@ -104,11 +105,13 @@ class OHT{
         }
         count_comp = 0;
         count_collisions = 0;
+        count_rehash = 0;
     }
 
     bool insert(const Key& k, const Value& v){
         if(load_factor() >= maxLoadFactor){
             rehash(2 * tableSize);
+            count_rehash++;
         }
 
         int aux = _contains(k);
@@ -178,10 +181,7 @@ class OHT{
         return numElem;
     }
 
-
     //funções da hash
-
-    
     size_t num_slot() const{
         return tableSize;
     }
@@ -230,12 +230,14 @@ class OHT{
     void reserve(size_t n){
         if(n > tableSize * maxLoadFactor){
             rehash( n / maxLoadFactor);
+            count_rehash++;
         }
     }
 
     Value& operator[](const Key& k){
         if(load_factor() >= maxLoadFactor) {
             rehash(2 * tableSize);
+            count_rehash++;
         }
 
         int aux = _contains(k);
@@ -286,6 +288,10 @@ class OHT{
 
     int getCountCollision(){
         return count_collisions;
+    }
+
+    int getCountRehash(){
+        return count_rehash;
     }
 };
 

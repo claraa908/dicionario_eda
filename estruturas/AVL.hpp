@@ -75,11 +75,11 @@ class AVL{
                 return p;
             }
             if(key < p->tuple.first){
-                count_comp++;
+                count_comp += 2;
                 p->left = _insert(p->left, key, value);
             }
             else if(key>p->tuple.first){
-                count_comp++;
+                count_comp += 3;
                 p->right = _insert(p->right, key, value);
             }
             p = fixup_insertion(p, key);
@@ -89,27 +89,31 @@ class AVL{
         //função que conserta o balanço da arvore após uma inserção
         Node* fixup_insertion(Node *p, T key){
             int bal = balance(p);
-            if(bal < -1 && key < p->left->tuple.first){
-                count_comp++;
-                count_rotation++;
-                return rightRotation(p);
+            if(bal < -1){
+                if(key < p->left->tuple.first){
+                    count_comp++;
+                    count_rotation++;
+                    return rightRotation(p);
+                }
+                if(key > p->left->tuple.first){
+                    count_comp += 2;
+                    count_rotation += 2;
+                    p->left = leftRotation(p->left);
+                    return rightRotation(p);
+                }
             }
-            if(bal < -1 && key > p->left->tuple.first){
-                count_comp++;
-                count_rotation += 2;
-                p->left = leftRotation(p->left);
-                return rightRotation(p);
-            }
-            if(bal > 1 && key > p->right->tuple.first){
+            if(bal > 1){
+                if(key > p->right->tuple.first){
                 count_comp++;
                 count_rotation++;
                 return leftRotation(p);
-            }
-            if(bal > 1 && key < p->right->tuple.first){
-                count_comp++;
-                count_rotation += 2;
-                p->right = rightRotation(p->right);
-                return leftRotation(p);
+                }
+                if(key < p->right->tuple.first){
+                    count_comp += 2;
+                    count_rotation += 2;
+                    p->right = rightRotation(p->right);
+                    return leftRotation(p);
+                }
             }
             p->height = 1 + std::max(height(p->left), height(p->right));
             return p;
@@ -119,15 +123,14 @@ class AVL{
             if(p == nullptr){
                 throw std::invalid_argument("chave nao encontrada na arvore");
             }
-
             if(key == p->tuple.first){
                 count_comp++;
                 return p->tuple.second;
             }else if(key < p->tuple.first){
-                count_comp++;
+                count_comp += 2;
                 return _at(p->left, key);
             }else{
-                count_comp++;
+                count_comp += 3;
                 return _at(p->right, key);
             }
             return p->tuple.second;
@@ -142,10 +145,10 @@ class AVL{
                 count_comp++;
                 return p->tuple.second;
             } else if (key < p->tuple.first) {
-                count_comp++;
+                count_comp += 2;
                 return _at(p->left, key);
             } else {
-                count_comp++;
+                count_comp += 3;
                 return _at(p->right, key);
             }
         }
@@ -161,7 +164,7 @@ class AVL{
                 count_comp++;
                 p->left = _erase(p->left, key);
             } else if(key > p->tuple.first){
-                count_comp++;
+                count_comp += 2;
                 p->right = _erase(p->right, key);
             } else {
                 if(p->left == nullptr){
@@ -227,10 +230,10 @@ class AVL{
             }
 
             if(key < p->tuple.first){
-                count_comp++;
+                count_comp += 2;
                 return _contains(key, p->left);
             }else{
-                count_comp++;
+                count_comp += 3;
                 return _contains(key, p->right);
             }
         }
@@ -321,7 +324,7 @@ class AVL{
         }
 
         //função publica que retorna se um nó está ou não na árvore
-        bool contains(T key){
+        bool contains(const T& key){
             return _contains(key, root);
         }
 
@@ -341,6 +344,13 @@ class AVL{
         //função publica que retorna quantos nós uma árvore possui
         int size(){
             return _empty(root) ? 0 : _size(root);
+        }
+
+        K& operator[](const T& key) {
+            if (!contains(key)) {
+                insert(key, K{});
+            }
+            return at(key);
         }
 
         void show(){

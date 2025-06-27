@@ -21,6 +21,7 @@ class CHT{
     std::vector<std::list<std::pair<Key, Value>>> table;
     mutable int count_comp;
     mutable int count_collisions;
+    mutable int count_rehash;
 
     //função que vai receber o tamanho da tabela e pegar o próximo valor primo mais próximo dele
     size_t get_next_prime(size_t x) {
@@ -59,6 +60,7 @@ class CHT{
         }
         count_comp = 0;
         count_collisions = 0;
+        count_rehash = 0;
     }
 
     //funções gerais
@@ -68,6 +70,7 @@ class CHT{
     bool insert(const Key& k, const Value& v){
         if(load_factor() >= max_load_factor()){
             rehash(2 * tableSize);
+            count_rehash++;
         }
 
         size_t slot  = compress(k);
@@ -221,6 +224,7 @@ class CHT{
     void reserve(size_t n){
         if(n > tableSize * maxLoadFactor){
             rehash( n / maxLoadFactor);
+            count_rehash++;
         }
     }
 
@@ -228,6 +232,7 @@ class CHT{
     Value& operator[](const Key& k){
         if(load_factor() >= maxLoadFactor) {
             rehash(2 * tableSize);
+            count_rehash++;
         }
         size_t slot = compress(k);
         for(auto& par : table[slot]) {
@@ -269,6 +274,10 @@ class CHT{
 
     int getCountCollision(){
         return count_collisions;
+    }
+
+    int getCountRehash(){
+        return count_rehash;
     }
 };
 
