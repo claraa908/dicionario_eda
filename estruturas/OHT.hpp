@@ -57,6 +57,23 @@ class OHT{
         return x - 2;
     }
 
+    int _contains(const Key& k){
+        size_t i = 0;
+        while(i < tableSize){
+            size_t slot = compress(k, i);
+            if(table[slot].n_status ==  EMPTY){
+                return -1;
+            }
+
+            if(table[slot].n_status == ACTIVE && table[slot].tuple.first == k){
+                count_comp++;
+                return slot;
+            }
+            i++;
+        }
+        return -1;
+    }
+
     //funções de hashing duplo
 
     //função do primeiro hash que recebe uma chave e determina onde a inserção vai iniciar
@@ -94,7 +111,7 @@ class OHT{
             rehash(2 * tableSize);
         }
 
-        int aux = contains(k);
+        int aux = _contains(k);
         if(aux != -1){
             table[aux].tuple.second = v;
             return false;
@@ -106,17 +123,18 @@ class OHT{
             if(table[slot].n_status != ACTIVE){
                 table[slot] = Node(k, v);
                 numElem++;
+                count_collisions += i;
                 return true;
             }
-            count_collisions++;
             i++;
         }
 
+        count_collisions += i;
         throw std::overflow_error("tabela cheia");
     }
 
     Value& at(const Key& k){
-        int aux = contains(k);
+        int aux = _contains(k);
         if(aux != -1){
             return table[aux].tuple.second;
         }
@@ -124,40 +142,25 @@ class OHT{
     }
 
     const Value& at(const Key& k) const{
-        int aux = contains(k);
+        int aux = _contains(k);
         if(aux != -1){
             return table[aux].tuple.second;
         }
         throw std::invalid_argument("chave nao encontrada");
     }
 
-    bool erase(){
-        int aux = contains(k);
+    bool erase(const Key& k){
+        int aux = _contains(k);
         if(aux != -1){
-            table.n_status = DELETED;
+            table[aux].n_status = DELETED;
             numElem--;
             return true;
         }
         return false;
     }
 
-    int contains(Key& k){
-        size_t i = 0;
-        while(i < tableSize){
-            size_t slot = compress(k, i);
-            if(table[slot].n_status ==  EMPTY){
-                count_comp++;
-                return -1;
-            }
-
-            if(table[slot].n_status == ACTIVE && table[slot].tuple.first == k){
-                count_comp++;
-                return slot;
-            }
-            i++;
-            count_comp++;
-        }
-        return -1;
+    bool contains(const Key& k){
+        return _contains(k) != -1 ? true : false;
     }
 
     void clear(){
@@ -177,15 +180,17 @@ class OHT{
 
 
     //funções da hash
+
+    
     size_t num_slot() const{
         return tableSize;
     }
 
     //função que retorna o slot de uma determinada chave
-    size_t getSlot(const Key& k) const{
-        int aux = contains(k);
+    size_t getSlot(const Key& k){
+        int aux = _contains(k);
         if(aux == -1){
-           throw std::invalid_argument("chave nao encontrada")
+           throw std::invalid_argument("chave nao encontrada");
         }
         return aux;
     }
@@ -233,7 +238,7 @@ class OHT{
             rehash(2 * tableSize);
         }
 
-        int aux = contains(k);
+        int aux = _contains(k);
         if(aux != -1){
             return table[aux].tuple.second;
         }
@@ -261,15 +266,17 @@ class OHT{
             std::cout << "'Hash sem elementos'";
         }else{
             bool first = true;
-            for (const auto& node : table) {
+            for (int i = 0; i < tableSize; i++) {
+                const auto& node = table[i];
                 if(node.n_status == ACTIVE){
                     if (!first) {
                     std::cout << ", ";
                     }
-                    std::cout << "(" << node.tuple.first << ": " << node.tuple.second << ")";
+                    std::cout << "slot " << i << ": (" << node.tuple.first << ": " << node.tuple.second << ")";
                         first = false;
                 }
             }
+            std::cout << std::endl;
         }
     }
     
