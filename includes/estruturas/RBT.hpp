@@ -77,5 +77,5 @@ class RBT{
         int getCountRecolor();
         int getCountRotation();
 };
-#include "..\src\RBT.tpp"
+#include "..\..\src\estruturas\RBT.tpp"
 #endif

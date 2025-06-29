@@ -1,19 +1,19 @@
-#include "..\includes\estruturas\AVL.hpp"
+#include "..\..\includes\estruturas\AVL.hpp"
 //finalizado
 
 //funções privadas
 template<typename Key, typename Value>
-int AVL<Key, Value>::height (Node* node){
+int AVL<Key, Value>::height (typename AVL<Key, Value>::Node* node){
     return (_empty(node)) ? 0 : node->height;
 }
 
 template<typename Key, typename Value>
-int AVL<Key, Value>::balance (Node* node){
+int AVL<Key, Value>::balance (typename AVL<Key, Value>::Node* node){
     return height(node->right) - height(node->left);
 }
 
 template<typename Key, typename Value>
-AVL<Key, Value>::Node* AVL<Key, Value>::rightRotation (Node* p){
+typename AVL<Key, Value>::Node* AVL<Key, Value>::rightRotation (typename AVL<Key, Value>::Node* p){
     Node* u = p->left;
     p->left = u->right;
     u->right = p;
@@ -24,7 +24,7 @@ AVL<Key, Value>::Node* AVL<Key, Value>::rightRotation (Node* p){
 }
 
 template<typename Key, typename Value>
-AVL<Key, Value>::Node* AVL<Key, Value>::leftRotation (Node* p){
+typename AVL<Key, Value>::Node* AVL<Key, Value>::leftRotation (typename AVL<Key, Value>::Node* p){
     Node* u = p->right;
     p->right = u->left;
     u->left = p;
@@ -35,7 +35,7 @@ AVL<Key, Value>::Node* AVL<Key, Value>::leftRotation (Node* p){
 }
 
 template<typename Key, typename Value>
-AVL<Key, Value>::Node* AVL<Key, Value>::_insert(Node *p , const Key& k, const Value& v){
+typename AVL<Key, Value>::Node* AVL<Key, Value>::_insert(typename AVL<Key, Value>::Node* p , const Key& k, const Value& v){
     if(_empty(p)){
         return new Node{k, v, 1, nullptr, nullptr};
     }
@@ -58,7 +58,7 @@ AVL<Key, Value>::Node* AVL<Key, Value>::_insert(Node *p , const Key& k, const Va
 }
 
 template<typename Key, typename Value>
-AVL<Key, Value>::Node* AVL<Key, Value>::fixup_insertion(Node *p, const Key& k){
+typename AVL<Key, Value>::Node* AVL<Key, Value>::fixup_insertion(typename AVL<Key, Value>::Node* p, const Key& k){
     int bal = balance(p);
     if(bal < -1){
         if(k < p->left->tuple.first){
@@ -91,7 +91,7 @@ AVL<Key, Value>::Node* AVL<Key, Value>::fixup_insertion(Node *p, const Key& k){
 }
 
 template<typename Key, typename Value>
-Value& AVL<Key, Value>::_at(Node* p, const Key& k){
+Value& AVL<Key, Value>::_at(typename AVL<Key, Value>::Node* p, const Key& k){
     if(p == nullptr){
         throw std::invalid_argument("chave nao encontrada na arvore");
     }
@@ -109,7 +109,7 @@ Value& AVL<Key, Value>::_at(Node* p, const Key& k){
 }
 
 template<typename Key, typename Value>
-const Value& AVL<Key, Value>::_at(Node* p, const Key& k) const {
+const Value& AVL<Key, Value>::_at(typename AVL<Key, Value>::Node* p, const Key& k) const {
     if (p == nullptr) {
         throw std::invalid_argument("chave nao encontrada na arvore");
     }
@@ -127,7 +127,7 @@ const Value& AVL<Key, Value>::_at(Node* p, const Key& k) const {
 }
 
 template<typename Key, typename Value>
-AVL<Key, Value>::Node* AVL<Key, Value>::_erase(Node* p, const Key& k){
+typename AVL<Key, Value>::Node* AVL<Key, Value>::_erase(typename AVL<Key, Value>::Node* p, const Key& k){
     if(_empty(p)){
         return nullptr;
     }
@@ -158,7 +158,7 @@ AVL<Key, Value>::Node* AVL<Key, Value>::_erase(Node* p, const Key& k){
 }
 
 template<typename Key, typename Value>
-AVL<Key, Value>::Node* AVL<Key, Value>::getMin(Node* p){
+typename AVL<Key, Value>::Node* AVL<Key, Value>::getMin(typename AVL<Key, Value>::Node* p){
     while(p->left != nullptr){
         p = p->left;
     }
@@ -166,7 +166,7 @@ AVL<Key, Value>::Node* AVL<Key, Value>::getMin(Node* p){
 }
 
 template<typename Key, typename Value>
-AVL<Key, Value>::Node* AVL<Key, Value>::fixup_erase(Node* p){
+typename AVL<Key, Value>::Node* AVL<Key, Value>::fixup_erase(typename AVL<Key, Value>::Node* p){
     int bal = balance(p);
     if(bal < -1 && balance(p->left) <= 0){
         count_rotation++;
@@ -191,7 +191,7 @@ AVL<Key, Value>::Node* AVL<Key, Value>::fixup_erase(Node* p){
 }
 
 template<typename Key, typename Value>
-bool AVL<Key, Value>::_contains(Node* p, const Key& k){
+bool AVL<Key, Value>::_contains(typename AVL<Key, Value>::Node* p, const Key& k){
     if(_empty(p)){
         return false;
     }
@@ -210,7 +210,7 @@ bool AVL<Key, Value>::_contains(Node* p, const Key& k){
 }
 
 template<typename Key, typename Value>
-AVL<Key, Value>::Node* AVL<Key, Value>::_clear(Node* p){
+typename AVL<Key, Value>::Node* AVL<Key, Value>::_clear(typename AVL<Key, Value>::Node* p){
     if(p != nullptr){
         p->left = _clear(p->left);
         p->right = _clear(p->right);
@@ -220,12 +220,12 @@ AVL<Key, Value>::Node* AVL<Key, Value>::_clear(Node* p){
 }
 
 template<typename Key, typename Value>
-bool AVL<Key, Value>::_empty(Node *p){
+bool AVL<Key, Value>::_empty(AVL<Key, Value>::Node* p){
     return (p == nullptr) ? true : false;
 }
 
 template<typename Key, typename Value>
-int AVL<Key, Value>::_size(Node *p){
+int AVL<Key, Value>::_size(AVL<Key, Value>::Node* p){
     if(_empty(p)){
         return 0;
     }
@@ -234,7 +234,7 @@ int AVL<Key, Value>::_size(Node *p){
 }
 
 template<typename Key, typename Value>
-void AVL<Key, Value>::bshow(Node *node, std::string heranca) const {
+void AVL<Key, Value>::bshow(AVL<Key, Value>::Node* node, std::string heranca) const {
     if(node != nullptr && (node->left != nullptr || node->right != nullptr))
         bshow(node->right , heranca + "r");
     for(int i = 0; i < (int) heranca.size() - 1; i++)
@@ -249,7 +249,6 @@ void AVL<Key, Value>::bshow(Node *node, std::string heranca) const {
     if(node != nullptr && (node->left != nullptr || node->right != nullptr))
         bshow(node->left, heranca + "l");
 }
-
 
 
 //funções públicas

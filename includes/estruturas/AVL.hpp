@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <algorithm>
 
+
 //TODO: COMENTAR!!!!!!
 
 template <typename Key, typename Value>
@@ -39,31 +40,23 @@ class AVL{
         Node* rightRotation (Node* p);
         //função que rotaciona uma arvore/subarvore para esquerda
         Node* leftRotation (Node* p);
-        //insert
         //função que adiciona um nó sem desbalancear a arvore
         Node* _insert(Node *p , const Key& k, const Value& v);
         //função que conserta o balanço da arvore após uma inserção
         Node* fixup_insertion(Node *p, const Key& k);
         Value& _at(Node* p, const Key& k);
         const Value& _at(Node* p, const Key& k) const;
-
-        //erase
         //função que remove um nó sem desbalancear a arvore
         Node* _erase(Node* p, const Key& k);
-
         Node* getMin(Node* p);
         //função que conserta o balanço da arvore após uma remoção
         Node* fixup_erase(Node* p);
-        //contains
         //função booleana que recebe o primeiro nó da árvore e um determinado valor e verifica se este está na árvore
         bool _contains(Node* p, const Key& k);
-        //clear
         //função privada que deleta os nos em pos ordem
         Node* _clear(Node* p);
-        //empty
         //função que verifica se a arvore é vazia ou não
         bool _empty(Node *p);
-        //size
         //função privada que retorna o quantidade de nos que a arvore possui
         int _size(Node *p);
         void bshow(Node *node, std::string heranca) const;
@@ -96,5 +89,5 @@ class AVL{
         int getCountRotation();
 };
 
-#include "..\src\AVL.tpp"
+#include "..\..\src\estruturas\AVL.tpp"
 #endif

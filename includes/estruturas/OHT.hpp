@@ -81,5 +81,5 @@ class OHT{
         int getCountCollision();
         int getCountRehash();
 };
-#include "..\src\OHT.tpp"
+#include "..\..\src\estruturas\OHT.tpp"
 #endif

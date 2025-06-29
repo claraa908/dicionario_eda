@@ -10,6 +10,7 @@ int main(){
     hash.insert(1, "a");
     std::cout << "Colisoes: " << hash.getCountCollision() << std::endl;
     std::cout << "Comparacoes: " << hash.getCountComparation() << std::endl;
+    std::cout << "Comparacoes: " << hash.getCountRehash() << std::endl;
     hash.show();
     std::cout << std::endl;
 
@@ -17,6 +18,7 @@ int main(){
     hash.insert(4, "b");  // Deve colidir com 1 (dependendo do hash)
     std::cout << "Colisoes: " << hash.getCountCollision() << std::endl;
     std::cout << "Comparacoes: " << hash.getCountComparation() << std::endl;
+    std::cout << "Comparacoes: " << hash.getCountRehash() << std::endl;
     hash.show();
     std::cout << std::endl;
 
@@ -24,6 +26,7 @@ int main(){
     hash.insert(7, "c");  // Provavelmente mais uma colisão
     std::cout << "Colisoes: " << hash.getCountCollision() << std::endl;
     std::cout << "Comparacoes: " << hash.getCountComparation() << std::endl;
+    std::cout << "Comparacoes: " << hash.getCountRehash() << std::endl;
     hash.show();
     std::cout << std::endl;
 
@@ -31,14 +34,17 @@ int main(){
     hash.insert(4, "d");  // Atualização: mesma chave, valor diferente
     std::cout << "Colisoes: " << hash.getCountCollision() << std::endl;
     std::cout << "Comparacoes: " << hash.getCountComparation() << std::endl;
+    std::cout << "Comparacoes: " << hash.getCountRehash() << std::endl;
     hash.show();
     std::cout << std::endl;
 
     std::cout << "Valor da chave 7: " << hash.at(7) << std::endl;
     std::cout << "Comparacoes apos at(7): " << hash.getCountComparation() << std::endl;
+    std::cout << "Comparacoes: " << hash.getCountRehash() << std::endl;
 
     std::cout << "Contem chave 1? " << (hash.contains(1) ? "Sim" : "Nao") << std::endl;
     std::cout << "Comparacoes apos contains(1): " << hash.getCountComparation() << std::endl;
+    std::cout << "Comparacoes: " << hash.getCountRehash() << std::endl;
     hash.show();
     std::cout << std::endl;
 
@@ -49,6 +55,7 @@ int main(){
         std::cout << "Chave nao encontrada" << std::endl;
     }
     std::cout << "Comparacoes apos erase(4): " << hash.getCountComparation() << std::endl;
+    std::cout << "Comparacoes: " << hash.getCountRehash() << std::endl;
     hash.show();
     std::cout << std::endl;
 
@@ -72,6 +79,7 @@ int main(){
 
     std::cout << "Colisoes: " << hash.getCountCollision() << std::endl;
     std::cout << "Comparacoes: " << hash.getCountComparation() << std::endl;
+    std::cout << "Comparacoes: " << hash.getCountRehash() << std::endl;
     hash.show();
 
     std::cout << hash.size() << std::endl;

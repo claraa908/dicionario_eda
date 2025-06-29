@@ -1,4 +1,4 @@
-#include "..\includes\estruturas\CHT.hpp"
+#include "..\..\includes\estruturas\CHT.hpp"
 //TODO: DESTRUTOR!!!!!!!!
 
 //funções privadas
@@ -24,6 +24,8 @@ template <typename Key, typename Value, typename Hash>
 size_t CHT<Key, Value, Hash>::compress(const Key& k) const {
     return hashing(k) % tableSize;
 }
+
+
 
 //funções públicas
 template <typename Key, typename Value, typename Hash>
@@ -54,14 +56,13 @@ bool CHT<Key, Value, Hash>::insert(const Key& k, const Value& v){
     }
 
     size_t slot  = compress(k);
-    bool colision = false;
+    bool colision = !table[slot].empty();
     for(auto& p : table[slot]){
         if(p.first == k){
             count_comp++;
             p.second = v;
             return false;
         }
-        colision = true; 
     }
 
     if(colision){
@@ -232,19 +233,25 @@ const Value& CHT<Key, Value, Hash>::operator[](const Key& k) const{
 
 template <typename Key, typename Value, typename Hash>
 void CHT<Key, Value, Hash>::show(){
-    if(empty()){
-        std::cout << "'Hash sem elementos'";
-    }else{
-        bool first = true;
-        for (size_t i = 0; i < tableSize; i++) {
-            for (const auto& p : table[i]) {
-                if (!first) {
-                    std::cout << ", ";
-                }
-                std::cout << "(" << p.first << ": " << p.second << ")";
-                first = false;
-            }
+    if (empty()) {
+        std::cout << "Hash sem elementos\n";
+        return;
+    }
+
+    for (size_t i = 0; i < tableSize; i++) {
+        std::cout << "slot " << i << ": ";
+        if (table[i].empty()) {
+            std::cout << "[]\n";
+            continue;
         }
+
+        bool first = true;
+        for (const auto& p : table[i]) {
+            if (!first) std::cout << " -> ";
+            std::cout << "(" << p.first << ": " << p.second << ")";
+            first = false;
+        }
+        std::cout << '\n';
     }
 }
 

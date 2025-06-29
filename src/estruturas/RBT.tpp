@@ -1,9 +1,9 @@
-#include "..\includes\estruturas\RBT.hpp"
+#include "..\..\includes\estruturas\RBT.hpp"
 //finalizado
 
 //funções privadas
 template<typename Key, typename Value>
-RBT<Key, Value>::Node* RBT<Key, Value>::rightRotation(Node* x){
+typename RBT<Key, Value>::Node* RBT<Key, Value>::rightRotation(typename RBT<Key, Value>::Node* x){
     Node* y = x->left;
     x->left = y->right;
     y->right->parent = x;
@@ -22,7 +22,7 @@ RBT<Key, Value>::Node* RBT<Key, Value>::rightRotation(Node* x){
 }
 
 template<typename Key, typename Value>
-RBT<Key, Value>::Node* RBT<Key, Value>::leftRotation(Node* x){
+typename RBT<Key, Value>::Node* RBT<Key, Value>::leftRotation(typename RBT<Key, Value>::Node* x){
     Node* y = x->right;
     x->right = y->left;
     y->left->parent = x;
@@ -77,7 +77,7 @@ void RBT<Key, Value>::_insert(const Key& k, const Value& v){
 }
 
 template<typename Key, typename Value>
-void RBT<Key, Value>::fixup_insertion(Node* x){
+void RBT<Key, Value>::fixup_insertion(typename RBT<Key, Value>::Node* x){
     while(x->parent->color == RED){
         if(x->parent == x->parent->parent->left){
             Node* tio = x->parent->parent->right;
@@ -122,12 +122,12 @@ void RBT<Key, Value>::fixup_insertion(Node* x){
             }
         }
     }
-    root->color = BLACK;
     count_recolor++;
+    root->color = BLACK;
 }
 
 template<typename Key, typename Value>
-Value& RBT<Key, Value>::_at(Node* p, const Key& k){
+Value& RBT<Key, Value>::_at(typename RBT<Key, Value>::Node* p, const Key& k){
     if(p == nil){
         throw std::invalid_argument("chave nao encontrada na arvore");
     }
@@ -145,7 +145,7 @@ Value& RBT<Key, Value>::_at(Node* p, const Key& k){
 }
 
 template<typename Key, typename Value>
-const Value& RBT<Key, Value>::_at(Node* p, const Key& k) const {
+const Value& RBT<Key, Value>::_at(typename RBT<Key, Value>::Node* p, const Key& k) const {
     if (p == nil) {
         throw std::invalid_argument("chave nao encontrada na arvore");
     }
@@ -165,11 +165,16 @@ const Value& RBT<Key, Value>::_at(Node* p, const Key& k) const {
 template<typename Key, typename Value>
 void RBT<Key, Value>::_erase(const Key& k){
     Node* p = root;
-    while (p != nil && p->tuple.first != k){
-        if(p->tuple.first > k){
+    while (p != nil) {
+        if (p->tuple.first == k) {
+            count_comp++;
+            break;
+        }
+
+        if (p->tuple.first > k) {
             count_comp++;
             p = p->left;
-        }else{
+        } else {
             count_comp += 2;
             p = p->right;
         }
@@ -181,7 +186,7 @@ void RBT<Key, Value>::_erase(const Key& k){
 }
 
 template<typename Key, typename Value>
-void RBT<Key, Value>::delete_RB(Node* p){
+void RBT<Key, Value>::delete_RB(typename RBT<Key, Value>::Node* p){
     Node* y = nil;
     if(p->left == nil || p->right == nil){
         y = p;
@@ -220,7 +225,7 @@ void RBT<Key, Value>::delete_RB(Node* p){
 }
 
 template<typename Key, typename Value>
-RBT<Key, Value>::Node* RBT<Key, Value>::minimum(Node* p){
+typename RBT<Key, Value>::Node* RBT<Key, Value>::minimum(typename RBT<Key, Value>::Node* p){
     while(p->left != nil){
         p = p->left;
     }
@@ -228,7 +233,7 @@ RBT<Key, Value>::Node* RBT<Key, Value>::minimum(Node* p){
 }
 
 template<typename Key, typename Value>
-void RBT<Key, Value>::fixup_erase(Node* x){
+void RBT<Key, Value>::fixup_erase(typename RBT<Key, Value>::Node* x){
     while(x != root && x->color == BLACK){
         if(x == x->parent->left){
             Node* w = x->parent->right;
@@ -296,8 +301,8 @@ void RBT<Key, Value>::fixup_erase(Node* x){
             }
         }
     }
-    x->color = BLACK;
     count_recolor++;
+    x->color = BLACK;
 }
 
 template<typename Key, typename Value>
@@ -305,17 +310,18 @@ bool RBT<Key, Value>::_contains(const Key& k){
     if(root == nil){
         return false;
     }
-
     Node* p = root;
-    while(p != nil && p->tuple.first != k){
-        if(k == p->tuple.first){
+    while (p != nil) {
+        if (k == p->tuple.first) {
             count_comp++;
             return true;
-        }else if(k < p->tuple.first){
-            count_comp += 2;
+        }
+
+        if (k < p->tuple.first) {
+            count_comp++;
             p = p->left;
-        }else{
-            count_comp += 3;
+        } else {
+            count_comp += 2;
             p = p->right;
         }
     }
@@ -323,7 +329,7 @@ bool RBT<Key, Value>::_contains(const Key& k){
 }
 
 template<typename Key, typename Value>
-RBT<Key, Value>::Node* RBT<Key, Value>::_clear(Node* p){
+typename RBT<Key, Value>::Node* RBT<Key, Value>::_clear(typename RBT<Key, Value>::Node* p){
     if(p == nil) return nil;
 
     _clear(p->left);
@@ -334,18 +340,18 @@ RBT<Key, Value>::Node* RBT<Key, Value>::_clear(Node* p){
 }
 
 template<typename Key, typename Value>
-bool RBT<Key, Value>::_empty(Node* p){
+bool RBT<Key, Value>::_empty(typename RBT<Key, Value>::Node* p){
     return p == nil;
 }
 
 template<typename Key, typename Value>
-int RBT<Key, Value>::_size(Node* p) {
+int RBT<Key, Value>::_size(typename RBT<Key, Value>::Node* p) {
     if (p == nil) return 0;
     return 1 + _size(p->left) + _size(p->right);
 }
 
 template<typename Key, typename Value>
-void RBT<Key, Value>::bshow(Node *node, std::string heranca) {
+void RBT<Key, Value>::bshow(typename RBT<Key, Value>::Node *node, std::string heranca) {
     if(node != nil && (node->left != nil || node->right != nil))
         bshow(node->right , heranca + "r");
 
@@ -461,6 +467,7 @@ template<typename Key, typename Value>
 int RBT<Key, Value>::getCountRecolor(){
     return count_recolor;
 }
+
 template<typename Key, typename Value>
 int RBT<Key, Value>::getCountRotation(){
     return count_rotation;
