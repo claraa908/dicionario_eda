@@ -1,13 +1,11 @@
-#ifndef DICT_AVL_HPP
-#define DICT_AVL_HPP
-#include "..\estruturas\AVL.hpp"
+#ifndef MAP_RBT_HPP
+#define MAP_RBT_HPP
+#include "..\estruturas\RBT.hpp"
 
-namespace d_avl{
-    template <typename Key, typename Value>
-    class Dictionary{
+template <typename Key, typename Value>
+    class MAP_RBT{
         private:
-            AVL<Key, Value> avl_tree;
-
+            RBT<Key, Value> rbt_tree;
         public:
             //construtor default, cria um dicionário vazio
             Dictionary() = default;
@@ -19,9 +17,8 @@ namespace d_avl{
 
             ~Dictionary() = default;
 
-            //função de inserção no dicionario
             void insert(Key k, Value v){
-                avl_tree.insert(k, v);
+                rbt_tree.insert(k, v);
             }
 
             void update(Key k, Value newValue){
@@ -29,39 +26,38 @@ namespace d_avl{
             }
 
             Value& getValue(const Key& k){
-                return avl_tree.getValue(k);
+                return rbt_tree.getValue(k);
             }
 
             const Value& getValue(const Key& k) const{
-                return avl_tree.getValue(k);
+                return rbt_tree.getValue(k);
             }
 
-            void erase(const Key k){
-                avl_tree.erase(k);
+            void erase(const Key& k){
+                rbt_tree.erase(k);
             }
 
-            bool contains(const Key k){
-                return avl_tree.contains(k);
+            bool contains(const Key& k){
+                return rbt_tree.contains(k);
             }
 
             int size(){
-                return avl_tree.size();
+                return rbt_tree.size();
             }
 
             void clear(){
-                avl_tree.clear();
+                rbt_tree.clear();
             }
 
-            //teste
             void show(){
-                avl_tree.show();
+                rbt_tree.show();
+                std::cout << std::endl;
             }
 
             /*
             * TODO: iteração = percorre os pares da estrutura
-            * na avl provavelmente é para percorrer os pares em ordem simétrica e usar a chave como iterador
+            * na rbt provavelmente é para percorrer os pares em ordem simétrica e usar a chave como iterador
             * talvez uma sobrecarga do operador [] (???)
             */
-    }; 
-}
+};
 #endif

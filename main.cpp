@@ -1,13 +1,13 @@
 #include <iostream>
 #include <string>
-#include "dicionarios/dict_avl.hpp"
-#include "dicionarios/dict_cht.hpp"
-#include "dicionarios/dict_oht.hpp"
-#include "dicionarios/dict_rbt.hpp"
+#include "dicionarios/MAP_AVL.hpp"
+#include "dicionarios/MAP_CHT.hpp"
+#include "dicionarios/MAP_OHT.hpp"
+#include "dicionarios/MAP_RBT.hpp"
 
 int main(){
     //teste da avl
-    d_avl::Dictionary<std::string, int> testeAVL;
+    MAP_AVL<std::string, int> testeAVL;
     int count = 0;
     for(char i = 65; i < 75; i++){
         testeAVL.insert(std::string(1, i), count);
@@ -40,7 +40,7 @@ int main(){
 
 
     //teste da rbt
-    d_rbt::Dictionary<std::string, int> testeRBT;
+    MAP_RBT<std::string, int> testeRBT;
     int count2 = 0;
     for(char i = 65; i < 75; i++){
         testeRBT.insert(std::string(1, i), count2);
@@ -72,9 +72,9 @@ int main(){
 
     
     //teste da cht
-    d_cht::Dictionary<std::string, int> testeCHT1;
-    d_cht::Dictionary<std::string, int> testeCHT2;
-    d_cht::Dictionary<std::string, int> testeCHT3;
+    MAP_CHT<std::string, int> testeCHT1;
+    MAP_CHT<std::string, int> testeCHT2;
+    MAP_CHT<std::string, int> testeCHT3;
 
     int count3 = 0;
     for(char i = 65; i < 75; i++){

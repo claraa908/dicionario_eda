@@ -1,10 +1,9 @@
-#ifndef DICT_OHT_HPP
-#define DICT_OHT_HPP
+#ifndef MAP_OHT_HPP
+#define MAP_OHT_HPP
 #include "..\estruturas\OHT.hpp"
 
-namespace d_oht{
-    template <typename Key, typename Value>
-    class Dictionary{
+template <typename Key, typename Value>
+    class MAP_OHT{
         private:
         public:
         /*funções pra implementar:
@@ -18,7 +17,5 @@ namespace d_oht{
         * Tamanho = size
         * Limpeza = remover todos os pares de chave
         */
-    };
-}
-
+};
 #endif

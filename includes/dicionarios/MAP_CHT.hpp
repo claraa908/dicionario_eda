@@ -1,11 +1,10 @@
-#ifndef DICT_CHT_HPP
-#define DICT_CHT_HPP
+#ifndef MAP_CHT_HPP
+#define MAP_CHT_HPP
 #include "..\estruturas\CHT.hpp"
 #include <stdexcept>
 
-namespace d_cht{
-    template <typename Key, typename Value>
-    class Dictionary{
+template <typename Key, typename Value>
+    class MAP_CHT{
         private:
             CHT<Key, Value> c_hash;
         public:
@@ -74,7 +73,5 @@ namespace d_cht{
             * TODO: iteração = percorre os pares da estrutura
             * talvez isso já esteja feito..
             */
-    };
-}
-
+};
 #endif
