@@ -44,9 +44,7 @@ CHT<Key, Value, Hash>::CHT(size_t table_size, float load_factor){
 }
 
 template <typename Key, typename Value, typename Hash>
-CHT<Key, Value, Hash>::~CHT(){
-
-}
+CHT<Key, Value, Hash>::~CHT() = default;
 
 template <typename Key, typename Value, typename Hash>
 bool CHT<Key, Value, Hash>::insert(const Key& k, const Value& v){

@@ -70,9 +70,7 @@ OHT<Key, Value, Hash>::OHT(size_t table_size, float load_factor){
 }
 
 template <typename Key, typename Value, typename Hash>
-OHT<Key, Value, Hash>::~OHT(){
-
-}
+OHT<Key, Value, Hash>::~OHT() = default;
 
 template <typename Key, typename Value, typename Hash>
 bool OHT<Key, Value, Hash>::insert(const Key& k, const Value& v){
