@@ -2,6 +2,7 @@
 //finalizado
 
 //funções privadas
+
 template<typename Key, typename Value>
 int AVL<Key, Value>::height (typename AVL<Key, Value>::Node* node){
     return (_empty(node)) ? 0 : node->height;
@@ -49,7 +50,7 @@ typename AVL<Key, Value>::Node* AVL<Key, Value>::_insert(typename AVL<Key, Value
         count_comp += 2;
         p->left = _insert(p->left, k, v);
     }
-    else if(k>p->tuple.first){
+    else if(k > p->tuple.first){
         count_comp += 3;
         p->right = _insert(p->right, k, v);
     }
@@ -272,7 +273,7 @@ void AVL<Key, Value>::insert(const Key& k, const Value& v){
 template<typename Key, typename Value>
 Value& AVL<Key, Value>::at(const Key& k){
     if(root == nullptr){
-        throw std::invalid_argument("árvore vazia");
+        throw std::runtime_error("árvore vazia");
     }
     return _at(root, k);
 }
@@ -280,7 +281,7 @@ Value& AVL<Key, Value>::at(const Key& k){
 template<typename Key, typename Value>
 const Value& AVL<Key, Value>::at(const Key& k) const{
     if(root == nullptr){
-        throw std::invalid_argument("árvore vazia");
+        throw std::runtime_error("árvore vazia");
     }
     return _at(root, k);
 }
@@ -301,7 +302,7 @@ bool AVL<Key, Value>::contains(const Key& k){
 template<typename Key, typename Value>
 void AVL<Key, Value>::clear(){
     if(_empty(root)){
-        throw std::runtime_error("nao ha o que limpar");
+        throw std::runtime_error("arvore vazia");
     }
     root = _clear(root);
 }

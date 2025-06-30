@@ -32,7 +32,8 @@ int main(){
     avl.empty() ? std::cout << "vazia" << std::endl  : std::cout << "nao vazia" << std::endl;
     avl.erase(87);
     avl.contains(87) ? std::cout << "contem 87" << std::endl  : std::cout << "nao contem 87" << std::endl;
-
+    std::cout << avl.at(30) << std::endl;
+    
     avl.clear();
     avl.show();
     avl.empty() ? std::cout << "vazia" << std::endl  : std::cout << "nao vazia" << std::endl;
