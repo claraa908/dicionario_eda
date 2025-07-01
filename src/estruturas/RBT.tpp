@@ -1,7 +1,6 @@
 #include "..\..\includes\estruturas\RBT.hpp"
-//finalizado
-
 //funções privadas
+
 template<typename Key, typename Value>
 typename RBT<Key, Value>::Node* RBT<Key, Value>::rightRotation(typename RBT<Key, Value>::Node* x){
     Node* y = x->left;
@@ -194,7 +193,7 @@ void RBT<Key, Value>::delete_RB(typename RBT<Key, Value>::Node* p){
         y = minimum(p->right);
     }
 
-    Node* x;
+    Node* x = nil;
     if(y->right != nil){
         x = y->right;
     }else{
@@ -417,6 +416,9 @@ const Value& RBT<Key, Value>::at(const Key& k) const{
 
 template<typename Key, typename Value>
 void RBT<Key, Value>::erase(const Key& k){
+    if(!contains(k)){
+        throw std::invalid_argument("esse valor nao existe na arvore para remocao");
+    }
     _erase(k);
 }
 
@@ -427,6 +429,9 @@ bool RBT<Key, Value>::contains(const Key& k){
 
 template<typename Key, typename Value>
 void RBT<Key, Value>::clear(){
+    if(_empty(root)){
+        throw std::runtime_error("arvore vazia");
+    }
     root = _clear(root);
 }
 
@@ -437,7 +442,7 @@ bool RBT<Key, Value>::empty(){
 
 template<typename Key, typename Value>
 int RBT<Key, Value>::size(){
-    return _size(root);
+    return _empty(root) ? 0 : _size(root);
 }
 
 template<typename Key, typename Value>

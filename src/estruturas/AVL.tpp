@@ -1,6 +1,4 @@
 #include "..\..\includes\estruturas\AVL.hpp"
-//finalizado
-
 //funções privadas
 
 template<typename Key, typename Value>
@@ -148,7 +146,7 @@ typename AVL<Key, Value>::Node* AVL<Key, Value>::_erase(typename AVL<Key, Value>
             delete p;
             return aux;
         } else {
-            Node* suc = getMin(p->right);
+            Node* suc = minimum(p->right);
             p->tuple = suc->tuple;
             p->right = _erase(p->right, suc->tuple.first);
         }
@@ -159,7 +157,7 @@ typename AVL<Key, Value>::Node* AVL<Key, Value>::_erase(typename AVL<Key, Value>
 }
 
 template<typename Key, typename Value>
-typename AVL<Key, Value>::Node* AVL<Key, Value>::getMin(typename AVL<Key, Value>::Node* p){
+typename AVL<Key, Value>::Node* AVL<Key, Value>::minimum(typename AVL<Key, Value>::Node* p){
     while(p->left != nullptr){
         p = p->left;
     }
@@ -222,7 +220,7 @@ typename AVL<Key, Value>::Node* AVL<Key, Value>::_clear(typename AVL<Key, Value>
 
 template<typename Key, typename Value>
 bool AVL<Key, Value>::_empty(AVL<Key, Value>::Node* p){
-    return (p == nullptr) ? true : false;
+    return p == nullptr;
 }
 
 template<typename Key, typename Value>

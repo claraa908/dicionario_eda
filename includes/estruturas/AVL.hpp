@@ -19,6 +19,9 @@
 /**
  * @brief Classe que implementa uma árvore binária do tipo AVL.
  * 
+ * Implementa operações como inserção, remoção e busca mantendo o balanceamento 
+ * através das propriedades de uma árvore AVL.
+ * 
  * @tparam Key key type
  * @tparam Value value type
  */
@@ -81,6 +84,7 @@ class AVL{
          * @brief Função de rotação para direita.
          * Recebe um nó e realoca seus ponteiros de modo que ele vá para a 
          * direita. No fim, recalcula a altura do nó em sua nova posição.
+         * @param p Ponteiro para um nó que é o pivô da rotação
          * @return o nó realocado na posição correta.
          */
         Node* rightRotation (Node* p);
@@ -89,6 +93,7 @@ class AVL{
          * @brief Função de rotação para esquerda.
          * Recebe um nó e realoca seus ponteiros de modo que ele vá para 
          * esquerda. No fim, recalcula altura do nó em sua nova posição.
+         * @param p Ponteiro para um nó que é o pivô da rotação
          * @return O nó realocado na posição correta.
          */
         Node* leftRotation (Node* p);
@@ -147,7 +152,7 @@ class AVL{
          * 
          * Se o nó tiver um filho (ou nenhum) a substituição será o valor desse 
          * filho (ou nulo caso não tenha filhos). 
-         * Caso o nó possua ambos filhos, será chamado a função auxiliar getMin 
+         * Caso o nó possua ambos filhos, será chamado a função auxiliar minimum 
          * que irá retornar o sucessor (menor valor da subárvore do filho direito) 
          * do nó para substituí-lo.
          * 
@@ -164,7 +169,7 @@ class AVL{
          * @param p Ponteiro para o nó que irá iniciar a busca
          * @return o menor valor da subárvore passada
          */
-        Node* getMin(Node* p);
+        Node* minimum(Node* p);
 
         /**
          * @brief Função para conserto de um nó após remoção.
@@ -231,7 +236,19 @@ class AVL{
 
 
     public:
+        /**
+         * @brief Construtor default.
+         * O ponteiro root é inicializado como nullpter, representando uma árvore vazia.
+         * Também inicializa os contadores de comparação e rotação com zero.
+         */
         AVL();
+
+        /**
+         * @brief Destrutor da árvore.
+         * 
+         * Libera todos os nós alocados dinamicamente da árvore.
+         * Garante que não haja vazamentos de memória ao final da execução.
+         */
         ~AVL();
 
         /**
