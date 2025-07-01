@@ -1,5 +1,5 @@
 /**
- * @file AVL.hpp
+ * @file OHT.hpp
  * @author Clara Cruz
  * @brief Uma tabela hash com tratamento de colisao por endereçamento aberto
  * Estrutura de dados avancada - 2025.1

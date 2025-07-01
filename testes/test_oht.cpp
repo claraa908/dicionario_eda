@@ -84,7 +84,6 @@ int main(){
 
     std::cout << hash.size() << std::endl;
     std::cout << hash.empty() << std::endl;
-    std::cout << hash.getSlot(9) << std::endl;
     std::cout << hash.num_slot() << std::endl;
     std::cout << hash.load_factor() << std::endl;
     std::cout << hash.max_load_factor() << std::endl;

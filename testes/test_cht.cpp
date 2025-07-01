@@ -84,7 +84,6 @@ int main(){
 
     std::cout << hash.size() << std::endl;
     hash.empty() ? std::cout << "vazio" << std::endl : std::cout << "nao vazio" << std::endl;
-    std::cout << hash.getSlot(9) << std::endl;
     std::cout << hash.num_slot() << std::endl;
     std::cout << hash.slot_size(1) << std::endl;
     std::cout << hash.load_factor() << std::endl;

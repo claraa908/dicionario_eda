@@ -1,5 +1,5 @@
 /**
- * @file AVL.hpp
+ * @file CHT.hpp
  * @author Clara Cruz
  * @brief Uma tabela hash com tratamento de colisao por encadeamento exterior
  * Estrutura de dados avancada - 2025.1
