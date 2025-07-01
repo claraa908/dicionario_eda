@@ -1,7 +1,7 @@
 #include "..\..\includes\estruturas\CHT.hpp"
-//TODO: DESTRUTOR!!!!!!!!
 
 //funções privadas
+
 template <typename Key, typename Value, typename Hash>
 size_t CHT<Key, Value, Hash>::get_next_prime(size_t x) {
     if(x <= 2) return 3;
@@ -28,6 +28,7 @@ size_t CHT<Key, Value, Hash>::compress(const Key& k) const {
 
 
 //funções públicas
+
 template <typename Key, typename Value, typename Hash>
 CHT<Key, Value, Hash>::CHT(size_t table_size, float load_factor){
     numElem = 0;
@@ -156,11 +157,6 @@ size_t CHT<Key, Value, Hash>::slot_size(size_t n) const{
 }
 
 template <typename Key, typename Value, typename Hash>
-size_t CHT<Key, Value, Hash>::getSlot(const Key& k) const{
-    return compress(k);
-}
-
-template <typename Key, typename Value, typename Hash>
 float CHT<Key, Value, Hash>::load_factor() const{
     return static_cast<float>(numElem) / tableSize;
 }
@@ -173,7 +169,7 @@ float CHT<Key, Value, Hash>::max_load_factor() const{
 template <typename Key, typename Value, typename Hash>
 void CHT<Key, Value, Hash>::set_max_load_factor(float lf){
     if(lf <= 0) {
-        throw std::out_of_range("invalid load factor");
+        throw std::out_of_range("fator de carga invalido");
     }
     maxLoadFactor = lf;
     reserve(numElem);

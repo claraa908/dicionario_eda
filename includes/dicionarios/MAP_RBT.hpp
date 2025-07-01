@@ -2,15 +2,15 @@
 #define MAP_RBT_HPP
 #include "..\estruturas\RBT.hpp"
 
+//TODO
 template <typename Key, typename Value>
     class MAP_RBT{
         private:
             RBT<Key, Value> rbt_tree;
+
         public:
-            //construtor default, cria um dicionário vazio
             Dictionary() = default;
 
-            //construtor que recebe um par
             Dictionary(Key k, Value v){
                 insert(k, v);
             }
@@ -18,11 +18,15 @@ template <typename Key, typename Value>
             ~Dictionary() = default;
 
             void insert(Key k, Value v){
-                rbt_tree.insert(k, v);
+                if(!contains(k)){
+                    rbt_tree.insert(k, v);
+                } 
             }
 
             void update(Key k, Value newValue){
-                insert(k, newValue);
+                if(contains(k)){
+                    rbt_tree.insert(k, newValue);
+                }
             }
 
             Value& getValue(const Key& k){
@@ -53,11 +57,6 @@ template <typename Key, typename Value>
                 rbt_tree.show();
                 std::cout << std::endl;
             }
-
-            /*
-            * TODO: iteração = percorre os pares da estrutura
-            * na rbt provavelmente é para percorrer os pares em ordem simétrica e usar a chave como iterador
-            * talvez uma sobrecarga do operador [] (???)
-            */
 };
+#include "..\..\src\dicionarios\MAP_RBT.tpp"
 #endif

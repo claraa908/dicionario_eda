@@ -3,15 +3,15 @@
 #include "..\estruturas\CHT.hpp"
 #include <stdexcept>
 
+//TODO
 template <typename Key, typename Value>
     class MAP_CHT{
         private:
             CHT<Key, Value> c_hash;
+
         public:
-            //construtor default, cria um dicionário vazio
             Dictionary() = default;
 
-            //construtor que recebe um par
             Dictionary(Key k, Value v){
                 insert(k, v);
             }
@@ -19,11 +19,15 @@ template <typename Key, typename Value>
             ~Dictionary() = default;
 
             void insert(Key k, Value v){
-                c_hash.insert(k, v);
+                if(!contains(k)){
+                    c_hash.insert(k, v);
+                } 
             }
 
             void update(Key k, Value newValue){
-                insert(k, newValue);
+                if(contains(k)){
+                    c_hash.insert(k, newValue);
+                }
             }
 
             Value& getValue(const Key& k){
@@ -68,10 +72,6 @@ template <typename Key, typename Value>
                 }
                 return c_hash.getValue(k);
             }
-
-            /*
-            * TODO: iteração = percorre os pares da estrutura
-            * talvez isso já esteja feito..
-            */
 };
+#include "..\..\src\dicionarios\MAP_CHT.tpp"
 #endif

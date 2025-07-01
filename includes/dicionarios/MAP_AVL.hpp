@@ -2,40 +2,52 @@
 #define MAP_AVL_HPP
 #include "..\estruturas\AVL.hpp"
 
+//TODO
 template <typename Key, typename Value>
     class MAP_AVL{
         private:
             AVL<Key, Value> avl_tree;
 
         public:
-            //construtor default, cria um dicionário vazio
             Dictionary() = default;
 
-            //construtor que recebe um par
             Dictionary(Key k, Value v){
                 insert(k, v);
             }
 
             ~Dictionary() = default;
 
-            //função de inserção no dicionario
             void insert(Key k, Value v){
+                 if (contains(k)) {
+                    throw std::invalid_argument("Chave ja existe no dicionario");
+                }
                 avl_tree.insert(k, v);
             }
 
             void update(Key k, Value newValue){
-                insert(k, newValue);
+                if(!contains(k)){
+                throw std::invalid_argument("Chave nao encontrada para atualizacao")
+                }
+                avl_tree[k] = newValue;
             }
 
-            Value& getValue(const Key& k){
-                return avl_tree.getValue(k);
+            Value& at(const Key& k){
+                if()
+                return avl_tree.at(k);
             }
 
-            const Value& getValue(const Key& k) const{
-                return avl_tree.getValue(k);
+            const Value& at(const Key& k) const{
+                return avl_tree.at(k);
             }
 
             void erase(const Key k){
+                if(empty()){
+                    throw std::runtime_error("Dicionario vazio, nao ha o que remover");
+                }
+                if(!contains(k)){
+                    throw std::invalid_argument("Chave nao encontrada para remocao");
+                }
+
                 avl_tree.erase(k);
             }
 
@@ -48,18 +60,19 @@ template <typename Key, typename Value>
             }
 
             void clear(){
+                if(empty()){
+                    throw std::runtime_error("Dicionario vazio, nao ha o que limpar")
+                }
                 avl_tree.clear();
             }
 
-            //teste
+            bool empty(){
+                return avl_tree.empty();
+            }
+
             void show(){
                 avl_tree.show();
             }
-
-            /*
-            * TODO: iteração = percorre os pares da estrutura
-            * na avl provavelmente é para percorrer os pares em ordem simétrica e usar a chave como iterador
-            * talvez uma sobrecarga do operador [] (???)
-            */
 }; 
+#include "..\..\src\dicionarios\MAP_AVL.tpp"
 #endif

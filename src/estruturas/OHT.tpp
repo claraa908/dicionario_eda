@@ -1,7 +1,7 @@
 #include "..\..\includes\estruturas\OHT.hpp"
-//TODO: DESTRUTOR!!!!!!!
 
 //funções privadas
+
 template <typename Key, typename Value, typename Hash>
 size_t OHT<Key, Value, Hash>::get_next_prime(size_t x) {
     if(x <= 2) return 3;
@@ -54,6 +54,7 @@ size_t OHT<Key, Value, Hash>::compress(const Key& k, size_t i){
 }
 
 //funções públicas
+
 template <typename Key, typename Value, typename Hash>
 OHT<Key, Value, Hash>::OHT(size_t table_size, float load_factor){
     numElem = 0;
@@ -159,15 +160,6 @@ size_t OHT<Key, Value, Hash>::num_slot() const{
 }
 
 template <typename Key, typename Value, typename Hash>
-size_t OHT<Key, Value, Hash>::getSlot(const Key& k){
-    int aux = _contains(k);
-    if(aux == -1){
-        throw std::invalid_argument("chave nao encontrada");
-    }
-    return aux;
-}
-
-template <typename Key, typename Value, typename Hash>
 float OHT<Key, Value, Hash>::load_factor()const{
     return static_cast<float>(numElem) / tableSize;
 }
@@ -180,7 +172,7 @@ float OHT<Key, Value, Hash>::max_load_factor() const{
 template <typename Key, typename Value, typename Hash>
 void OHT<Key, Value, Hash>::set_max_load_factor(float lf){
     if(lf <= 0) {
-        throw std::out_of_range("invalid load factor");
+        throw std::out_of_range("fator de carga invalido");
     }
     maxLoadFactor = lf;
     reserve(numElem);

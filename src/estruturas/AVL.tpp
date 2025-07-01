@@ -104,7 +104,6 @@ Value& AVL<Key, Value>::_at(typename AVL<Key, Value>::Node* p, const Key& k){
         count_comp += 3;
         return _at(p->right, k);
     }
-    return p->tuple.second;
 }
 
 template<typename Key, typename Value>
