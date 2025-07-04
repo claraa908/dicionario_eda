@@ -3,6 +3,23 @@
 //funções privadas
 
 template <typename Key, typename Value, typename Hash>
+void OHT<Key, Value, Hash>::rehash(size_t m){
+    size_t newTableSize = get_next_prime(m);
+    if(newTableSize > tableSize) {
+        std::vector<Node> old_vector = table;
+        tableSize = newTableSize;
+        table = std::vector<Node>(newTableSize);
+        numElem = 0;
+
+        for(const auto& node : old_vector) {
+            if(node.n_status ==  ACTIVE){
+                insert(node.tuple.first, node.tuple.second);
+            }  
+        }
+    }
+}
+
+template <typename Key, typename Value, typename Hash>
 size_t OHT<Key, Value, Hash>::get_next_prime(size_t x) {
     if(x <= 2) return 3;
     x = (x % 2 == 0) ? x + 1 : x;
@@ -176,23 +193,6 @@ void OHT<Key, Value, Hash>::set_max_load_factor(float lf){
     }
     maxLoadFactor = lf;
     reserve(numElem);
-}
-
-template <typename Key, typename Value, typename Hash>
-void OHT<Key, Value, Hash>::rehash(size_t m){
-    size_t newTableSize = get_next_prime(m);
-    if(newTableSize > tableSize) {
-        std::vector<Node> old_vector = table;
-        tableSize = newTableSize;
-        table = std::vector<Node>(newTableSize);
-        numElem = 0;
-
-        for(const auto& node : old_vector) {
-            if(node.n_status ==  ACTIVE){
-                insert(node.tuple.first, node.tuple.second);
-            }  
-        }
-    }
 }
 
 template <typename Key, typename Value, typename Hash>

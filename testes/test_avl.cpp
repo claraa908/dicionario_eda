@@ -5,10 +5,9 @@
 
 int main(){
     AVL<int, std::string> avl;
-
     avl.insert(10, "a");
     avl.insert(20, "b");
-    avl.insert(30, "c"); // Deve causar rotacoes
+    avl.insert(30, "c");
     avl.insert(25, "d");
     avl.insert(5, "e");
 

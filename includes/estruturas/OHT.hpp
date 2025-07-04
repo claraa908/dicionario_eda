@@ -80,6 +80,17 @@ class OHT{
         mutable int count_rehash; // Contador de rehash
 
         /**
+         * @brief Atualiza o tamanho da tabela caso o novo valor seja 
+         * maior que o anterior. Caso seja, cria uma tabela temporária para
+         * guardar os dados antigos, passa um novo vetor redimensinado para table,
+         * zera seu número de elemento e copia os valores da tabela temporária 
+         * para a nova tabela redimensionada.
+         * 
+         * @param m Novo tamanho da tabela
+         */
+        void rehash(size_t m);
+        
+        /**
          * @brief Função encontra o próximo valor primo maior ou igual a x
          * 
          * Inicia a busca a partir de x (ou do próximo ímpar, se x for par),
@@ -248,17 +259,6 @@ class OHT{
          * @exception std::out_of_range caso o valor passado não seja maior que 0.
          */
         void set_max_load_factor(float lf);
-
-        /**
-         * @brief Atualiza o tamanho da tabela caso o novo valor seja 
-         * maior que o anterior. Caso seja, cria uma tabela temporária para
-         * guardar os dados antigos, passa um novo vetor redimensinado para table,
-         * zera seu número de elemento e copia os valores da tabela temporária 
-         * para a nova tabela redimensionada.
-         * 
-         * @param m Novo tamanho da tabela
-         */
-        void rehash(size_t m);
 
         /**
          * @brief Redimensiona a tabela a fim de comportar pelo menos n elementos.

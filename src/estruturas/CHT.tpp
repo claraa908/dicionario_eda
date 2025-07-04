@@ -3,6 +3,25 @@
 //funções privadas
 
 template <typename Key, typename Value, typename Hash>
+void CHT<Key, Value, Hash>::rehash(size_t m) {
+    size_t newTableSize = get_next_prime(m);
+    if(newTableSize > tableSize) {
+        std::vector<std::list<std::pair<Key,Value>>> old_vec;
+        old_vec = table; 
+        table.clear();
+        table.resize(newTableSize);
+        numElem = 0;
+        tableSize = newTableSize;
+        for(size_t i = 0; i < old_vec.size(); ++i) {
+            for(auto& par : old_vec[i]) {
+                insert(par.first, par.second);
+            }
+            old_vec[i].clear();
+        }            
+    }
+}
+
+template <typename Key, typename Value, typename Hash>
 size_t CHT<Key, Value, Hash>::get_next_prime(size_t x) {
     if(x <= 2) return 3;
     x = (x % 2 == 0) ? x + 1 : x;
@@ -173,25 +192,6 @@ void CHT<Key, Value, Hash>::set_max_load_factor(float lf){
     }
     maxLoadFactor = lf;
     reserve(numElem);
-}
-
-template <typename Key, typename Value, typename Hash>
-void CHT<Key, Value, Hash>::rehash(size_t m) {
-    size_t newTableSize = get_next_prime(m);
-    if(newTableSize > tableSize) {
-        std::vector<std::list<std::pair<Key,Value>>> old_vec;
-        old_vec = table; 
-        table.clear();
-        table.resize(newTableSize);
-        numElem = 0;
-        tableSize = newTableSize;
-        for(size_t i = 0; i < old_vec.size(); ++i) {
-            for(auto& par : old_vec[i]) {
-                insert(par.first, par.second);
-            }
-            old_vec[i].clear();
-        }            
-    }
 }
 
 template <typename Key, typename Value, typename Hash>

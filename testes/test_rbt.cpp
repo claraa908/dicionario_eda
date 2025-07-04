@@ -8,7 +8,7 @@ int main(){
 
     rbt.insert(10, "a");
     rbt.insert(20, "b");
-    rbt.insert(30, "c"); // Deve causar recoloracoes e rotacoes
+    rbt.insert(30, "c");
     rbt.insert(25, "d");
     rbt.insert(5, "e");
     std::cout << "contador apos insercoes: " << rbt.getCountComparation() << std::endl;

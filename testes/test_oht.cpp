@@ -4,7 +4,7 @@
 #include "..\includes\estruturas\OHT.hpp"
 
 int main(){
-    OHT<int, std::string> hash(3, 0.75);  // Tabela pequena para forçar colisões
+    OHT<int, std::string> hash(3, 0.75);
 
     std::cout << "Inserindo 1:'a'" << std::endl;
     hash.insert(1, "a");
@@ -15,7 +15,7 @@ int main(){
     std::cout << std::endl;
 
     std::cout << "Inserindo 4:'b'" << std::endl;
-    hash.insert(4, "b");  // Deve colidir com 1 (dependendo do hash)
+    hash.insert(4, "b"); 
     std::cout << "Colisoes: " << hash.getCountCollision() << std::endl;
     std::cout << "Comparacoes: " << hash.getCountComparation() << std::endl;
     std::cout << "Comparacoes: " << hash.getCountRehash() << std::endl;
@@ -23,7 +23,7 @@ int main(){
     std::cout << std::endl;
 
     std::cout << "Inserindo 7:'c'" << std::endl;
-    hash.insert(7, "c");  // Provavelmente mais uma colisão
+    hash.insert(7, "c");
     std::cout << "Colisoes: " << hash.getCountCollision() << std::endl;
     std::cout << "Comparacoes: " << hash.getCountComparation() << std::endl;
     std::cout << "Comparacoes: " << hash.getCountRehash() << std::endl;
@@ -31,7 +31,7 @@ int main(){
     std::cout << std::endl;
 
     std::cout << "Atualizando 4:'d'" << std::endl;
-    hash.insert(4, "d");  // Atualização: mesma chave, valor diferente
+    hash.insert(4, "d");
     std::cout << "Colisoes: " << hash.getCountCollision() << std::endl;
     std::cout << "Comparacoes: " << hash.getCountComparation() << std::endl;
     std::cout << "Comparacoes: " << hash.getCountRehash() << std::endl;
@@ -82,9 +82,9 @@ int main(){
     std::cout << "Comparacoes: " << hash.getCountRehash() << std::endl;
     hash.show();
 
-    std::cout << hash.size() << std::endl;
-    std::cout << hash.empty() << std::endl;
-    std::cout << hash.num_slot() << std::endl;
-    std::cout << hash.load_factor() << std::endl;
-    std::cout << hash.max_load_factor() << std::endl;
+    std::cout << "Quantidade de elementos: " << hash.size() << std::endl;
+    hash.empty() ? std::cout << "vazio" << std::endl : std::cout << "nao vazio" << std::endl;
+    std::cout << "Quantidade de slots da tabela: " << hash.num_slot() << std::endl;
+    std::cout << "Fator de carga atual da tabela: " << hash.load_factor() << std::endl;
+    std::cout << "Fator de carga máximo da tabela: " << hash.max_load_factor() << std::endl;
 }

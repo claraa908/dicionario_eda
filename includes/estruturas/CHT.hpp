@@ -11,7 +11,6 @@
  */
 #ifndef CHT_HPP
 #define CHT_HPP
-
 #include <iostream>
 #include <stdexcept>
 #include <cmath>
@@ -42,6 +41,16 @@ class CHT{
         mutable int count_collisions; // Contador de colisões na tabela
         mutable int count_rehash; // Contador de rehash
 
+        /**
+         * @brief Atualiza o tamanho da tabela caso o novo valor seja 
+         * maior que o anterior. Caso seja, cria uma tabela temporária para
+         * guardar os dados antigos, limpa e redimensiona a tabela atual, zera
+         * seu número de elementos, ajusta seu novo tamanho e copia os valores 
+         * da tabela temporária para a nova tabela.
+         * 
+         * @param m Novo tamanho da tabela
+         */
+        void rehash(size_t m);
 
         /**
          * @brief Função encontra o próximo valor primo maior ou igual a x
@@ -184,21 +193,11 @@ class CHT{
         void set_max_load_factor(float lf);
 
         /**
-         * @brief Atualiza o tamanho da tabela caso o novo valor seja 
-         * maior que o anterior. Caso seja, cria uma tabela temporária para
-         * guardar os dados antigos, limpa e redimensiona a tabela atual, zera
-         * seu número de elementos, ajusta seu novo tamanho e copia os valores 
-         * da tabela temporária para a nova tabela.
-         * 
-         * @param m Novo tamanho da tabela
-         */
-        void rehash(size_t m);
-
-        /**
-         * @brief Redimensiona a tabela a fim de comportar pelo menos n elementos.
-         * Só fará o redimensionamento caso o valor n passado seja maior que a
-         * multiplicação do tamanho atual da tabela pelo fator máximo de carga. 
-         * Após a verificação, chama a função rehash.
+         * @brief Redimensiona a tabela, por meio da função rehash, a fim desta 
+         * comportar pelo menos n elementos. Só fará o redimensionamento caso o 
+         * valor n passado seja maior que a multiplicação do tamanho atual da 
+         * tabela pelo fator máximo de carga. Após a verificação, chama a função 
+         * rehash.
          * 
          * @param n Número mínimo de elementos desejado
          */

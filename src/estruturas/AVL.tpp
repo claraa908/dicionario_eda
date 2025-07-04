@@ -74,9 +74,9 @@ typename AVL<Key, Value>::Node* AVL<Key, Value>::fixup_insertion(typename AVL<Ke
     }
     if(bal > 1){
         if(k > p->right->tuple.first){
-        count_comp++;
-        count_rotation++;
-        return leftRotation(p);
+            count_comp++;
+            count_rotation++;
+            return leftRotation(p);
         }
         if(k < p->right->tuple.first){
             count_comp += 2;

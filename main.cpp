@@ -6,6 +6,15 @@
 #include "dicionarios/MAP_RBT.hpp"
 
 int main(){
+
+    /**
+     * Aqui estão apenas os testes dos dicionários implementados, que não estão
+     * totalmente concluído. 
+     * 
+     * Os arquivos de teste referentes as estruturas desenvolvidas na primeira 
+     * parte do trabalho se encontram na pasta 'testes'.
+     */
+
     //teste da avl
     MAP_AVL<std::string, int> testeAVL;
     int count = 0;
@@ -28,7 +37,7 @@ int main(){
     testeAVL.insert("L", 38);
     testeAVL.show();
 
-    std::cout << "valor da chave G: " << testeAVL.getValue("G") << std::endl;
+    std::cout << "valor da chave G: " << testeAVL.at("G") << std::endl;
     testeAVL.contains("B") ? std::cout << "Contem B" << std::endl : std::cout << "Nao contem B" << std::endl;
     testeAVL.contains("A") ? std::cout << "Contem A" << std::endl : std::cout << "Nao contem A" << std::endl;
     std::cout << "tamanho: " << testeAVL.size() << std::endl;
