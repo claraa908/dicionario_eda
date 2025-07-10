@@ -1,0 +1,5 @@
+========================= ESTATISTICAS =========================
+Contagem de comparacoes de chaves realizadas: 0
+Contagem de rotacoes realizadas: 0
+Tempo de execucao: 0.000808
+================================================================

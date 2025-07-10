@@ -1,0 +1,6 @@
+========================= ESTATISTICAS =========================
+Contagem de comparacoes de chaves realizadas: 0
+Contagem de colisoes realizadas: 0
+Contagem de rehashes realizados: 0
+Tempo de execucao: 0.000679
+================================================================
