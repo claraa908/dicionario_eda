@@ -1,8 +1,8 @@
 #include "..\..\includes\estruturas\RBT.hpp"
 //funções privadas
 
-template<typename Key, typename Value>
-typename RBT<Key, Value>::Node* RBT<Key, Value>::rightRotation(typename RBT<Key, Value>::Node* x){
+template<typename Key, typename Value, typename Compare, typename Equals>
+typename RBT<Key, Value, Compare, Equals>::Node* RBT<Key, Value, Compare, Equals>::rightRotation(typename RBT<Key, Value, Compare, Equals>::Node* x){
     Node* y = x->left;
     x->left = y->right;
     y->right->parent = x;
@@ -12,7 +12,7 @@ typename RBT<Key, Value>::Node* RBT<Key, Value>::rightRotation(typename RBT<Key,
 
     if(y->parent == nil){
         root = y;
-    }else if(y->tuple.first < y->parent->tuple.first){
+    }else if(less(y->tuple.first, y->parent->tuple.first)){
         y->parent->left = y;
     }else{
         y->parent->right = y;
@@ -20,8 +20,8 @@ typename RBT<Key, Value>::Node* RBT<Key, Value>::rightRotation(typename RBT<Key,
     return y;
 }
 
-template<typename Key, typename Value>
-typename RBT<Key, Value>::Node* RBT<Key, Value>::leftRotation(typename RBT<Key, Value>::Node* x){
+template<typename Key, typename Value, typename Compare, typename Equals>
+typename RBT<Key, Value, Compare, Equals>::Node* RBT<Key, Value, Compare, Equals>::leftRotation(typename RBT<Key, Value, Compare, Equals>::Node* x){
     Node* y = x->right;
     x->right = y->left;
     y->left->parent = x;
@@ -31,7 +31,7 @@ typename RBT<Key, Value>::Node* RBT<Key, Value>::leftRotation(typename RBT<Key, 
 
     if(y->parent == nil){
         root = y;
-    }else if(y->tuple.first < y->parent->tuple.first){
+    }else if(less(y->tuple.first, y->parent->tuple.first)){
         y->parent->left = y;
     }else{
         y->parent->right = y;
@@ -39,17 +39,17 @@ typename RBT<Key, Value>::Node* RBT<Key, Value>::leftRotation(typename RBT<Key, 
     return y;
 }
 
-template<typename Key, typename Value>
-void RBT<Key, Value>::_insert(const Key& k, const Value& v){
+template<typename Key, typename Value, typename Compare, typename Equals>
+void RBT<Key, Value, Compare, Equals>::_insert(const Key& k, const Value& v){
     Node* pai = nil;
     Node* node = root;
 
     while(node != nil){
         pai = node;
-        if(k < node->tuple.first){
+        if(less(k, node->tuple.first)){
             count_comp++;
             node = node->left;
-        }else if(k > node->tuple.first){
+        }else if(!less(k, node->tuple.first)){
             count_comp += 2;
             node = node->right;
         }else{
@@ -64,7 +64,7 @@ void RBT<Key, Value>::_insert(const Key& k, const Value& v){
         root = novoNo;
     }else{
         novoNo->parent = pai;
-        if(k < pai->tuple.first){
+        if(less(k, pai->tuple.first)){
             count_comp++;
             pai->left = novoNo;
         }else{
@@ -75,8 +75,8 @@ void RBT<Key, Value>::_insert(const Key& k, const Value& v){
     fixup_insertion(novoNo);
 }
 
-template<typename Key, typename Value>
-void RBT<Key, Value>::fixup_insertion(typename RBT<Key, Value>::Node* x){
+template<typename Key, typename Value, typename Compare, typename Equals>
+void RBT<Key, Value, Compare, Equals>::fixup_insertion(typename RBT<Key, Value, Compare, Equals>::Node* x){
     while(x->parent->color == RED){
         if(x->parent == x->parent->parent->left){
             Node* tio = x->parent->parent->right;
@@ -125,16 +125,16 @@ void RBT<Key, Value>::fixup_insertion(typename RBT<Key, Value>::Node* x){
     root->color = BLACK;
 }
 
-template<typename Key, typename Value>
-Value& RBT<Key, Value>::_at(typename RBT<Key, Value>::Node* p, const Key& k){
+template<typename Key, typename Value, typename Compare, typename Equals>
+Value& RBT<Key, Value, Compare, Equals>::_at(typename RBT<Key, Value, Compare, Equals>::Node* p, const Key& k){
     if(p == nil){
         throw std::invalid_argument("chave nao encontrada na arvore");
     }
 
-    if(k == p->tuple.first){
+    if(equal(k, p->tuple.first)){
         count_comp++;
         return p->tuple.second;
-    }else if(k < p->tuple.first){
+    }else if(less(k, p->tuple.first)){
         count_comp += 2;
         return _at(p->left, k);
     }else{
@@ -143,16 +143,16 @@ Value& RBT<Key, Value>::_at(typename RBT<Key, Value>::Node* p, const Key& k){
     }
 }
 
-template<typename Key, typename Value>
-const Value& RBT<Key, Value>::_at(typename RBT<Key, Value>::Node* p, const Key& k) const {
+template<typename Key, typename Value, typename Compare, typename Equals>
+const Value& RBT<Key, Value, Compare, Equals>::_at(typename RBT<Key, Value, Compare, Equals>::Node* p, const Key& k) const {
     if (p == nil) {
         throw std::invalid_argument("chave nao encontrada na arvore");
     }
 
-    if (k == p->tuple.first) {
+    if (equal(k, p->tuple.first)) {
         count_comp++;
         return p->tuple.second;
-    } else if (k < p->tuple.first) {
+    } else if (less(k, p->tuple.first)) {
         count_comp += 2;
         return _at(p->left, k);
     } else {
@@ -161,19 +161,19 @@ const Value& RBT<Key, Value>::_at(typename RBT<Key, Value>::Node* p, const Key& 
     }
 }
 
-template<typename Key, typename Value>
-void RBT<Key, Value>::_erase(const Key& k){
+template<typename Key, typename Value, typename Compare, typename Equals>
+void RBT<Key, Value, Compare, Equals>::_erase(const Key& k){
     Node* p = root;
     while (p != nil) {
-        if (p->tuple.first == k) {
+        if (equal(p->tuple.first, k)) {
             count_comp++;
             break;
         }
 
-        if (p->tuple.first > k) {
+        if (!less(p->tuple.first, k)) {
             count_comp++;
             p = p->left;
-        } else {
+        } else{
             count_comp += 2;
             p = p->right;
         }
@@ -184,8 +184,8 @@ void RBT<Key, Value>::_erase(const Key& k){
     }
 }
 
-template<typename Key, typename Value>
-void RBT<Key, Value>::delete_RB(typename RBT<Key, Value>::Node* p){
+template<typename Key, typename Value, typename Compare, typename Equals>
+void RBT<Key, Value, Compare, Equals>::delete_RB(typename RBT<Key, Value, Compare, Equals>::Node* p){
     Node* y = nil;
     if(p->left == nil || p->right == nil){
         y = p;
@@ -223,16 +223,16 @@ void RBT<Key, Value>::delete_RB(typename RBT<Key, Value>::Node* p){
     delete y;
 }
 
-template<typename Key, typename Value>
-typename RBT<Key, Value>::Node* RBT<Key, Value>::minimum(typename RBT<Key, Value>::Node* p){
+template<typename Key, typename Value, typename Compare, typename Equals>
+typename RBT<Key, Value, Compare, Equals>::Node* RBT<Key, Value, Compare, Equals>::minimum(typename RBT<Key, Value, Compare, Equals>::Node* p){
     while(p->left != nil){
         p = p->left;
     }
     return p;
 }
 
-template<typename Key, typename Value>
-void RBT<Key, Value>::fixup_erase(typename RBT<Key, Value>::Node* x){
+template<typename Key, typename Value, typename Compare, typename Equals>
+void RBT<Key, Value, Compare, Equals>::fixup_erase(typename RBT<Key, Value, Compare, Equals>::Node* x){
     while(x != root && x->color == BLACK){
         if(x == x->parent->left){
             Node* w = x->parent->right;
@@ -304,19 +304,19 @@ void RBT<Key, Value>::fixup_erase(typename RBT<Key, Value>::Node* x){
     x->color = BLACK;
 }
 
-template<typename Key, typename Value>
-bool RBT<Key, Value>::_contains(const Key& k){
+template<typename Key, typename Value, typename Compare, typename Equals>
+bool RBT<Key, Value, Compare, Equals>::_contains(const Key& k){
     if(root == nil){
         return false;
     }
     Node* p = root;
     while (p != nil) {
-        if (k == p->tuple.first) {
+        if (equal(k, p->tuple.first)) {
             count_comp++;
             return true;
         }
 
-        if (k < p->tuple.first) {
+        if (less(k, p->tuple.first)) {
             count_comp++;
             p = p->left;
         } else {
@@ -327,8 +327,8 @@ bool RBT<Key, Value>::_contains(const Key& k){
     return false;
 }
 
-template<typename Key, typename Value>
-typename RBT<Key, Value>::Node* RBT<Key, Value>::_clear(typename RBT<Key, Value>::Node* p){
+template<typename Key, typename Value, typename Compare, typename Equals>
+typename RBT<Key, Value, Compare, Equals>::Node* RBT<Key, Value, Compare, Equals>::_clear(typename RBT<Key, Value, Compare, Equals>::Node* p){
     if(p == nil) return nil;
 
     _clear(p->left);
@@ -338,19 +338,19 @@ typename RBT<Key, Value>::Node* RBT<Key, Value>::_clear(typename RBT<Key, Value>
     return nil;
 }
 
-template<typename Key, typename Value>
-bool RBT<Key, Value>::_empty(typename RBT<Key, Value>::Node* p){
+template<typename Key, typename Value, typename Compare, typename Equals>
+bool RBT<Key, Value, Compare, Equals>::_empty(typename RBT<Key, Value, Compare, Equals>::Node* p){
     return p == nil;
 }
 
-template<typename Key, typename Value>
-int RBT<Key, Value>::_size(typename RBT<Key, Value>::Node* p) {
+template<typename Key, typename Value, typename Compare, typename Equals>
+int RBT<Key, Value, Compare, Equals>::_size(typename RBT<Key, Value, Compare, Equals>::Node* p) {
     if (p == nil) return 0;
     return 1 + _size(p->left) + _size(p->right);
 }
 
-template<typename Key, typename Value>
-void RBT<Key, Value>::bshow(typename RBT<Key, Value>::Node *node, std::string heranca) {
+template<typename Key, typename Value, typename Compare, typename Equals>
+void RBT<Key, Value, Compare, Equals>::bshow(typename RBT<Key, Value, Compare, Equals>::Node *node, std::string heranca) {
     if(node != nil && (node->left != nil || node->right != nil))
         bshow(node->right , heranca + "r");
 
@@ -377,8 +377,8 @@ void RBT<Key, Value>::bshow(typename RBT<Key, Value>::Node *node, std::string he
 
 
 //funções públicas
-template<typename Key, typename Value>
-RBT<Key, Value>::RBT(){
+template<typename Key, typename Value, typename Compare, typename Equals>
+RBT<Key, Value, Compare, Equals>::RBT(){
     nil = new Node(Key{}, Value{}, BLACK, nullptr, nullptr, nullptr);
     nil->left = nil->right = nil;
     root = nil;
@@ -386,94 +386,125 @@ RBT<Key, Value>::RBT(){
     count_comp = 0;
     count_recolor = 0;
     count_rotation = 0;
+    less = Compare();
+    equal = Equals();
 }
 
-template<typename Key, typename Value>
-RBT<Key, Value>::~RBT(){
+template<typename Key, typename Value, typename Compare, typename Equals>
+RBT<Key, Value, Compare, Equals>::RBT(Compare comp, Equals eq_comp){
+    nil = new Node(Key{}, Value{}, BLACK, nullptr, nullptr, nullptr);
+    nil->left = nil->right = nil;
+    root = nil;
+    root->parent = nil;
+    count_comp = 0;
+    count_recolor = 0;
+    count_rotation = 0;
+    less = comp;
+    equal = eq_comp;
+}
+
+template<typename Key, typename Value, typename Compare, typename Equals>
+RBT<Key, Value, Compare, Equals>::~RBT(){
     root = _clear(root);
 }
 
-template<typename Key, typename Value>
-void RBT<Key, Value>::insert(const Key& k, const Value& v){
+template<typename Key, typename Value, typename Compare, typename Equals>
+void RBT<Key, Value, Compare, Equals>::insert(const Key& k, const Value& v){
     _insert(k, v);
 }
 
-template<typename Key, typename Value>
-Value& RBT<Key, Value>::at(const Key& k){
+template<typename Key, typename Value, typename Compare, typename Equals>
+Value& RBT<Key, Value, Compare, Equals>::at(const Key& k){
     if(root == nil){
         throw std::invalid_argument("árvore vazia");
     }
     return _at(root, k);
 }
 
-template<typename Key, typename Value>
-const Value& RBT<Key, Value>::at(const Key& k) const{
+template<typename Key, typename Value, typename Compare, typename Equals>
+const Value& RBT<Key, Value, Compare, Equals>::at(const Key& k) const{
     if(root == nil){
         throw std::invalid_argument("árvore vazia");
     }
     return _at(root, k);
 }
 
-template<typename Key, typename Value>
-void RBT<Key, Value>::erase(const Key& k){
+template<typename Key, typename Value, typename Compare, typename Equals>
+void RBT<Key, Value, Compare, Equals>::erase(const Key& k){
     if(!contains(k)){
         throw std::invalid_argument("esse valor nao existe na arvore para remocao");
     }
     _erase(k);
 }
 
-template<typename Key, typename Value>
-bool RBT<Key, Value>::contains(const Key& k){
+template<typename Key, typename Value, typename Compare, typename Equals>
+bool RBT<Key, Value, Compare, Equals>::contains(const Key& k){
     return _contains(k);
 }
 
-template<typename Key, typename Value>
-void RBT<Key, Value>::clear(){
+template<typename Key, typename Value, typename Compare, typename Equals>
+void RBT<Key, Value, Compare, Equals>::clear(){
     if(_empty(root)){
         throw std::runtime_error("arvore vazia");
     }
     root = _clear(root);
 }
 
-template<typename Key, typename Value>
-bool RBT<Key, Value>::empty(){
+template<typename Key, typename Value, typename Compare, typename Equals>
+bool RBT<Key, Value, Compare, Equals>::empty(){
     return _empty(root);
 }
 
-template<typename Key, typename Value>
-int RBT<Key, Value>::size(){
+template<typename Key, typename Value, typename Compare, typename Equals>
+int RBT<Key, Value, Compare, Equals>::size(){
     return _empty(root) ? 0 : _size(root);
 }
 
-template<typename Key, typename Value>
-Value& RBT<Key, Value>::operator[](const Key& k) {
+template<typename Key, typename Value, typename Compare, typename Equals>
+Value& RBT<Key, Value, Compare, Equals>::operator[](const Key& k) {
     if (!contains(k)) {
         insert(k, Value{});
     }
     return at(k);
 }
 
-template<typename Key, typename Value>
-const Value& RBT<Key, Value>::operator[](const Key& k) const {
+template<typename Key, typename Value, typename Compare, typename Equals>
+const Value& RBT<Key, Value, Compare, Equals>::operator[](const Key& k) const {
     return at(k);
 }
 
-template<typename Key, typename Value>
-void RBT<Key, Value>::show(){
+template<typename Key, typename Value, typename Compare, typename Equals>
+void RBT<Key, Value, Compare, Equals>::show(){
     bshow(root, "");
 }
 
-template<typename Key, typename Value>
-int RBT<Key, Value>::getCountComparation(){
+template<typename Key, typename Value, typename Compare, typename Equals>
+void RBT<Key, Value, Compare, Equals>::_inOrder(RBT<Key, Value, Compare, Equals>::Node* p, std::vector<std::pair<Key, Value>>& v) const{
+    if(p != nil){
+        _inOrder(p->left, v);
+        v.push_back({p->tuple.first, p->tuple.second});
+        _inOrder(p->right, v);
+    }
+}
+
+template<typename Key, typename Value, typename Compare, typename Equals>
+std::vector<std::pair<Key, Value>> RBT<Key, Value, Compare, Equals>::inOrder() const{
+    std::vector<std::pair<Key, Value>> vetor;
+    _inOrder(root, vetor);
+    return vetor; 
+}
+
+template<typename Key, typename Value, typename Compare, typename Equals>
+int RBT<Key, Value, Compare, Equals>::getCountComparation(){
     return count_comp;
 }
 
-template<typename Key, typename Value>
-int RBT<Key, Value>::getCountRecolor(){
+template<typename Key, typename Value, typename Compare, typename Equals>
+int RBT<Key, Value, Compare, Equals>::getCountRecolor(){
     return count_recolor;
 }
 
-template<typename Key, typename Value>
-int RBT<Key, Value>::getCountRotation(){
+template<typename Key, typename Value, typename Compare, typename Equals>
+int RBT<Key, Value, Compare, Equals>::getCountRotation(){
     return count_rotation;
 }

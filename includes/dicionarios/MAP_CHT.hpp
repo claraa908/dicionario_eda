@@ -2,40 +2,41 @@
 #define MAP_CHT_HPP
 #include "..\estruturas\CHT.hpp"
 #include <stdexcept>
+#include <functional>
 
 //TODO
-template <typename Key, typename Value>
+template <typename Key, typename Value, typename Hash = std::hash<Key>,
+          typename Compare = std::less<Key>, typename Equals = std::equal_to<Key>>
     class MAP_CHT{
         private:
-            CHT<Key, Value> c_hash;
+            CHT<Key, Value, Hash, Compare, Equals> c_hash;
 
         public:
-            Dictionary() = default;
-
-            Dictionary(Key k, Value v){
-                insert(k, v);
-            }
-
-            ~Dictionary() = default;
+            MAP_CHT(size_t table_size = 10, float load_factor = 0.75, Hash hasher = Hash(), Compare comp = Compare(), Equals eq = Equals())
+            : c_hash(table_size, load_factor, hasher, comp, eq) {};
+            
+            ~MAP_CHT() = default;
 
             void insert(Key k, Value v){
-                if(!contains(k)){
-                    c_hash.insert(k, v);
-                } 
+                if (contains(k)) {
+                    throw std::invalid_argument("Chave ja existe no dicionario");
+                }
+                c_hash.insert(k, v);
             }
 
             void update(Key k, Value newValue){
-                if(contains(k)){
-                    c_hash.insert(k, newValue);
+                if(!contains(k)){
+                    throw std::invalid_argument("Chave nao encontrada para atualizacao");
                 }
+                c_hash[k] = newValue;
             }
 
-            Value& getValue(const Key& k){
-                return c_hash.getValue(k);
+            Value& at(const Key& k){
+                return c_hash.at(k);
             }
 
-            const Value& getValue(const Key& k) const{
-                return c_hash.getValue(k);
+            const Value& at(const Key& k) const{
+                return c_hash.at(k);
             }
 
             void erase(Key k){
@@ -63,14 +64,18 @@ template <typename Key, typename Value>
                 if(!c_hash.contains(k)){
                     throw std::invalid_argument("chave inexistente");
                 }
-                return c_hash.getValue(k);
+                return c_hash.at(k);
             }
 
             Value& operator[](const Key& k){
                 if(!c_hash.contains(k)){
                     c_hash.insert(k, Value());
                 }
-                return c_hash.getValue(k);
+                return c_hash.at(k);
+            }
+
+            std::vector<std::pair<Key, Value>> rout() const{ 
+                return c_hash.toVector();
             }
 };
 #include "..\..\src\dicionarios\MAP_CHT.tpp"

@@ -12,9 +12,11 @@
 #ifndef AVL_HPP
 #define AVL_HPP
 #include <string>
+#include <vector>
 #include <utility>
 #include <stdexcept>
 #include <algorithm>
+#include <functional>
 
 /**
  * @brief Classe que implementa uma árvore binária do tipo AVL.
@@ -25,7 +27,8 @@
  * @tparam Key key type
  * @tparam Value value type
  */
-template <typename Key, typename Value>
+template <typename Key, typename Value, 
+          typename Compare = std::less<Key>, typename Equals = std::equal_to<Key>>
 class AVL{
     private:
         /**
@@ -59,7 +62,8 @@ class AVL{
         Node* root; // Ponteiro que aponta para a raiz da árvore
         mutable int count_comp; //Contador de comparações de chaves
         mutable int count_rotation; // Contador de rotações realizadas
-
+        Compare less;
+        Equals equal;
 
         //funções privadas
 
@@ -233,7 +237,7 @@ class AVL{
          */
         void bshow(Node* node, std::string heranca) const;
 
-
+        void _inOrder(Node* p, std::vector<std::pair<Key, Value>>& v) const;
 
     public:
         /**
@@ -242,6 +246,13 @@ class AVL{
          * Também inicializa os contadores de comparação e rotação com zero.
          */
         AVL();
+
+        /**
+         * @brief Construtor com comparadores.
+         * O ponteiro root é inicializado como nullpter, representando uma árvore vazia.
+         * Também inicializa os contadores de comparação e rotação com zero.
+         */
+        AVL(Compare comp, Equals eq_comp);
 
         /**
          * @brief Destrutor da árvore.
@@ -348,6 +359,8 @@ class AVL{
         * da estrutura.
         */
         void show();
+
+        std::vector<std::pair<Key, Value>> inOrder() const;
 
         /**
         * @brief Função getter que mostra o estado do contador de comparações de 

@@ -3,42 +3,43 @@
 #include "..\estruturas\RBT.hpp"
 
 //TODO
-template <typename Key, typename Value>
+template <typename Key, typename Value, 
+          typename Compare = std::less<Key>, typename Equals = std::equal_to<Key>>
     class MAP_RBT{
         private:
-            RBT<Key, Value> rbt_tree;
+            RBT<Key, Value, Compare, Equals> rbt_tree;
 
         public:
-            Dictionary() = default;
+            MAP_RBT() : rbt_tree(){};
 
-            Dictionary(Key k, Value v){
-                insert(k, v);
-            }
+            MAP_RBT(Compare comp, Equals eq_comp) : rbt_tree(comp, eq_comp){};
 
-            ~Dictionary() = default;
+            ~MAP_RBT() = default;
 
             void insert(Key k, Value v){
-                if(!contains(k)){
-                    rbt_tree.insert(k, v);
-                } 
+                if (contains(k)) {
+                    throw std::invalid_argument("Chave ja existe no dicionario");
+                }
+                rbt_tree.insert(k, v); 
             }
 
             void update(Key k, Value newValue){
-                if(contains(k)){
-                    rbt_tree.insert(k, newValue);
+                if(!contains(k)){
+                    throw std::invalid_argument("Chave nao encontrada para atualizacao");
                 }
+                rbt_tree[k] = newValue;
             }
 
-            Value& getValue(const Key& k){
-                return rbt_tree.getValue(k);
+            Value& at(const Key& k){
+                return rbt_tree.at(k);
             }
 
-            const Value& getValue(const Key& k) const{
-                return rbt_tree.getValue(k);
+            const Value& at(const Key& k) const{
+                return rbt_tree.at(k);
             }
 
             void erase(const Key& k){
-                rbt_tree.erase(k);
+              rbt_tree.erase(k);
             }
 
             bool contains(const Key& k){
@@ -56,6 +57,24 @@ template <typename Key, typename Value>
             void show(){
                 rbt_tree.show();
                 std::cout << std::endl;
+            }
+
+            const Value& operator[](const Key& k) const{
+                if(!rbt_tree.contains(k)){
+                    throw std::invalid_argument("chave inexistente");
+                }
+                return rbt_tree.at(k);
+            }
+
+            Value& operator[](const Key& k){
+                if(!rbt_tree.contains(k)){
+                    rbt_tree.insert(k, Value());
+                }
+                return rbt_tree.at(k);
+            }
+
+            std::vector<std::pair<Key, Value>> rout() const{ 
+                return rbt_tree.inOrder();
             }
 };
 #include "..\..\src\dicionarios\MAP_RBT.tpp"

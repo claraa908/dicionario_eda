@@ -32,7 +32,8 @@
  * @tparam Key key type
  * @tparam Value value type
  */
-template <typename Key, typename Value>
+template <typename Key, typename Value, 
+          typename Compare = std::less<Key>, typename Equals = std::equal_to<Key>>
 class RBT{
     private:
 
@@ -73,9 +74,10 @@ class RBT{
         mutable int count_comp; // Contador de comparações de chaves
         mutable int count_recolor; // Contador de recoloração
         mutable int count_rotation; // Contador de rotações realizadas
+        Compare less;
+        Equals equal;
 
         //funções privadas
-
 
         /**
          * @brief Função de rotação para direita.
@@ -249,6 +251,8 @@ class RBT{
          */
         void bshow(Node *node, std::string heranca);
 
+        void _inOrder(Node* p, std::vector<std::pair<Key, Value>>& v) const;
+
     public:
         /**
          * @brief Construtor default.
@@ -260,6 +264,13 @@ class RBT{
          * Também inicializa os contadores de comparação, rotação e recoloração com zero.
          */
         RBT();
+
+        /**
+         * @brief Construtor com comparadores.
+         * O ponteiro root é inicializado como nullpter, representando uma árvore vazia.
+         * Também inicializa os contadores de comparação e rotação com zero.
+         */
+        RBT(Compare comp, Equals eq_comp);
 
         /**
          * @brief Destrutor da árvore.
@@ -362,6 +373,8 @@ class RBT{
         * da estrutura e suas respectivas cores.
         */
         void show();
+
+        std::vector<std::pair<Key, Value>> inOrder() const;
 
         /**
         * @brief Função getter que mostra o estado do contador de comparações de 

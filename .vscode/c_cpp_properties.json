@@ -3,19 +3,22 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/estruturas",
-                "${workspaceFolder}/dicionarios",
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/includes",      
+                "${workspaceFolder}/src",         
+                "${workspaceFolder}/testes",       
+                "${workspaceFolder}",              
+                "${workspaceFolder}/**",
+                "C:/msys64/ucrt64/include"           
             ],
             "defines": [
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE"
             ],
-            "compilerPath": "C:\\MinGW\\bin\\g++.exe",
+            "compilerPath": "C:/msys64/mingw64/bin/g++.exe",
             "cStandard": "c11",
-            "cppStandard": "gnu++14",
-            "intelliSenseMode": "windows-gcc-x86"
+            "cppStandard": "c++17",
+            "intelliSenseMode": "gcc-x64"
         }
     ],
     "version": 4

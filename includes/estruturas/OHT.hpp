@@ -39,7 +39,8 @@ enum status{
  * @tparam Value value type
  * @tparam Hash hash function type
  */
-template <typename Key, typename Value, typename Hash = std::hash<Key>>
+template <typename Key, typename Value, typename Hash = std::hash<Key>, 
+          typename Compare = std::less<Key>, typename Equals = std::equal_to<Key>>
 class OHT{
     private:
 
@@ -78,6 +79,8 @@ class OHT{
         mutable int count_comp; // Contador de comparações de chaves
         mutable int count_collisions; // Contador de colisões na tabela
         mutable int count_rehash; // Contador de rehash
+        Compare less;
+        Equals equal;
 
         /**
          * @brief Atualiza o tamanho da tabela caso o novo valor seja 
@@ -156,7 +159,8 @@ class OHT{
          * @param table_size O número de slots da tabela.
          * @param load_factor O fator máximo de carga da tabela.
          */
-        OHT(size_t table_size = 10, float load_factor = 0.75);
+        OHT(size_t table_size = 10, float load_factor = 0.75, Hash hasher = Hash{}, 
+            Compare comp = Compare{}, Equals eq_comp = Equals{});
 
         /**
          * @brief Destrutor default
@@ -295,6 +299,8 @@ class OHT{
          * @brief Exibe a tabela no terminal
          */
         void show();
+
+        std::vector<std::pair<Key, Value>> toVector() const;
 
         /**
          * @brief Função getter que mostra o estado do contador de comparações de 

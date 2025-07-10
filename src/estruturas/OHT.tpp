@@ -2,8 +2,8 @@
 
 //funções privadas
 
-template <typename Key, typename Value, typename Hash>
-void OHT<Key, Value, Hash>::rehash(size_t m){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+void OHT<Key, Value, Hash, Compare, Equals>::rehash(size_t m){
     size_t newTableSize = get_next_prime(m);
     if(newTableSize > tableSize) {
         std::vector<Node> old_vector = table;
@@ -19,8 +19,8 @@ void OHT<Key, Value, Hash>::rehash(size_t m){
     }
 }
 
-template <typename Key, typename Value, typename Hash>
-size_t OHT<Key, Value, Hash>::get_next_prime(size_t x) {
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+size_t OHT<Key, Value, Hash, Compare, Equals>::get_next_prime(size_t x) {
     if(x <= 2) return 3;
     x = (x % 2 == 0) ? x + 1 : x;
     bool not_prime = true;
@@ -37,8 +37,8 @@ size_t OHT<Key, Value, Hash>::get_next_prime(size_t x) {
     return x - 2;
 }
 
-template <typename Key, typename Value, typename Hash>
-int OHT<Key, Value, Hash>::_contains(const Key& k){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+int OHT<Key, Value, Hash, Compare, Equals>::_contains(const Key& k){
     size_t i = 0;
     while(i < tableSize){
         size_t slot = compress(k, i);
@@ -46,34 +46,36 @@ int OHT<Key, Value, Hash>::_contains(const Key& k){
             return -1;
         }
 
-        if(table[slot].n_status == ACTIVE && table[slot].tuple.first == k){
-            count_comp++;
-            return slot;
+        if(table[slot].n_status == ACTIVE){
+            if(equal(table[slot].tuple.first, k)){
+                count_comp++;
+                return slot;
+            }
         }
         i++;
     }
     return -1;
 }
 
-template <typename Key, typename Value, typename Hash>
-size_t OHT<Key, Value, Hash>::hash1 (const Key& k) const {
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+size_t OHT<Key, Value, Hash, Compare, Equals>::hash1 (const Key& k) const {
     return hashing(k) % tableSize;
 }
 
-template <typename Key, typename Value, typename Hash>
-size_t OHT<Key, Value, Hash>::hash2 (const Key& k) const{
-    return 1 + (k % tableSize-1);
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+size_t OHT<Key, Value, Hash, Compare, Equals>::hash2 (const Key& k) const{
+    return 1 + (hashing(k) % (tableSize-1));
 }
 
-template <typename Key, typename Value, typename Hash>
-size_t OHT<Key, Value, Hash>::compress(const Key& k, size_t i){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+size_t OHT<Key, Value, Hash, Compare, Equals>::compress(const Key& k, size_t i){
     return (hash1(k) + i * hash2(k)) % tableSize;
 }
 
 //funções públicas
 
-template <typename Key, typename Value, typename Hash>
-OHT<Key, Value, Hash>::OHT(size_t table_size, float load_factor){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+OHT<Key, Value, Hash, Compare, Equals>::OHT(size_t table_size, float load_factor, Hash hasher, Compare comp, Equals eq_comp){
     numElem = 0;
     tableSize = get_next_prime(table_size);
     table.resize(tableSize);
@@ -85,13 +87,16 @@ OHT<Key, Value, Hash>::OHT(size_t table_size, float load_factor){
     count_comp = 0;
     count_collisions = 0;
     count_rehash = 0;
+    less = comp;
+    equal = eq_comp;
+    hashing = hasher;
 }
 
-template <typename Key, typename Value, typename Hash>
-OHT<Key, Value, Hash>::~OHT() = default;
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+OHT<Key, Value, Hash, Compare, Equals>::~OHT() = default;
 
-template <typename Key, typename Value, typename Hash>
-bool OHT<Key, Value, Hash>::insert(const Key& k, const Value& v){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+bool OHT<Key, Value, Hash, Compare, Equals>::insert(const Key& k, const Value& v){
     if(load_factor() >= maxLoadFactor){
         rehash(2 * tableSize);
         count_rehash++;
@@ -104,7 +109,7 @@ bool OHT<Key, Value, Hash>::insert(const Key& k, const Value& v){
     }
 
     size_t i = 0;
-    while(i < tableSize){
+    while(i < tableSize){        
         size_t slot = compress(k, i);
         if(table[slot].n_status != ACTIVE){
             table[slot] = Node(k, v);
@@ -116,11 +121,11 @@ bool OHT<Key, Value, Hash>::insert(const Key& k, const Value& v){
     }
 
     count_collisions += i;
-    throw std::overflow_error("tabela cheia");
+    throw std::overflow_error("tabela cheia: ");
 }
 
-template <typename Key, typename Value, typename Hash>
-Value& OHT<Key, Value, Hash>::at(const Key& k){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+Value& OHT<Key, Value, Hash, Compare, Equals>::at(const Key& k){
     int aux = _contains(k);
     if(aux != -1){
         return table[aux].tuple.second;
@@ -128,8 +133,8 @@ Value& OHT<Key, Value, Hash>::at(const Key& k){
     throw std::invalid_argument("chave nao encontrada");
 }
 
-template <typename Key, typename Value, typename Hash>
-const Value& OHT<Key, Value, Hash>::at(const Key& k) const{
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+const Value& OHT<Key, Value, Hash, Compare, Equals>::at(const Key& k) const{
     int aux = _contains(k);
     if(aux != -1){
         return table[aux].tuple.second;
@@ -137,8 +142,8 @@ const Value& OHT<Key, Value, Hash>::at(const Key& k) const{
     throw std::invalid_argument("chave nao encontrada");
 }
 
-template <typename Key, typename Value, typename Hash>
-bool OHT<Key, Value, Hash>::erase(const Key& k){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+bool OHT<Key, Value, Hash, Compare, Equals>::erase(const Key& k){
     int aux = _contains(k);
     if(aux != -1){
         table[aux].n_status = DELETED;
@@ -148,46 +153,46 @@ bool OHT<Key, Value, Hash>::erase(const Key& k){
     return false;
 }
 
-template <typename Key, typename Value, typename Hash>
-bool OHT<Key, Value, Hash>::contains(const Key& k){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+bool OHT<Key, Value, Hash, Compare, Equals>::contains(const Key& k){
     return _contains(k) != -1 ? true : false;
 }
 
-template <typename Key, typename Value, typename Hash>
-void OHT<Key, Value, Hash>::clear(){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+void OHT<Key, Value, Hash, Compare, Equals>::clear(){
     for(auto& node : table){
         node = Node();
     }
     numElem = 0;
 }
 
-template <typename Key, typename Value, typename Hash>
-bool OHT<Key, Value, Hash>::empty() const{
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+bool OHT<Key, Value, Hash, Compare, Equals>::empty() const{
     return numElem == 0;
 }
 
-template <typename Key, typename Value, typename Hash>
-size_t OHT<Key, Value, Hash>::size() const{
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+size_t OHT<Key, Value, Hash, Compare, Equals>::size() const{
     return numElem;
 }
 
-template <typename Key, typename Value, typename Hash>
-size_t OHT<Key, Value, Hash>::num_slot() const{
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+size_t OHT<Key, Value, Hash, Compare, Equals>::num_slot() const{
     return tableSize;
 }
 
-template <typename Key, typename Value, typename Hash>
-float OHT<Key, Value, Hash>::load_factor()const{
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+float OHT<Key, Value, Hash, Compare, Equals>::load_factor()const{
     return static_cast<float>(numElem) / tableSize;
 }
 
-template <typename Key, typename Value, typename Hash>
-float OHT<Key, Value, Hash>::max_load_factor() const{
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+float OHT<Key, Value, Hash, Compare, Equals>::max_load_factor() const{
     return maxLoadFactor;
 }
 
-template <typename Key, typename Value, typename Hash>
-void OHT<Key, Value, Hash>::set_max_load_factor(float lf){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+void OHT<Key, Value, Hash, Compare, Equals>::set_max_load_factor(float lf){
     if(lf <= 0) {
         throw std::out_of_range("fator de carga invalido");
     }
@@ -195,16 +200,16 @@ void OHT<Key, Value, Hash>::set_max_load_factor(float lf){
     reserve(numElem);
 }
 
-template <typename Key, typename Value, typename Hash>
-void OHT<Key, Value, Hash>::reserve(size_t n){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+void OHT<Key, Value, Hash, Compare, Equals>::reserve(size_t n){
     if(n > tableSize * maxLoadFactor){
         rehash( n / maxLoadFactor);
         count_rehash++;
     }
 }
 
-template <typename Key, typename Value, typename Hash>
-Value& OHT<Key, Value, Hash>::operator[](const Key& k){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+Value& OHT<Key, Value, Hash, Compare, Equals>::operator[](const Key& k){
     if(load_factor() >= maxLoadFactor) {
         rehash(2 * tableSize);
         count_rehash++;
@@ -228,13 +233,13 @@ Value& OHT<Key, Value, Hash>::operator[](const Key& k){
     throw std::overflow_error("tabela cheia");
 }
 
-template <typename Key, typename Value, typename Hash>
-const Value& OHT<Key, Value, Hash>::operator[](const Key& k) const{
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+const Value& OHT<Key, Value, Hash, Compare, Equals>::operator[](const Key& k) const{
     return at(k);
 }
 
-template <typename Key, typename Value, typename Hash>
-void OHT<Key, Value, Hash>::show(){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+void OHT<Key, Value, Hash, Compare, Equals>::show(){
     if(empty()){
         std::cout << "'Hash sem elementos'";
     }else{
@@ -253,17 +258,29 @@ void OHT<Key, Value, Hash>::show(){
     }
 }
 
-template <typename Key, typename Value, typename Hash>
-int OHT<Key, Value, Hash>::getCountComparation(){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+std::vector<std::pair<Key, Value>> OHT<Key, Value, Hash, Compare, Equals>::toVector() const{
+    std::vector<std::pair<Key, Value>> vetor;
+    for(int i = 0; i < tableSize; i++){
+        const auto& p = table[i];
+            if(p.n_status == ACTIVE){
+                vetor.push_back({p.tuple});
+        }
+    }
+    return vetor;
+}
+
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+int OHT<Key, Value, Hash, Compare, Equals>::getCountComparation(){
     return count_comp;
 }
 
-template <typename Key, typename Value, typename Hash>
-int OHT<Key, Value, Hash>::getCountCollision(){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+int OHT<Key, Value, Hash, Compare, Equals>::getCountCollision(){
     return count_collisions;
 }
 
-template <typename Key, typename Value, typename Hash>
-int OHT<Key, Value, Hash>::getCountRehash(){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+int OHT<Key, Value, Hash, Compare, Equals>::getCountRehash(){
     return count_rehash;
 }

@@ -2,8 +2,8 @@
 
 //funções privadas
 
-template <typename Key, typename Value, typename Hash>
-void CHT<Key, Value, Hash>::rehash(size_t m) {
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+void  CHT<Key, Value, Hash, Compare,  Equals>::rehash(size_t m) {
     size_t newTableSize = get_next_prime(m);
     if(newTableSize > tableSize) {
         std::vector<std::list<std::pair<Key,Value>>> old_vec;
@@ -21,8 +21,8 @@ void CHT<Key, Value, Hash>::rehash(size_t m) {
     }
 }
 
-template <typename Key, typename Value, typename Hash>
-size_t CHT<Key, Value, Hash>::get_next_prime(size_t x) {
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+size_t  CHT<Key, Value, Hash, Compare,  Equals>::get_next_prime(size_t x) {
     if(x <= 2) return 3;
     x = (x % 2 == 0) ? x + 1 : x;
     bool not_prime = true;
@@ -39,8 +39,8 @@ size_t CHT<Key, Value, Hash>::get_next_prime(size_t x) {
     return x - 2;
 }
 
-template <typename Key, typename Value, typename Hash>
-size_t CHT<Key, Value, Hash>::compress(const Key& k) const {
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+size_t  CHT<Key, Value, Hash, Compare,  Equals>::compress(const Key& k) const {
     return hashing(k) % tableSize;
 }
 
@@ -48,8 +48,8 @@ size_t CHT<Key, Value, Hash>::compress(const Key& k) const {
 
 //funções públicas
 
-template <typename Key, typename Value, typename Hash>
-CHT<Key, Value, Hash>::CHT(size_t table_size, float load_factor){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+ CHT<Key, Value, Hash, Compare,  Equals>::CHT(size_t table_size, float load_factor, Hash hasher, Compare comp, Equals eq_comp){
     numElem = 0;
     tableSize = get_next_prime(table_size);
     table.resize(tableSize);
@@ -61,13 +61,16 @@ CHT<Key, Value, Hash>::CHT(size_t table_size, float load_factor){
     count_comp = 0;
     count_collisions = 0;
     count_rehash = 0;
+    less = comp;
+    equal = eq_comp;
+    hashing = hasher;
 }
 
-template <typename Key, typename Value, typename Hash>
-CHT<Key, Value, Hash>::~CHT() = default;
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+ CHT<Key, Value, Hash, Compare, Equals>::~CHT() = default;
 
-template <typename Key, typename Value, typename Hash>
-bool CHT<Key, Value, Hash>::insert(const Key& k, const Value& v){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+bool  CHT<Key, Value, Hash, Compare,  Equals>::insert(const Key& k, const Value& v){
     if(load_factor() >= max_load_factor()){
         rehash(2 * tableSize);
         count_rehash++;
@@ -76,7 +79,7 @@ bool CHT<Key, Value, Hash>::insert(const Key& k, const Value& v){
     size_t slot  = compress(k);
     bool colision = !table[slot].empty();
     for(auto& p : table[slot]){
-        if(p.first == k){
+        if(equal(p.first, k)){
             count_comp++;
             p.second = v;
             return false;
@@ -92,12 +95,12 @@ bool CHT<Key, Value, Hash>::insert(const Key& k, const Value& v){
     return true;
 }
 
-template <typename Key, typename Value, typename Hash>
-Value& CHT<Key, Value, Hash>::at(const Key& k){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+Value&  CHT<Key, Value, Hash, Compare,  Equals>::at(const Key& k){
     size_t slot = compress(k);
 
     for(auto& p : table[slot]){
-        if(p.first == k){
+        if(equal(p.first, k)){
             count_comp++;
             return p.second;
         }
@@ -105,12 +108,12 @@ Value& CHT<Key, Value, Hash>::at(const Key& k){
     throw std::invalid_argument("chave nao encontrada");
 }
 
-template <typename Key, typename Value, typename Hash>
-const Value& CHT<Key, Value, Hash>::at(const Key& k) const{
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+const Value&  CHT<Key, Value, Hash, Compare,  Equals>::at(const Key& k) const{
     size_t slot = compress(k);
 
     for(const auto& p : table[slot]){
-        if(p.first == k){
+        if(equal(p.first, k)){
             count_comp++;
             return p.second;
         }
@@ -118,11 +121,11 @@ const Value& CHT<Key, Value, Hash>::at(const Key& k) const{
     throw std::invalid_argument("chave nao encontrada");
 }
 
-template <typename Key, typename Value, typename Hash>
-bool CHT<Key, Value, Hash>::erase(const Key& k){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+bool  CHT<Key, Value, Hash, Compare,  Equals>::erase(const Key& k){
     size_t slot = compress(k);
     for(auto it = table[slot].begin(); it != table[slot].end(); it++){
-        if(it->first == k){
+        if(equal(it->first, k)){
             count_comp++;
             table[slot].erase(it);
             numElem--;
@@ -132,11 +135,11 @@ bool CHT<Key, Value, Hash>::erase(const Key& k){
     return false;
 }
 
-template <typename Key, typename Value, typename Hash>
-bool CHT<Key, Value, Hash>::contains(const Key& k){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+bool  CHT<Key, Value, Hash, Compare,  Equals>::contains(const Key& k){
     size_t slot = compress(k);
     for(auto p : table[slot]){
-        if(p.first == k){
+        if(equal(p.first, k)){
             count_comp++;
             return true;
         }
@@ -144,49 +147,49 @@ bool CHT<Key, Value, Hash>::contains(const Key& k){
     return false;
 }
 
-template <typename Key, typename Value, typename Hash>
-void CHT<Key, Value, Hash>::clear(){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+void  CHT<Key, Value, Hash, Compare,  Equals>::clear(){
     for(size_t i = 0; i < tableSize; i++){
         table[i].clear();
     }
     numElem = 0;
 }
 
-template <typename Key, typename Value, typename Hash>
-bool CHT<Key, Value, Hash>::empty() const{
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+bool  CHT<Key, Value, Hash, Compare,  Equals>::empty() const{
     return numElem == 0;
 }
 
-template <typename Key, typename Value, typename Hash>
-size_t CHT<Key, Value, Hash>::size() const{
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+size_t  CHT<Key, Value, Hash, Compare,  Equals>::size() const{
     return numElem;
 }
 
-template <typename Key, typename Value, typename Hash>
-size_t CHT<Key, Value, Hash>::num_slot() const{
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+size_t  CHT<Key, Value, Hash, Compare,  Equals>::num_slot() const{
     return tableSize;
 }
 
-template <typename Key, typename Value, typename Hash>
-size_t CHT<Key, Value, Hash>::slot_size(size_t n) const{
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+size_t  CHT<Key, Value, Hash, Compare,  Equals>::slot_size(size_t n) const{
     if(n >= tableSize){
         throw std::out_of_range("invalid index");
     }
     return table[n].size();
 }
 
-template <typename Key, typename Value, typename Hash>
-float CHT<Key, Value, Hash>::load_factor() const{
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+float  CHT<Key, Value, Hash, Compare,  Equals>::load_factor() const{
     return static_cast<float>(numElem) / tableSize;
 }
 
-template <typename Key, typename Value, typename Hash>
-float CHT<Key, Value, Hash>::max_load_factor() const{
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+float  CHT<Key, Value, Hash, Compare,  Equals>::max_load_factor() const{
     return maxLoadFactor;
 }
 
-template <typename Key, typename Value, typename Hash>
-void CHT<Key, Value, Hash>::set_max_load_factor(float lf){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+void  CHT<Key, Value, Hash, Compare,  Equals>::set_max_load_factor(float lf){
     if(lf <= 0) {
         throw std::out_of_range("fator de carga invalido");
     }
@@ -194,23 +197,23 @@ void CHT<Key, Value, Hash>::set_max_load_factor(float lf){
     reserve(numElem);
 }
 
-template <typename Key, typename Value, typename Hash>
-void CHT<Key, Value, Hash>::reserve(size_t n){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+void  CHT<Key, Value, Hash, Compare,  Equals>::reserve(size_t n){
     if(n > tableSize * maxLoadFactor){
         rehash( n / maxLoadFactor);
         count_rehash++;
     }
 }
 
-template <typename Key, typename Value, typename Hash>
-Value& CHT<Key, Value, Hash>::operator[](const Key& k){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+Value&  CHT<Key, Value, Hash, Compare,  Equals>::operator[](const Key& k){
     if(load_factor() >= maxLoadFactor) {
         rehash(2 * tableSize);
         count_rehash++;
     }
     size_t slot = compress(k);
     for(auto& par : table[slot]) {
-        if(par.first == k) {
+        if(equal(par.first, k)) {
             count_comp++;
             return par.second;
         }
@@ -220,13 +223,13 @@ Value& CHT<Key, Value, Hash>::operator[](const Key& k){
     return table[slot].back().second;
 }
 
-template <typename Key, typename Value, typename Hash>
-const Value& CHT<Key, Value, Hash>::operator[](const Key& k) const{
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+const Value&  CHT<Key, Value, Hash, Compare,  Equals>::operator[](const Key& k) const{
     return at(k);
 }
 
-template <typename Key, typename Value, typename Hash>
-void CHT<Key, Value, Hash>::show(){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+void  CHT<Key, Value, Hash, Compare,  Equals>::show(){
     if (empty()) {
         std::cout << "Hash sem elementos\n";
         return;
@@ -249,17 +252,28 @@ void CHT<Key, Value, Hash>::show(){
     }
 }
 
-template <typename Key, typename Value, typename Hash>
-int CHT<Key, Value, Hash>::getCountComparation(){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+std::vector<std::pair<Key, Value>> CHT<Key, Value, Hash, Compare,  Equals>::toVector() const{
+    std::vector<std::pair<Key, Value>> vetor;
+    for(size_t i = 0; i < tableSize; i++){
+        for(const auto& p : table[i]){
+            vetor.push_back({p.first, p.second});
+        }
+    }
+    return vetor;
+}
+
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+int  CHT<Key, Value, Hash, Compare,  Equals>::getCountComparation(){
     return count_comp;
 }
 
-template <typename Key, typename Value, typename Hash>
-int CHT<Key, Value, Hash>::getCountCollision(){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+int  CHT<Key, Value, Hash, Compare,  Equals>::getCountCollision(){
     return count_collisions;
 }
 
-template <typename Key, typename Value, typename Hash>
-int CHT<Key, Value, Hash>::getCountRehash(){
+template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+int  CHT<Key, Value, Hash, Compare,  Equals>::getCountRehash(){
     return count_rehash;
 }
