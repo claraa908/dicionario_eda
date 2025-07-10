@@ -4,92 +4,42 @@
 #include <functional>
 #include <vector>
 
-template <typename Key, typename Value, 
-          typename Compare = std::less<Key>, typename Equals = std::equal_to<Key>>
+template <typename Key, typename Value, typename Compare = std::less<Key>, typename Equals = std::equal_to<Key>>
     class MAP_AVL{
         private:
             AVL<Key, Value, Compare, Equals> avl_tree;
-
         public:
-            MAP_AVL() : avl_tree(){};
+            MAP_AVL();
 
-            MAP_AVL(Compare comp, Equals eq_comp) : avl_tree(comp, eq_comp){};
+            MAP_AVL(Compare comp, Equals eq_comp);
 
-            ~MAP_AVL() = default;
+            ~MAP_AVL();
 
-            void insert(Key k, Value v){
-                if (contains(k)) {
-                    throw std::invalid_argument("Chave ja existe no dicionario");
-                }
-                avl_tree.insert(k, v);
-            }
+            void insert(Key k, Value v);
 
-            void update(Key k, Value newValue){
-                if(!contains(k)){
-                    throw std::invalid_argument("Chave nao encontrada para atualizacao");
-                }
-                avl_tree[k] = newValue;
-            }
+            void update(Key k, Value newValue);
 
-            Value& at(const Key& k){
-                return avl_tree.at(k);
-            }
+            Value& at(const Key& k);
 
-            const Value& at(const Key& k) const{
-                return avl_tree.at(k);
-            }
+            const Value& at(const Key& k) const;
 
-            void erase(const Key& k){
-                if(empty()){
-                    throw std::runtime_error("Dicionario vazio, nao ha o que remover");
-                }
-                if(!contains(k)){
-                    throw std::invalid_argument("Chave nao encontrada para remocao");
-                }
+            void erase(const Key& k);
 
-                avl_tree.erase(k);
-            }
+            bool contains(const Key& k);
 
-            bool contains(const Key& k){
-                return avl_tree.contains(k);
-            }
+            int size();
 
-            int size(){
-                return avl_tree.size();
-            }
+            void clear();
 
-            void clear(){
-                if(empty()){
-                    throw std::runtime_error("Dicionario vazio, nao ha o que limpar");
-                }
-                avl_tree.clear();
-            }
+            bool empty();
 
-            bool empty(){
-                return avl_tree.empty();
-            }
+            void show();
 
-            void show(){
-                avl_tree.show();
-            }
+            const Value& operator[](const Key& k) const;
 
-            const Value& operator[](const Key& k) const{
-                 if(!avl_tree.contains(k)){
-                    throw std::invalid_argument("chave inexistente");
-                }
-                return avl_tree.at(k);
-            }
+            Value& operator[](const Key& k);
 
-            Value& operator[](const Key& k){
-                if(!avl_tree.contains(k)){
-                    avl_tree.insert(k, Value());
-                }
-                return avl_tree.at(k);
-            }
-
-            std::vector<std::pair<Key, Value>> rout() const{ 
-                return avl_tree.inOrder();
-            }
+            std::vector<std::pair<Key, Value>> toVector() const;
 }; 
 #include "..\..\src\dicionarios\MAP_AVL.tpp"
 #endif

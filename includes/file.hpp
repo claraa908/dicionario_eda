@@ -74,7 +74,7 @@ class File{
                 std::cerr << "Nao foi possivel criar/abrir o arquivo";
             }
 
-            std::vector<std::pair<uniStringKey, int>> tuple = map.rout();
+            std::vector<std::pair<uniStringKey, int>> tuple = map.toVector();
             std::sort(tuple.begin(), tuple.end(), uniStringPairLess());
 
             for(const auto& p : tuple){
