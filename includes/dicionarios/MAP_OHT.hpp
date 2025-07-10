@@ -37,6 +37,8 @@ template <typename Key, typename Value, typename Hash = std::hash<Key>, typename
             Value& operator[](const Key& k);
 
             std::vector<std::pair<Key, Value>> toVector() const;
+
+            std::string metric();
 };
 #include "..\..\src\dicionarios\MAP_OHT.tpp"
 #endif

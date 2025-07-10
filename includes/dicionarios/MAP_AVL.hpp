@@ -40,6 +40,8 @@ template <typename Key, typename Value, typename Compare = std::less<Key>, typen
             Value& operator[](const Key& k);
 
             std::vector<std::pair<Key, Value>> toVector() const;
+
+            std::string metric();
 }; 
 #include "..\..\src\dicionarios\MAP_AVL.tpp"
 #endif

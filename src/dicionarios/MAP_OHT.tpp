@@ -79,3 +79,15 @@ template <typename Key, typename Value, typename Hash, typename Compare, typenam
 std::vector<std::pair<Key, Value>> MAP_OHT<Key, Value, Hash, Compare, Equals>::toVector() const{ 
     return o_hash.toVector();
 }
+
+template <typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+std::string MAP_OHT<Key, Value, Hash, Compare, Equals>::metric(){
+    std::string value = "";
+    value += "Contagem de comparacoes de chaves realizadas: ";
+    value += std::to_string(o_hash.getCountComparation());
+    value += "\nContagem de colisoes realizadas: ";
+    value += std::to_string(o_hash.getCountCollision());
+    value += "\nContagem de rehashes realizados: ";
+    value += std::to_string(o_hash.getCountRehash());
+    return value;
+}

@@ -39,6 +39,8 @@ template <typename Key, typename Value,
             Value& operator[](const Key& k);
 
             std::vector<std::pair<Key, Value>> toVector() const;
+
+            std::string metric();
 };
 #include "..\..\src\dicionarios\MAP_RBT.tpp"
 #endif

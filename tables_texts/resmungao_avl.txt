@@ -1,3 +1,8 @@
+========================= ESTATISTICAS =========================
+Contagem de comparacoes de chaves realizadas: 2347
+Contagem de rotacoes realizadas: 19
+Tempo de execucao: 0.001450
+================================================================
 a: 18
 aranha: 6
 chuva: 6

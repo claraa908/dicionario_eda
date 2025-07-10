@@ -16,6 +16,9 @@
 #include <unicode/ustdio.h>
 #include "UnicodeComparator.hpp"
 
+template <typename Key>
+bool compare_t(std::pair<Key, int> t1, std::pair<Key, int> t2){ return t1.second >= t2.second; }
+
 class File{
 
     public:
@@ -49,7 +52,7 @@ class File{
                     i += U16_LENGTH(ch);
 
                     //tratar isso
-                    if(u_isalnum(ch) || ch == 0x002D){ 
+                    if(u_isalnum(ch) || !word.isEmpty() && ch == 0x002D ){ 
                         word.append(ch);
                     }else {
                         if(!word.isEmpty()){
@@ -68,7 +71,7 @@ class File{
         }
 
         template <typename Map>
-        void write(const Map& map, const std::string& output){
+        void write(const Map& map, std::string& start, const std::string& output){
             std::ofstream out(output);
             if(!out.is_open()){
                 std::cerr << "Nao foi possivel criar/abrir o arquivo";
@@ -76,6 +79,8 @@ class File{
 
             std::vector<std::pair<uniStringKey, int>> tuple = map.toVector();
             std::sort(tuple.begin(), tuple.end(), uniStringPairLess());
+
+            out << start;
 
             for(const auto& p : tuple){
                 std::string str;

@@ -81,3 +81,15 @@ template <typename Key, typename Value, typename Compare, typename Equals>
 std::vector<std::pair<Key, Value>> MAP_RBT<Key, Value, Compare, Equals>::toVector() const{ 
     return rbt_tree.inOrder();
 }
+
+template <typename Key, typename Value, typename Compare, typename Equals>
+std::string MAP_RBT<Key, Value, Compare, Equals>::metric() {
+    std::string value = "";
+    value += "Contagem de comparacoes de chaves realizadas: ";
+    value += std::to_string(rbt_tree.getCountComparation());
+    value += "\nContagem de rotacoes realizadas: ";
+    value += std::to_string(rbt_tree.getCountRotation());
+    value += "\nContagem de recoloracoes realizadas: ";
+    value += std::to_string(rbt_tree.getCountRecolor());
+    return value;
+}

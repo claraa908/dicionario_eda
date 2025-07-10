@@ -95,3 +95,13 @@ template <typename Key, typename Value, typename Compare, typename Equals>
 std::vector<std::pair<Key, Value>> MAP_AVL<Key, Value, Compare, Equals>::toVector() const{ 
     return avl_tree.inOrder();
 }
+
+template <typename Key, typename Value, typename Compare, typename Equals>
+std::string MAP_AVL<Key, Value, Compare, Equals>::metric(){
+    std::string value = "";
+    value += "Contagem de comparacoes de chaves realizadas: ";
+    value += std::to_string(avl_tree.getCountComparation());
+    value += "\nContagem de rotacoes realizadas: ";
+    value += std::to_string(avl_tree.getCountRotation());
+    return value;
+}
