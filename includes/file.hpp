@@ -48,9 +48,10 @@ class File{
                     UChar32 ch = uline.char32At(i);
                     i += U16_LENGTH(ch);
 
+                    //tratar isso
                     if(u_isalnum(ch) || ch == 0x002D){ 
                         word.append(ch);
-                    } else {
+                    }else {
                         if(!word.isEmpty()){
                             ++map[uniStringKey(word)];
                             word.remove();
