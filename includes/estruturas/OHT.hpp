@@ -3,8 +3,8 @@
  * @author Clara Cruz
  * @brief Uma tabela hash com tratamento de colisao por endereçamento aberto
  * Estrutura de dados avancada - 2025.1
- * @version 0.1
- * @date 2025-06-15
+ * @version 0.2
+ * @date 2025-07-11
  * 
  * @copyright Copyright (c) 2025
  * 
@@ -38,6 +38,8 @@ enum status{
  * @tparam Key key type
  * @tparam Value value type
  * @tparam Hash hash function type
+ * @tparam Compare less function type
+ * @tparam Equals equal_to function type
  */
 template <typename Key, typename Value, typename Hash = std::hash<Key>, 
           typename Compare = std::less<Key>, typename Equals = std::equal_to<Key>>
@@ -79,8 +81,8 @@ class OHT{
         mutable int count_comp; // Contador de comparações de chaves
         mutable int count_collisions; // Contador de colisões na tabela
         mutable int count_rehash; // Contador de rehash
-        Compare less;
-        Equals equal;
+        Compare less; // Referência para função de less
+        Equals equal; // Referência para função to_equal
 
         /**
          * @brief Atualiza o tamanho da tabela caso o novo valor seja 
@@ -152,12 +154,15 @@ class OHT{
         
     public:
         /**
-         * @brief Construtor que pode ser definido ou não
+         * @brief Construtor com parâmetros padrões.
          * 
          * Cria uma tabela hash com número primo de slots, inicializa os seus
          * contadores e o fator máximo de carga.
          * @param table_size O número de slots da tabela.
          * @param load_factor O fator máximo de carga da tabela.
+         * @param hash O hash sobrecarregado da estrutura.
+         * @param comp O comparador less sobrecarregado da estrutura.
+         * @param eq_comp O comparador equals sobrecarregado da estrutura.
          */
         OHT(size_t table_size = 10, float load_factor = 0.75, Hash hasher = Hash{}, 
             Compare comp = Compare{}, Equals eq_comp = Equals{});
@@ -300,6 +305,10 @@ class OHT{
          */
         void show();
 
+        /**
+         * @brief Função que percorre a tabela e passa os pares para um vetor.
+         * @return O vetor com os pares da tabela.
+         */
         std::vector<std::pair<Key, Value>> toVector() const;
 
         /**

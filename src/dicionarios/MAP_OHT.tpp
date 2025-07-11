@@ -35,6 +35,12 @@ const Value& MAP_OHT<Key, Value, Hash, Compare, Equals>::at(const Key& k) const{
 
 template <typename Key, typename Value, typename Hash, typename Compare, typename Equals>
 void MAP_OHT<Key, Value, Hash, Compare, Equals>::erase(Key k){
+    if(empty()){
+        throw std::runtime_error("Dicionario vazio, nao ha o que remover");
+    }
+    if(!contains(k)){
+        throw std::invalid_argument("Chave nao encontrada para remocao");
+    }
     o_hash.erase(k);
 }
 
@@ -50,7 +56,15 @@ int MAP_OHT<Key, Value, Hash, Compare, Equals>::size(){
 
 template <typename Key, typename Value, typename Hash, typename Compare, typename Equals>
 void MAP_OHT<Key, Value, Hash, Compare, Equals>::clear(){
+    if(empty()){
+        throw std::runtime_error("Dicionario vazio, nao ha o que limpar");
+    }
     o_hash.clear();
+}
+
+template <typename Key, typename Value, typename Hash, typename Compare, typename Equals>
+bool MAP_OHT<Key, Value, Hash, Compare, Equals>::empty(){
+    o_hash.empty();
 }
 
 template <typename Key, typename Value, typename Hash, typename Compare, typename Equals>

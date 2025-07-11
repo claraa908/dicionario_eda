@@ -4,7 +4,8 @@ template <typename Key, typename Value, typename Compare, typename Equals>
 MAP_AVL<Key, Value, Compare, Equals>::MAP_AVL() : avl_tree(){};
 
 template <typename Key, typename Value, typename Compare, typename Equals>
-MAP_AVL<Key, Value, Compare, Equals>::MAP_AVL(Compare comp, Equals eq_comp) : avl_tree(comp, eq_comp){};
+MAP_AVL<Key, Value, Compare, Equals>::MAP_AVL(Compare comp, Equals eq_comp) 
+: avl_tree(comp, eq_comp){};
 
 template <typename Key, typename Value, typename Compare, typename Equals>
 MAP_AVL<Key, Value, Compare, Equals>::~MAP_AVL() = default;
@@ -77,7 +78,7 @@ void MAP_AVL<Key, Value, Compare, Equals>::show(){
 
 template <typename Key, typename Value, typename Compare, typename Equals>
 const Value& MAP_AVL<Key, Value, Compare, Equals>::operator[](const Key& k) const{
-        if(!avl_tree.contains(k)){
+    if(!avl_tree.contains(k)){
         throw std::invalid_argument("chave inexistente");
     }
     return avl_tree.at(k);
@@ -93,7 +94,7 @@ Value& MAP_AVL<Key, Value, Compare, Equals>::operator[](const Key& k){
 
 template <typename Key, typename Value, typename Compare, typename Equals>
 std::vector<std::pair<Key, Value>> MAP_AVL<Key, Value, Compare, Equals>::toVector() const{ 
-    return avl_tree.inOrder();
+    return avl_tree.toVector();
 }
 
 template <typename Key, typename Value, typename Compare, typename Equals>

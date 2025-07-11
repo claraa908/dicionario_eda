@@ -374,9 +374,17 @@ void RBT<Key, Value, Compare, Equals>::bshow(typename RBT<Key, Value, Compare, E
         bshow(node->left, heranca + "l");
 }
 
-
+template<typename Key, typename Value, typename Compare, typename Equals>
+void RBT<Key, Value, Compare, Equals>::_toVector(RBT<Key, Value, Compare, Equals>::Node* p, std::vector<std::pair<Key, Value>>& v) const{
+    if(p != nil){
+        _toVector(p->left, v);
+        v.push_back({p->tuple.first, p->tuple.second});
+        _toVector(p->right, v);
+    }
+}
 
 //funções públicas
+
 template<typename Key, typename Value, typename Compare, typename Equals>
 RBT<Key, Value, Compare, Equals>::RBT(){
     nil = new Node(Key{}, Value{}, BLACK, nullptr, nullptr, nullptr);
@@ -479,18 +487,9 @@ void RBT<Key, Value, Compare, Equals>::show(){
 }
 
 template<typename Key, typename Value, typename Compare, typename Equals>
-void RBT<Key, Value, Compare, Equals>::_inOrder(RBT<Key, Value, Compare, Equals>::Node* p, std::vector<std::pair<Key, Value>>& v) const{
-    if(p != nil){
-        _inOrder(p->left, v);
-        v.push_back({p->tuple.first, p->tuple.second});
-        _inOrder(p->right, v);
-    }
-}
-
-template<typename Key, typename Value, typename Compare, typename Equals>
-std::vector<std::pair<Key, Value>> RBT<Key, Value, Compare, Equals>::inOrder() const{
+std::vector<std::pair<Key, Value>> RBT<Key, Value, Compare, Equals>::toVector() const{
     std::vector<std::pair<Key, Value>> vetor;
-    _inOrder(root, vetor);
+    _toVector(root, vetor);
     return vetor; 
 }
 

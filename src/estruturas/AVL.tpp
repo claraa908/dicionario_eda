@@ -249,11 +249,11 @@ void AVL<Key, Value, Compare, Equals>::bshow(AVL<Key, Value, Compare, Equals>::N
 }
 
 template<typename Key, typename Value, typename Compare, typename Equals>
-void AVL<Key, Value, Compare, Equals>::_inOrder(AVL<Key, Value, Compare, Equals>::Node* p, std::vector<std::pair<Key, Value>>& v) const{
+void AVL<Key, Value, Compare, Equals>::_toVector(AVL<Key, Value, Compare, Equals>::Node* p, std::vector<std::pair<Key, Value>>& v) const{
     if(p != nullptr){
-        _inOrder(p->left, v);
+        _toVector(p->left, v);
         v.push_back({p->tuple.first, p->tuple.second});
-        _inOrder(p->right, v);
+        _toVector(p->right, v);
     }
 }
 
@@ -353,9 +353,9 @@ void AVL<Key, Value, Compare, Equals>::show(){
 }
 
 template<typename Key, typename Value, typename Compare, typename Equals>
-std::vector<std::pair<Key, Value>> AVL<Key, Value, Compare, Equals>::inOrder() const{
+std::vector<std::pair<Key, Value>> AVL<Key, Value, Compare, Equals>::toVector() const{
     std::vector<std::pair<Key, Value>> vetor;
-    _inOrder(root, vetor);
+    _toVector(root, vetor);
     return vetor; 
 }
 

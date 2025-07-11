@@ -3,8 +3,8 @@
  * @author Clara Cruz
  * @brief Uma árvore RBT
  * Estrutura de dados avancada - 2025.1
- * @version 0.1
- * @date 2025-06-15
+ * @version 0.2
+ * @date 2025-07-10
  * 
  * @copyright Copyright (c) 2025
  * 
@@ -31,6 +31,8 @@
  * 
  * @tparam Key key type
  * @tparam Value value type
+ * @tparam Compare less function type
+ * @tparam Equals equal_to function type
  */
 template <typename Key, typename Value, 
           typename Compare = std::less<Key>, typename Equals = std::equal_to<Key>>
@@ -74,8 +76,8 @@ class RBT{
         mutable int count_comp; // Contador de comparações de chaves
         mutable int count_recolor; // Contador de recoloração
         mutable int count_rotation; // Contador de rotações realizadas
-        Compare less;
-        Equals equal;
+        Compare less; // Referência para função de less
+        Equals equal; // Referência para função to_equal
 
         //funções privadas
 
@@ -251,7 +253,13 @@ class RBT{
          */
         void bshow(Node *node, std::string heranca);
 
-        void _inOrder(Node* p, std::vector<std::pair<Key, Value>>& v) const;
+        /**
+         * @brief Função privada que percorre a árvore em ordem e passa os seus 
+         * valores para dentro de um vetor.
+         * @param p nó que vai iniciar a busca (iniciado na raiz).
+         * @param v vetor que receberá os pares.
+         */
+        void _toVector(Node* p, std::vector<std::pair<Key, Value>>& v) const;
 
     public:
         /**
@@ -267,8 +275,11 @@ class RBT{
 
         /**
          * @brief Construtor com comparadores.
-         * O ponteiro root é inicializado como nullpter, representando uma árvore vazia.
-         * Também inicializa os contadores de comparação e rotação com zero.
+         * realiza as mesmas operações do construtor default com diferença que
+         * inicializa os comparadores, ou sebrecarrega eles, com um comparador
+         * passado.
+         * @param comp O comparador less sobrecarregado da estrutura.
+         * @param eq_comp O comparador equals sobrecarregado da estutura.
          */
         RBT(Compare comp, Equals eq_comp);
 
@@ -374,7 +385,11 @@ class RBT{
         */
         void show();
 
-        std::vector<std::pair<Key, Value>> inOrder() const;
+        /**
+         * @brief Função pública que transforma a árvore em um vetor
+         * @return Vetor da árvore.
+         */
+        std::vector<std::pair<Key, Value>> toVector() const;
 
         /**
         * @brief Função getter que mostra o estado do contador de comparações de 

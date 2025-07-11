@@ -37,6 +37,12 @@ const Value& MAP_RBT<Key, Value, Compare, Equals>::at(const Key& k) const{
 
 template <typename Key, typename Value, typename Compare, typename Equals>
 void MAP_RBT<Key, Value, Compare, Equals>::erase(const Key& k){
+    if(empty()){
+        throw std::runtime_error("Dicionario vazio, nao ha o que remover");
+    }
+    if(!contains(k)){
+        throw std::invalid_argument("Chave nao encontrada para remocao");
+    }
     rbt_tree.erase(k);
 }
 
@@ -52,7 +58,15 @@ int MAP_RBT<Key, Value, Compare, Equals>::size(){
 
 template <typename Key, typename Value, typename Compare, typename Equals>
 void MAP_RBT<Key, Value, Compare, Equals>::clear(){
+    if(empty()){
+        throw std::runtime_error("Dicionario vazio, nao ha o que limpar");
+    }
     rbt_tree.clear();
+}
+
+template <typename Key, typename Value, typename Compare, typename Equals>
+bool MAP_AVL<Key, Value, Compare, Equals>::empty(){
+    return rbt_tree.empty();
 }
 
 template <typename Key, typename Value, typename Compare, typename Equals>
