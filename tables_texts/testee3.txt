@@ -1,0 +1,34 @@
+========================= ESTATISTICAS =========================
+Contagem de comparacoes de chaves realizadas: 2347
+Contagem de rotacoes realizadas: 19
+Tempo de execucao: 0.042807
+================================================================
+a: 18
+aranha: 6
+chuva: 6
+contente: 3
+continua: 3
+derrubou: 3
+desce: 3
+descer: 1
+desobediente: 3
+dona: 6
+e: 12
+é: 3
+ela: 3
+está: 3
+forte: 3
+já: 6
+nunca: 3
+o: 3
+parede: 3
+passou: 3
+pela: 3
+sobe: 6
+sol: 3
+subir: 2
+subiu: 3
+surgindo: 3
+teimosa: 3
+veio: 3
+vem: 3
