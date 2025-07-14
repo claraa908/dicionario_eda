@@ -65,7 +65,7 @@ void MAP_RBT<Key, Value, Compare, Equals>::clear(){
 }
 
 template <typename Key, typename Value, typename Compare, typename Equals>
-bool MAP_AVL<Key, Value, Compare, Equals>::empty(){
+bool MAP_RBT<Key, Value, Compare, Equals>::empty(){
     return rbt_tree.empty();
 }
 
@@ -93,7 +93,7 @@ Value& MAP_RBT<Key, Value, Compare, Equals>::operator[](const Key& k){
 
 template <typename Key, typename Value, typename Compare, typename Equals>
 std::vector<std::pair<Key, Value>> MAP_RBT<Key, Value, Compare, Equals>::toVector() const{ 
-    return rbt_tree.inOrder();
+    return rbt_tree.toVector();
 }
 
 template <typename Key, typename Value, typename Compare, typename Equals>

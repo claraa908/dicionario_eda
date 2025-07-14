@@ -1,10 +1,24 @@
 # dicionario_eda
 
-O parâmetro de linha de comando usado no terminal
+### Compilação do projeto:
+O projeto já possui um 'Makefile' configurado para compilação. Porém, deve ser feito um **ajuste o caminho para biblioteca ICU** em seu computador para rodar normalmente. Para que a compilação ocorra sem problemas, edite as variaveis da ICU no 'Makefile':
 
-`./main [structure] [input].txt [output].txt`
+`ICU_INCLUDES = -I"C:/msys64/ucrt64/include"`
 
-structure:
+`ICU_LIBS = -L"C:/msys64/ucrt64/lib" -licuuc -licuin -licudt`
+
+(Note: O caminho exato para a ICU pode variar dependendo da sua instalação. Caso seja no MSYS2, geralmente o caminho será `C:/msys64/ucrt64/` ou `C:/msys64/mingw64/`. Basta encontrar esse caminho e modificá-lo no 'Makefile')
+
+### Comando para Compilar no Terminal
+Na raiz do projeto (onde o 'Makefile' se encontra), execute:
+`make all`
+
+### Comando de Execução no Terminal:
+Para executar o programa após a compilação basta usar o seguinte padrão no terminal:
+
+`./freq [structure] [input].txt [output].txt`
+
+#### structure:
 - map_avl: Dicionário implementado com uma Árvore AVL;
 - map_rbt: Dicionário implementado com uma Árvore Rubro-Negra;
 - map_cht: Dicionário implementado com uma Tabela Hash com Encadeamento Exterior;

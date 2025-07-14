@@ -41,7 +41,7 @@ template<typename Key, typename Value, typename Hash, typename Compare, typename
 int OHT<Key, Value, Hash, Compare, Equals>::_contains(const Key& k){
     size_t i = 0;
     while(i < tableSize){
-        size_t slot = compress(k, i);
+        int slot = compress(k, i);
         if(table[slot].n_status ==  EMPTY){
             return -1;
         }
@@ -244,7 +244,7 @@ void OHT<Key, Value, Hash, Compare, Equals>::show(){
         std::cout << "'Hash sem elementos'";
     }else{
         bool first = true;
-        for (int i = 0; i < tableSize; i++) {
+        for (size_t i = 0; i < tableSize; i++) {
             const auto& node = table[i];
             if(node.n_status == ACTIVE){
                 if (!first) {
@@ -261,7 +261,7 @@ void OHT<Key, Value, Hash, Compare, Equals>::show(){
 template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
 std::vector<std::pair<Key, Value>> OHT<Key, Value, Hash, Compare, Equals>::toVector() const{
     std::vector<std::pair<Key, Value>> vetor;
-    for(int i = 0; i < tableSize; i++){
+    for(size_t i = 0; i < tableSize; i++){
         const auto& p = table[i];
             if(p.n_status == ACTIVE){
                 vetor.push_back({p.tuple});

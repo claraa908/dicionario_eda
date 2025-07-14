@@ -89,8 +89,10 @@ Value& MAP_OHT<Key, Value, Hash, Compare, Equals>::operator[](const Key& k){
     return o_hash.at(k);
 }
 
+
 template <typename Key, typename Value, typename Hash, typename Compare, typename Equals>
-std::vector<std::pair<Key, Value>> MAP_OHT<Key, Value, Hash, Compare, Equals>::toVector() const{ 
+std::vector<std::pair<Key, Value>> MAP_OHT<Key, Value, Hash, Compare, Equals>::toVector() const{
+
     return o_hash.toVector();
 }
 

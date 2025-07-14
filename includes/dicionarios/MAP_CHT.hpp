@@ -28,12 +28,11 @@
 template <typename Key, typename Value, typename Hash = std::hash<Key>, typename Compare = std::less<Key>, typename Equals = std::equal_to<Key>>
     class MAP_CHT{
         private:
-
             // Instância que cria uma tabela hash com encadeamento exterior.
             CHT<Key, Value, Hash, Compare, Equals> c_hash;
 
         public:
-
+        
             /**
              * @brief Construtor com parâmetros padrões.
              * Possui parâmetros pré-inicializados e passa esses valores recebidos]

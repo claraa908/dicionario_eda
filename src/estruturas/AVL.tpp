@@ -235,7 +235,7 @@ template<typename Key, typename Value, typename Compare, typename Equals>
 void AVL<Key, Value, Compare, Equals>::bshow(AVL<Key, Value, Compare, Equals>::Node* node, std::string heranca) const {
     if(node != nullptr && (node->left != nullptr || node->right != nullptr))
         bshow(node->right , heranca + "r");
-    for(int i = 0; i < (int) heranca.size() - 1; i++)
+    for(int i = 0; i < static_cast<int>(heranca.size()) - 1; i++)
         std::cout << (heranca[i] != heranca[i + 1] ? "|   " : "    ");
     if(heranca != "")
         std::cout << (heranca.back() == 'r' ? "|--" : "|--");

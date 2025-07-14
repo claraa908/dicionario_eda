@@ -354,7 +354,7 @@ void RBT<Key, Value, Compare, Equals>::bshow(typename RBT<Key, Value, Compare, E
     if(node != nil && (node->left != nil || node->right != nil))
         bshow(node->right , heranca + "r");
 
-    for(int i = 0; i < (int) heranca.size() - 1; i++)
+    for(int i = 0; i < static_cast<int>(heranca.size()) - 1; i++)
         std::cout << (heranca[i] != heranca[i + 1] ? "|   " : "    ");
 
     if(heranca != "")

@@ -33,6 +33,7 @@ template <typename Key, typename Value,
             RBT<Key, Value, Compare, Equals> rbt_tree;
 
         public:
+
             /**
              * @brief Construtor default.
              * Chama o construtor default da rubro-negra.

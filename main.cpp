@@ -3,17 +3,19 @@
 #include <algorithm>
 #include <string>
 #include <chrono>
+
 #include <unicode/unistr.h>
 #include <unicode/uchar.h>
 #include <unicode/brkiter.h>
 #include <unicode/normalizer2.h>
 #include <unicode/locid.h>
+
 #include "includes/dicionarios/MAP_AVL.hpp"
 #include "includes/dicionarios/MAP_CHT.hpp"
 #include "includes/dicionarios/MAP_OHT.hpp"
 #include "includes/dicionarios/MAP_RBT.hpp"
 #include "includes/UnicodeComparator.hpp"
-#include "includes/file.hpp"
+#include "includes/DictionaryIO.hpp"
 
 #define OUTPUT_FILE "tables_texts/"
 #define INPUT_FILE "texts/"
@@ -27,7 +29,7 @@ int main(int argc, char* argv[]){
         return 1;
     }
 
-    File arq;
+    DictIO arq;
     std::string metric;
     std::string option = argv[1];
     std::string arq_in = argv[2];

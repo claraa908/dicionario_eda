@@ -33,8 +33,9 @@ template <typename Key, typename Value, typename Compare = std::less<Key>,
         private:
             // Instância que cria uma árvore avl.
             AVL<Key, Value, Compare, Equals> avl_tree;
-        public:
 
+        public:
+        
             /**
              * @brief Construtor default.
              * Chama o construtor default da AVL.

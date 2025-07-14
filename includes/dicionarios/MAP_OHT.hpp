@@ -32,6 +32,7 @@ template <typename Key, typename Value, typename Hash = std::hash<Key>, typename
             OHT<Key, Value, Hash, Compare, Equals> o_hash;
 
         public:
+        
             /**
              * @brief Construtor com parâmetros padrões.
              * Possui parâmetros pré-inicializados e passa esses valores recebidos]
