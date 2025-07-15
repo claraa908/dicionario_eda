@@ -14,6 +14,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -146,15 +147,30 @@ class DictIO{
                 std::cerr << "Nao foi possivel criar/abrir o arquivo";
             }
 
-            out << start;
             std::vector<std::pair<uniStringKey, int>> tuple = map.toVector();
             std::sort(tuple.begin(), tuple.end(), uniStringPairLess());
 
+            out << start << std::endl;
+
+            const int word_width = 43;
+            const int freq_width = 22;
+            const int total = word_width + freq_width + 3;
+
+            out << std::string(total, '=') << std::endl;
+
+            out << std::setw(word_width) << std::left << "PALAVRA"
+            << std::setw(freq_width) << std::right << "FREQUENCIA"
+            << std::endl;
+
+            out << std::string(total, '-') << std::endl;
+
             for(const auto& p : tuple){
-                std::string str;
-                p.first.getStr().toUTF8String(str);
-                out << str << ": " << p.second << std::endl;
+                out << "|" << std::setw(word_width) << std::left << p.first;
+                out << "|" << std::setw(freq_width) << std::right << p.second << "|";
+                out << std::endl;
             }
+            out << std::string(total, '-') << std::endl;
+            out << std::string(total, '=') << std::endl;
             out.close();
             std::cout << "Conteudo do dicionario gravado em '" << output << "'" << std::endl;
         }

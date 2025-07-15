@@ -25,7 +25,7 @@
  * estruturas de dados.
  *
  * Fornece construtores para inicialização, um método para acesso à string interna, 
- * e uma sobrecarga do operador de inserção para facilitar a depuração e impressão.
+ * e uma sobrecarga do operador de inserção para facilitar a impressão.
  */
 class uniStringKey{
     private:

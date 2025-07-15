@@ -4,8 +4,7 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/includes",      
-                "${workspaceFolder}/src",         
-                "${workspaceFolder}/testes",       
+                "${workspaceFolder}/src",               
                 "${workspaceFolder}",              
                 "${workspaceFolder}/**",
                 "C:/msys64/ucrt64/include"           

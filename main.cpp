@@ -23,6 +23,8 @@
 /*
 * !!!!!!!! LEIA O README !!!!!!!!!!
 */
+
+
 int main(int argc, char* argv[]){
     if(argc != 4){
         std::cerr << "Comando errado" << std::endl;
@@ -45,13 +47,13 @@ int main(int argc, char* argv[]){
             auto end = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double> elapsed = end - start;
             double time = elapsed.count();
-
+            
             std::string output;
-            output += "========================= ESTATISTICAS =========================\n";
+            output += "=========================== ESTATISTICAS ===========================\n";
             output += map_avl.metric() + "\n";
             output += "Tempo de execucao: ";
             output += std::to_string(time) + "\n";
-            output += "================================================================\n";
+            output += "====================================================================\n";
             std::cout << output;
 
             arq.write(map_avl, output, OUTPUT_FILE + arq_out);
@@ -68,11 +70,11 @@ int main(int argc, char* argv[]){
             double time = elapsed.count();
 
             std::string output;
-            output += "========================= ESTATISTICAS =========================\n";
+            output += "=========================== ESTATISTICAS ===========================\n";
             output += map_rbt.metric() + "\n";
             output += "Tempo de execucao: ";
             output += std::to_string(time) + "\n";
-            output += "================================================================\n";
+            output += "====================================================================\n";
             std::cout << output;
 
             arq.write(map_rbt, output, OUTPUT_FILE + arq_out);
@@ -89,11 +91,11 @@ int main(int argc, char* argv[]){
             double time = elapsed.count();
 
             std::string output;
-            output += "========================= ESTATISTICAS =========================\n";
+            output += "=========================== ESTATISTICAS ===========================\n";
             output += map_cht.metric() + "\n";
             output += "Tempo de execucao: ";
             output += std::to_string(time) + "\n";
-            output += "================================================================\n";
+            output += "====================================================================\n";
             std::cout << output;
 
             arq.write(map_cht, output, OUTPUT_FILE + arq_out);
@@ -110,11 +112,11 @@ int main(int argc, char* argv[]){
             double time = elapsed.count();
 
             std::string output;
-            output += "========================= ESTATISTICAS =========================\n";
+            output += "=========================== ESTATISTICAS ===========================\n";
             output += map_oht.metric() + "\n";
             output += "Tempo de execucao: ";
             output += std::to_string(time) + "\n";
-            output += "================================================================\n";
+            output += "====================================================================\n";
             std::cout << output;
 
             arq.write(map_oht, output, OUTPUT_FILE + arq_out);
