@@ -41,12 +41,6 @@ template <typename Key, typename Value,
             MAP_RBT();
 
             /**
-             * @brief Construtor com comparadores.
-             * Chama o construtor que define os comparadores da rubro-negra
-             */
-            MAP_RBT(Compare comp, Equals eq_comp);
-
-            /**
              * @brief Destrutor Default
              */
             ~MAP_RBT();

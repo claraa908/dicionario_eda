@@ -269,15 +269,6 @@ AVL<Key, Value, Compare, Equals>::AVL() {
 }
 
 template<typename Key, typename Value, typename Compare, typename Equals>
-AVL<Key, Value, Compare, Equals>::AVL(Compare comp, Equals eq_comp) {
-    root = nullptr;
-    count_comp = 0;
-    count_rotation = 0;
-    less = comp;
-    equal = eq_comp;
-}
-
-template<typename Key, typename Value, typename Compare, typename Equals>
 AVL<Key, Value, Compare, Equals>::~AVL(){
     root = _clear(root);
 }

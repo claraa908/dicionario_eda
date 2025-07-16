@@ -2,7 +2,7 @@
 Contagem de comparacoes de chaves realizadas: 33207261
 Contagem de rotacoes realizadas: 8209
 Contagem de recoloracoes realizadas: 43877
-Tempo de execucao: 8.883634
+Tempo de execucao: 3.937706
 ====================================================================
 
 ====================================================================

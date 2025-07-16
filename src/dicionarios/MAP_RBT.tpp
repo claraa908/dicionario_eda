@@ -4,9 +4,6 @@ template <typename Key, typename Value, typename Compare, typename Equals>
 MAP_RBT<Key, Value, Compare, Equals>::MAP_RBT() : rbt_tree(){};
 
 template <typename Key, typename Value, typename Compare, typename Equals>
-MAP_RBT<Key, Value, Compare, Equals>::MAP_RBT(Compare comp, Equals eq_comp) : rbt_tree(comp, eq_comp){};
-
-template <typename Key, typename Value, typename Compare, typename Equals>
 MAP_RBT<Key, Value, Compare, Equals>::~MAP_RBT() = default;
 
 template <typename Key, typename Value, typename Compare, typename Equals>

@@ -2,7 +2,7 @@
 Contagem de comparacoes de chaves realizadas: 1771510
 Contagem de colisoes realizadas: 21083
 Contagem de rehashes realizados: 11
-Tempo de execucao: 3.084538
+Tempo de execucao: 1.478438
 ====================================================================
 
 ====================================================================

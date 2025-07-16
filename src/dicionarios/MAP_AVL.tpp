@@ -4,10 +4,6 @@ template <typename Key, typename Value, typename Compare, typename Equals>
 MAP_AVL<Key, Value, Compare, Equals>::MAP_AVL() : avl_tree(){};
 
 template <typename Key, typename Value, typename Compare, typename Equals>
-MAP_AVL<Key, Value, Compare, Equals>::MAP_AVL(Compare comp, Equals eq_comp) 
-: avl_tree(comp, eq_comp){};
-
-template <typename Key, typename Value, typename Compare, typename Equals>
 MAP_AVL<Key, Value, Compare, Equals>::~MAP_AVL() = default;
 
 template <typename Key, typename Value, typename Compare, typename Equals>

@@ -256,16 +256,6 @@ class AVL{
         AVL();
 
         /**
-         * @brief Construtor com comparadores.
-         * realiza as mesmas operações do construtor default com diferença que
-         * inicializa os comparadores, ou sebrecarrega eles, com um comparador
-         * passado.
-         * @param comp O comparador less sobrecarregado da estrutura.
-         * @param eq_comp O comparador equals sobrecarregado da estutura.
-         */
-        AVL(Compare comp, Equals eq_comp);
-
-        /**
          * @brief Destrutor da árvore.
          * 
          * Libera todos os nós alocados dinamicamente da árvore.

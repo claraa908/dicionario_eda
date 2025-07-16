@@ -1,7 +1,7 @@
 =========================== ESTATISTICAS ===========================
 Contagem de comparacoes de chaves realizadas: 41588082
 Contagem de rotacoes realizadas: 9735
-Tempo de execucao: 8.767138
+Tempo de execucao: 4.326412
 ====================================================================
 
 ====================================================================

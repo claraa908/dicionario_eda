@@ -9,8 +9,8 @@
  * @copyright Copyright (c) 2025
  * 
  */
-#ifndef DICTIONARY_IO_HPP
-#define DICTIONARY_IO_HPP
+#ifndef DICTIO_IO_HPP
+#define DICTIO_IO_HPP
 
 #include <iostream>
 #include <fstream>
@@ -78,7 +78,7 @@ class DictIO{
          */
         template <typename Map>
         void read(Map& map, const std::string input){
-            std::cerr << "Tentando abrir arquivo: " << input << std::endl;
+            //std::cerr << "Tentando abrir arquivo: " << input << std::endl;
             std::fstream in(input);
 
             if(!in.is_open()){

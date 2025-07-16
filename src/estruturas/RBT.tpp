@@ -399,19 +399,6 @@ RBT<Key, Value, Compare, Equals>::RBT(){
 }
 
 template<typename Key, typename Value, typename Compare, typename Equals>
-RBT<Key, Value, Compare, Equals>::RBT(Compare comp, Equals eq_comp){
-    nil = new Node(Key{}, Value{}, BLACK, nullptr, nullptr, nullptr);
-    nil->left = nil->right = nil;
-    root = nil;
-    root->parent = nil;
-    count_comp = 0;
-    count_recolor = 0;
-    count_rotation = 0;
-    less = comp;
-    equal = eq_comp;
-}
-
-template<typename Key, typename Value, typename Compare, typename Equals>
 RBT<Key, Value, Compare, Equals>::~RBT(){
     root = _clear(root);
 }

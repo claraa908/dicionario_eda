@@ -43,12 +43,6 @@ template <typename Key, typename Value, typename Compare = std::less<Key>,
             MAP_AVL();
 
             /**
-             * @brief Construtor com comparadores.
-             * Chama o construtor que define os comparadores da avl
-             */
-            MAP_AVL(Compare comp, Equals eq_comp);
-
-            /**
              * @brief Destrutor Default
              */
             ~MAP_AVL();

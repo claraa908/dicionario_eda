@@ -3,19 +3,12 @@
 #include <algorithm>
 #include <string>
 #include <chrono>
-
-#include <unicode/unistr.h>
-#include <unicode/uchar.h>
-#include <unicode/brkiter.h>
-#include <unicode/normalizer2.h>
-#include <unicode/locid.h>
-
 #include "includes/dicionarios/MAP_AVL.hpp"
 #include "includes/dicionarios/MAP_CHT.hpp"
 #include "includes/dicionarios/MAP_OHT.hpp"
 #include "includes/dicionarios/MAP_RBT.hpp"
 #include "includes/UnicodeComparator.hpp"
-#include "includes/DictionaryIO.hpp"
+#include "includes/DictIO.hpp"
 
 #define OUTPUT_FILE "tables_texts/"
 #define INPUT_FILE "texts/"
@@ -45,8 +38,8 @@ int main(int argc, char* argv[]){
             arq.read(map_avl,  INPUT_FILE + arq_in);
 
             auto end = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double> elapsed = end - start;
-            double time = elapsed.count();
+            std::chrono::duration<double> second = end - start;
+            double time = second.count();
             
             std::string output;
             output += "=========================== ESTATISTICAS ===========================\n";
@@ -66,8 +59,8 @@ int main(int argc, char* argv[]){
             arq.read(map_rbt, INPUT_FILE + arq_in);
 
             auto end = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double> elapsed = end - start;
-            double time = elapsed.count();
+            std::chrono::duration<double> second = end - start;
+            double time = second.count();
 
             std::string output;
             output += "=========================== ESTATISTICAS ===========================\n";
@@ -87,8 +80,8 @@ int main(int argc, char* argv[]){
             arq.read(map_cht, INPUT_FILE + arq_in);
 
             auto end = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double> elapsed = end - start;
-            double time = elapsed.count();
+            std::chrono::duration<double> second = end - start;
+            double time = second.count();
 
             std::string output;
             output += "=========================== ESTATISTICAS ===========================\n";
@@ -108,8 +101,8 @@ int main(int argc, char* argv[]){
             arq.read(map_oht, INPUT_FILE + arq_in);
 
             auto end = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double> elapsed = end - start;
-            double time = elapsed.count();
+            std::chrono::duration<double> second = end - start;
+            double time = second.count();
 
             std::string output;
             output += "=========================== ESTATISTICAS ===========================\n";
