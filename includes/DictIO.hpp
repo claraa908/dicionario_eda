@@ -44,6 +44,34 @@
  * com essas informações.
  */
 class DictIO{
+    private:
+
+        /**
+         * @brief Função que calcula a largura visual aproximada de uma UnicodeString.
+         * 
+         * Percorre cada código de ponto da string `icu::UnicodeString` e estima
+         * sua largura visual em espaços, considerando que alguns caracteres ocupam 
+         * menos ou mais espaço visual na saída de terminal ou em arquivos de texto.
+         * 
+         * Regras aplicadas:
+         * - Combinações de acento têm largura 0.
+         * - Todos os demais caracteres têm largura padrão de 1.
+         * 
+         * Isso é útil para alinhar colunas com texto Unicode em saídas de tabela.
+         * 
+         * @param str A string Unicode a ser analisada.
+         * @return int Largura visual total estimada.
+         */
+        int visualWidth(const icu::UnicodeString& str) {
+            int width = 0;
+            for (int32_t i = 0; i < str.length(); ++i) {
+                UChar32 c = str.char32At(i);
+                if (u_charType(c) == U_NON_SPACING_MARK) continue;
+                width += 1;
+            }
+            return width;
+        }
+
     public:
 
         /**
@@ -124,24 +152,23 @@ class DictIO{
 
         /**
          * @brief Função genérica que escreve um novo arquivo a partir de um
-         * dicinário.
+         * dicionário exibindo suas palavras e frequências em uma tabela visual.
          * 
-         * Abre um arquivo e vê se deu certo a abertura.
-         * Inicializa o arquivo com o cabeçalho de construção do dicionário.
-         * Chama a função de dicionário que o transforma em um vetor e o ordena
-         * caso seja uma tabela hash.
+         * Abre ou cria um arquivo de saída e insere um cabeçalho com métricas e
+         * informações de construção do dicionário. Em seguida, converte os pares do
+         * dicionário para um vetor, ordena alfabeticamente respeitando acentos e
+         * collation Unicode, e imprime esses pares em formato de tabela.
          * 
-         * Percorre o vetor de pares convertendo as chaves de unicodeString para 
-         * string e escrevendo estas com seus respectivos valores de frequência.
-         * Finaliza fechando o arquivo e dizendo onde ele se encontra.
+         * A largura da coluna de palavras é calculada dinamicamente, considerando a
+         * largura visual dos caracteres Unicode, garantindo alinhamento estético 
+         * da saída. As palavras são convertidas para UTF-8 antes de serem escritas.
          * 
-         * @param map O dicionário que será lido para criação do arquivo.
-         * @param start String que contém o cabeçalho com as informações de 
-         * construção do dicionário (métricas e tempo de inserção).
-         * @param output O nome do arquivo que será criado.
+         * @param map O dicionário de onde as palavras e frequências serão lidas.
+         * @param time Cabeçalho contendo tempo de inserção ou outras informações.
+         * @param output O nome do arquivo que será criado com a saída formatada.
          */
         template <typename Map>
-        void write(const Map& map, std::string& start, const std::string& output){
+        void write(const Map& map, std::string& time, const std::string& output){
             std::ofstream out(output);
             if(!out.is_open()){
                 std::cerr << "Nao foi possivel criar/abrir o arquivo";
@@ -150,30 +177,54 @@ class DictIO{
             std::vector<std::pair<uniStringKey, int>> tuple = map.toVector();
             std::sort(tuple.begin(), tuple.end(), uniStringPairLess());
 
-            out << start << std::endl;
+            int max_word = std::string("PALAVRA").size();
+            for(const auto& p : tuple){
+                int width = visualWidth(p.first.getStr());
+                if (width > max_word) {
+                    max_word = width;
+                }
+            }
 
-            const int word_width = 43;
-            const int freq_width = 22;
-            const int total = word_width + freq_width + 3;
+            const int word_padd = 35;
+            const int word_width = std::max(40, max_word + word_padd);
 
+            const int freq_width = 15;
+            const int total = 1 + word_width + 1 + freq_width + 1;;
+
+            std::string stat = " ESTATÍSTICAS ";
+            int stat_lenght = stat.length();
+            int padd_side = ((total - stat_lenght) / 2)+1;
+            out << std::string(padd_side, '=') << stat << std::string(total - padd_side - stat_lenght, '=') << std::endl;
+
+            out << map.metric() << std::endl;
+            out << time;
             out << std::string(total, '=') << std::endl;
 
-            out << std::setw(word_width) << std::left << "PALAVRA"
-            << std::setw(freq_width) << std::right << "FREQUENCIA"
-            << std::endl;
+            out << std::endl;
 
+            out << std::string(total, '=') << std::endl;
+            out << "|" << std::setw(word_width) << std::left << "PALAVRA" << "|"
+            << std::setw(freq_width) << std::right << "FREQUENCIA" << "|" << std::endl;
             out << std::string(total, '-') << std::endl;
 
             for(const auto& p : tuple){
-                out << "|" << std::setw(word_width) << std::left << p.first;
-                out << "|" << std::setw(freq_width) << std::right << p.second << "|";
-                out << std::endl;
+                icu::UnicodeString us = p.first.getStr();
+                std::string utf8;
+                us.toUTF8String(utf8);
+                int vis_width = visualWidth(us);
+                int pad = std::max(0, word_width - vis_width);
+                
+                out << "|" << utf8 << std::string(pad, ' ')
+                    << "|" << std::setw(freq_width) << std::right << p.second << "|"
+                    << std::endl;
             }
+
             out << std::string(total, '-') << std::endl;
             out << std::string(total, '=') << std::endl;
             out.close();
             std::cout << "Conteudo do dicionario gravado em '" << output << "'" << std::endl;
         }
 };
+
 
 #endif

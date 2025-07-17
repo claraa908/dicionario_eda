@@ -397,7 +397,6 @@ RBT<Key, Value, Compare, Equals>::RBT(){
     less = Compare();
     equal = Equals();
 }
-
 template<typename Key, typename Value, typename Compare, typename Equals>
 RBT<Key, Value, Compare, Equals>::~RBT(){
     root = _clear(root);
@@ -481,16 +480,16 @@ std::vector<std::pair<Key, Value>> RBT<Key, Value, Compare, Equals>::toVector() 
 }
 
 template<typename Key, typename Value, typename Compare, typename Equals>
-int RBT<Key, Value, Compare, Equals>::getCountComparation(){
+int RBT<Key, Value, Compare, Equals>::getCountComparation() const{
     return count_comp;
 }
 
 template<typename Key, typename Value, typename Compare, typename Equals>
-int RBT<Key, Value, Compare, Equals>::getCountRecolor(){
+int RBT<Key, Value, Compare, Equals>::getCountRecolor() const{
     return count_recolor;
 }
 
 template<typename Key, typename Value, typename Compare, typename Equals>
-int RBT<Key, Value, Compare, Equals>::getCountRotation(){
+int RBT<Key, Value, Compare, Equals>::getCountRotation() const{
     return count_rotation;
 }

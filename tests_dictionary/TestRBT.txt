@@ -1,0 +1,14 @@
+=================================================================================
+-------------------------- INFORMAÇÕES DO ARQUIVO LIDO --------------------------
+Arquivo analisado: kjv-bible.txt
+Total de palavras no arquivo: 892132
+Total de palavras no dicionário: 12754
+------------------------------ ESTATÍSTICAS DA RBT ------------------------------
+Contagem de comparacoes de chaves realizadas: 33207281
+Contagem de rotacoes realizadas: 8209
+Contagem de recoloracoes realizadas: 43879
+Tempo médio de inserção: 5.78599710s
+Tempo médio de busca (existe): 0.00000082s
+Tempo médio de busca (inexistente): 0.00000458s
+Tempo médio de remoção: 0.00000574s
+=================================================================================

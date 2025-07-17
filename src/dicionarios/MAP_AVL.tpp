@@ -94,7 +94,7 @@ std::vector<std::pair<Key, Value>> MAP_AVL<Key, Value, Compare, Equals>::toVecto
 }
 
 template <typename Key, typename Value, typename Compare, typename Equals>
-std::string MAP_AVL<Key, Value, Compare, Equals>::metric(){
+std::string MAP_AVL<Key, Value, Compare, Equals>::metric() const{
     std::string value = "";
     value += "Contagem de comparacoes de chaves realizadas: ";
     value += std::to_string(avl_tree.getCountComparation());

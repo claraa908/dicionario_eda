@@ -264,16 +264,16 @@ std::vector<std::pair<Key, Value>> CHT<Key, Value, Hash, Compare,  Equals>::toVe
 }
 
 template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
-int  CHT<Key, Value, Hash, Compare,  Equals>::getCountComparation(){
+int  CHT<Key, Value, Hash, Compare,  Equals>::getCountComparation() const{
     return count_comp;
 }
 
 template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
-int  CHT<Key, Value, Hash, Compare,  Equals>::getCountCollision(){
+int  CHT<Key, Value, Hash, Compare,  Equals>::getCountCollision() const{
     return count_collisions;
 }
 
 template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
-int  CHT<Key, Value, Hash, Compare,  Equals>::getCountRehash(){
+int  CHT<Key, Value, Hash, Compare,  Equals>::getCountRehash() const{
     return count_rehash;
 }

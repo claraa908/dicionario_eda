@@ -64,7 +64,7 @@ void MAP_OHT<Key, Value, Hash, Compare, Equals>::clear(){
 
 template <typename Key, typename Value, typename Hash, typename Compare, typename Equals>
 bool MAP_OHT<Key, Value, Hash, Compare, Equals>::empty(){
-    o_hash.empty();
+    return o_hash.empty();
 }
 
 template <typename Key, typename Value, typename Hash, typename Compare, typename Equals>
@@ -97,7 +97,7 @@ std::vector<std::pair<Key, Value>> MAP_OHT<Key, Value, Hash, Compare, Equals>::t
 }
 
 template <typename Key, typename Value, typename Hash, typename Compare, typename Equals>
-std::string MAP_OHT<Key, Value, Hash, Compare, Equals>::metric(){
+std::string MAP_OHT<Key, Value, Hash, Compare, Equals>::metric() const{
     std::string value = "";
     value += "Contagem de comparacoes de chaves realizadas: ";
     value += std::to_string(o_hash.getCountComparation());

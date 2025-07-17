@@ -144,7 +144,7 @@ template <typename Key, typename Value, typename Compare = std::less<Key>,
              * de dados utilizada. Serve para impressão.
              * @return Uma string com as métricas.
              */
-            std::string metric();
+            std::string metric() const;
 }; 
 #include "..\..\src\dicionarios\MAP_AVL.tpp"
 #endif

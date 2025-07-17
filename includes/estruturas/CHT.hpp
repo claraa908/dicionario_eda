@@ -250,7 +250,7 @@ class CHT{
          * @return Retorna o número de comparações feitas após todas as operações 
          * realizadas dentro da tabela
          */
-        int getCountComparation();
+        int getCountComparation() const;
 
         /**
          * @brief Função getter que mostra o estado do contador de colisões de 
@@ -258,7 +258,7 @@ class CHT{
          * @return Retorna o número de colisões feitas após todas as operações 
          * realizadas dentro da tabela
          */
-        int getCountCollision();
+        int getCountCollision() const;
 
         /**
          * @brief Função getter que mostra o estado do contador de rehash dentro
@@ -266,7 +266,7 @@ class CHT{
          * @return Retorna o número de rehash feitas após todas as operações 
          * realizadas dentro da tabela
          */
-        int getCountRehash();
+        int getCountRehash() const;
 };
 
 #include "..\..\src\estruturas\CHT.tpp"

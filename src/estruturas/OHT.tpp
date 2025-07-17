@@ -271,16 +271,16 @@ std::vector<std::pair<Key, Value>> OHT<Key, Value, Hash, Compare, Equals>::toVec
 }
 
 template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
-int OHT<Key, Value, Hash, Compare, Equals>::getCountComparation(){
+int OHT<Key, Value, Hash, Compare, Equals>::getCountComparation() const{
     return count_comp;
 }
 
 template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
-int OHT<Key, Value, Hash, Compare, Equals>::getCountCollision(){
+int OHT<Key, Value, Hash, Compare, Equals>::getCountCollision() const{
     return count_collisions;
 }
 
 template<typename Key, typename Value, typename Hash, typename Compare, typename Equals>
-int OHT<Key, Value, Hash, Compare, Equals>::getCountRehash(){
+int OHT<Key, Value, Hash, Compare, Equals>::getCountRehash() const{
     return count_rehash;
 }

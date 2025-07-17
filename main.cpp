@@ -42,6 +42,7 @@ int main(int argc, char* argv[]){
             double time = second.count();
             
             std::string output;
+            std::string outputFile;
             output += "=========================== ESTATISTICAS ===========================\n";
             output += map_avl.metric() + "\n";
             output += "Tempo de execucao: ";
@@ -49,7 +50,10 @@ int main(int argc, char* argv[]){
             output += "====================================================================\n";
             std::cout << output;
 
-            arq.write(map_avl, output, OUTPUT_FILE + arq_out);
+            outputFile += "Tempo de execucao: ";
+            outputFile += std::to_string(time) + "\n";
+
+            arq.write(map_avl, outputFile, OUTPUT_FILE + arq_out);
         }
 
 
@@ -63,14 +67,18 @@ int main(int argc, char* argv[]){
             double time = second.count();
 
             std::string output;
+            std::string outputFile;
             output += "=========================== ESTATISTICAS ===========================\n";
             output += map_rbt.metric() + "\n";
             output += "Tempo de execucao: ";
             output += std::to_string(time) + "\n";
             output += "====================================================================\n";
             std::cout << output;
+            
+            outputFile += "Tempo de execucao: ";
+            outputFile += std::to_string(time) + "\n";
 
-            arq.write(map_rbt, output, OUTPUT_FILE + arq_out);
+            arq.write(map_rbt, outputFile, OUTPUT_FILE + arq_out);
         }
 
 
@@ -84,14 +92,18 @@ int main(int argc, char* argv[]){
             double time = second.count();
 
             std::string output;
+            std::string outputFile;
             output += "=========================== ESTATISTICAS ===========================\n";
             output += map_cht.metric() + "\n";
             output += "Tempo de execucao: ";
             output += std::to_string(time) + "\n";
             output += "====================================================================\n";
             std::cout << output;
+            
+            outputFile += "Tempo de execucao: ";
+            outputFile += std::to_string(time) + "\n";
 
-            arq.write(map_cht, output, OUTPUT_FILE + arq_out);
+            arq.write(map_cht, outputFile, OUTPUT_FILE + arq_out);
         }
 
 
@@ -105,14 +117,18 @@ int main(int argc, char* argv[]){
             double time = second.count();
 
             std::string output;
+            std::string outputFile;
             output += "=========================== ESTATISTICAS ===========================\n";
             output += map_oht.metric() + "\n";
             output += "Tempo de execucao: ";
             output += std::to_string(time) + "\n";
             output += "====================================================================\n";
             std::cout << output;
+            
+            outputFile += "Tempo de execucao: ";
+            outputFile += std::to_string(time) + "\n";
 
-            arq.write(map_oht, output, OUTPUT_FILE + arq_out);
+            arq.write(map_oht, outputFile, OUTPUT_FILE + arq_out);
         }
 
         else{

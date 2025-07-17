@@ -142,7 +142,7 @@ template <typename Key, typename Value,
              * de dados utilizada. Serve para impressão.
              * @return Uma string com as métricas.
              */
-            std::string metric();
+            std::string metric() const;
 };
 #include "..\..\src\dicionarios\MAP_RBT.tpp"
 #endif

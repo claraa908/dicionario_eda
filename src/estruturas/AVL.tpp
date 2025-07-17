@@ -351,11 +351,11 @@ std::vector<std::pair<Key, Value>> AVL<Key, Value, Compare, Equals>::toVector() 
 }
 
 template<typename Key, typename Value, typename Compare, typename Equals>
-int AVL<Key, Value, Compare, Equals>::getCountComparation(){
+int AVL<Key, Value, Compare, Equals>::getCountComparation() const{
     return count_comp;
 }
 
 template<typename Key, typename Value, typename Compare, typename Equals>
-int AVL<Key, Value, Compare, Equals>::getCountRotation(){
+int AVL<Key, Value, Compare, Equals>::getCountRotation() const{
     return count_rotation;
 }

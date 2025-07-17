@@ -148,7 +148,7 @@ template <typename Key, typename Value, typename Hash = std::hash<Key>, typename
              * de dados utilizada. Serve para impressão.
              * @return Uma string com as métricas.
              */
-            std::string metric();
+            std::string metric() const;
 };
 #include "..\..\src\dicionarios\MAP_CHT.tpp"
 #endif

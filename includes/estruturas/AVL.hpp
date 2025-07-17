@@ -373,7 +373,7 @@ class AVL{
         * @return Retorna o número de comparações feitas após todas as operações 
         * realizadas dentro da árvore
         */
-        int getCountComparation();
+        int getCountComparation() const;
 
         /**
          * @brief Função getter que mostra o estado do contador de rotações
@@ -381,7 +381,7 @@ class AVL{
          * as operações realizadas
          * dentro da árvore.
          */
-        int getCountRotation();
+        int getCountRotation() const;
 };
 
 #include "..\..\src\estruturas\AVL.tpp"
