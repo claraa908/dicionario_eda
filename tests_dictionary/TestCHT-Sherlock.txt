@@ -1,0 +1,14 @@
+=================================================================================
+-------------------------- INFORMAÇÕES DO ARQUIVO LIDO --------------------------
+Arquivo analisado: sherlock_holmes.txt
+Total de palavras no arquivo: 108376
+Total de palavras no dicionário: 8438
+------------------------------ ESTATÍSTICAS DA CHT ------------------------------
+Contagem de comparacoes de chaves realizadas: 208317
+Contagem de colisoes realizadas: 5102
+Contagem de rehashes realizados: 10
+Tempo médio de inserção: 0.13375111s
+Tempo médio de busca (existe): 0.00000121s
+Tempo médio de busca (inexistente): 0.00000049s
+Tempo médio de remoção: 0.00000246s
+=================================================================================

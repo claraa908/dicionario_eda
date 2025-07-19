@@ -7,8 +7,8 @@ Total de palavras no dicionário: 12754
 Contagem de comparacoes de chaves realizadas: 1771513
 Contagem de colisoes realizadas: 8333
 Contagem de rehashes realizados: 11
-Tempo médio de inserção: 1.82013218s
-Tempo médio de busca (existe): 0.00000148s
-Tempo médio de busca (inexistente): 0.00000098s
-Tempo médio de remoção: 0.00000300s
+Tempo médio de inserção: 0.72913325s
+Tempo médio de busca (existe): 0.00000104s
+Tempo médio de busca (inexistente): 0.00000049s
+Tempo médio de remoção: 0.00000183s
 =================================================================================

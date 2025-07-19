@@ -1,4 +1,4 @@
-#include "..\..\includes\estruturas\RBT.hpp"
+#include "../../includes/estruturas/RBT.hpp"
 //funções privadas
 
 template<typename Key, typename Value, typename Compare, typename Equals>

@@ -1,17 +1,9 @@
 # dicionario_eda
 
 ### Compilação do projeto:
-O projeto já possui um 'Makefile' configurado para compilação. Porém, deve ser feito um **ajuste o caminho para biblioteca ICU** em seu computador para rodar normalmente. Para que a compilação ocorra sem problemas, edite as variaveis da ICU no 'Makefile':
+O projeto já possui um 'Makefile' configurado para compilação funciona tanto em Windows como em Linux. Para compilar no terminal, basta estar na raiz do projeto, onde o makefile se encontra, e executar o comando `make all` que irá gerar um executável `./freq` para uso do programa.
 
-`ICU_INCLUDES = -I"C:/msys64/ucrt64/include"`
-
-`ICU_LIBS = -L"C:/msys64/ucrt64/lib" -licuuc -licuin -licudt`
-
-(Note: O caminho exato para a ICU pode variar dependendo da sua instalação. Caso seja no MSYS2, geralmente o caminho será `C:/msys64/ucrt64/` ou `C:/msys64/mingw64/`. Basta encontrar esse caminho e modificá-lo no 'Makefile')
-
-### Comando para Compilar no Terminal
-Na raiz do projeto (onde o 'Makefile' se encontra), execute:
-`make all`
+NOTA: O makefile possui mais dois comandos o `make teste` que irá gerar e executar o teste dos dicionários que se encontra na pasta `tests_dictionary` e o comando `make clean` que apaga todos os executáveis gerados.
 
 ### Comando de Execução no Terminal:
 Para executar o programa após a compilação basta usar o seguinte padrão no terminal:
@@ -24,6 +16,7 @@ Para executar o programa após a compilação basta usar o seguinte padrão no t
 - map_cht: Dicionário implementado com uma Tabela Hash com Encadeamento Exterior;
 - map_oht: Dicionário implementado com uma Tabela Hash com Endereçamento Aberto;
 
+Os arquivos de input se encontram na pasta `texts`, caso queira adicionar mais arquivos .txt para teste adicione nesta pasta. Já referente ao arquivo de output, após a execução do programa no terminal o arquivo contendo as tabelas estará na pasta `tables_texts`.
 
 ### Descrição:
 Este projeto tem como objetivo desenvolver uma aplicação em C++ capaz de ler um arquivo no formato `.txt` e gerar um novo arquivo contendo uma tabela das palavras encontradas, junto com sua frequência de aparições, ordenadas em ordem alfabética, o programa também deve realizar o devido tratamento das strings, desconsiderando pontuações, acentos e distinções entre letra maiúsculas e minúsculas. 

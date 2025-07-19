@@ -1,7 +1,8 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
-#include "..\includes\estruturas\RBT.hpp"
+#include <vector>
+#include "../includes/estruturas/RBT.hpp"
 
 int main(){
     RBT<int, std::string> rbt;
@@ -27,8 +28,8 @@ int main(){
     std::cout << "RBT apos remocao de 20:" << std::endl;
     rbt.show();
 
-    rbt.contains(30) ? std::cout << "contem 30" << std::endl : std::cout << "nao contem 30" << std::endl;
-    rbt.contains(20) ? std::cout << "contem 20" << std::endl : std::cout << "nao contem 20" << std::endl;
+    rbt.contains(30) ? std::cout << "contem 30"<< std::endl : std::cout << "nao contem 30"  << std::endl;
+    rbt.contains(20) ? std::cout << "contem 20"<< std::endl : std::cout << "nao contem 20"  << std::endl;
 
     rbt.erase(25);
     std::cout << "contador apos remocao do 25: " << rbt.getCountComparation() << std::endl;

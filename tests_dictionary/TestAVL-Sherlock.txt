@@ -1,0 +1,13 @@
+=================================================================================
+-------------------------- INFORMAÇÕES DO ARQUIVO LIDO --------------------------
+Arquivo analisado: sherlock_holmes.txt
+Total de palavras no arquivo: 108376
+Total de palavras no dicionário: 8438
+------------------------------ ESTATÍSTICAS DA AVL ------------------------------
+Contagem de comparacoes de chaves realizadas: 5310015
+Contagem de rotacoes realizadas: 6117
+Tempo médio de inserção: 0.89851190s
+Tempo médio de busca (existe): 0.00000463s
+Tempo médio de busca (inexistente): 0.00000583s
+Tempo médio de remoção: 0.00001282s
+=================================================================================

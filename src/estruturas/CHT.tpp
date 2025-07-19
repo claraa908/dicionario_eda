@@ -1,4 +1,4 @@
-#include "..\..\includes\estruturas\CHT.hpp"
+#include "../../includes/estruturas/CHT.hpp"
 
 //funções privadas
 

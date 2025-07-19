@@ -13,10 +13,24 @@
 #define OUTPUT_FILE "tables_texts/"
 #define INPUT_FILE "texts/"
 
-/*
-* !!!!!!!! LEIA O README !!!!!!!!!!
-*/
-
+/**
+ * A main recebe dois parâmetros, o argc conta quantas palavras foram passadas no terminal
+ * e o argv guarda palavra por palavra separada por espaço em um vetor.
+ * 
+ * Essa main foi desenvolvida para receber 4 palavras:
+ * 1- nome do executavel;
+ * 2- nome do comando, para escolher qual dicionario vai receber o arquivo;
+ * 3- nome do arquivo de leitura, que servirá para inserção das palavras no dicionário;
+ * 4- nome do arquivo que escreverá a tabela de frequencia.
+ * 
+ * Possui uma verificação para saber se os 4 parametros foram passados.
+ * inicia o temporizador após a criação das variáveis que serão usadas, insere no dicionário
+ * e finaliza o temporizador.
+ * 
+ * Por fim, prepara um cabeçalho para impressão na main e passa o tempo de execução
+ * para o arquivo de saída colocar no cabeçalho do arquivo .txt também.
+ * 
+ */
 
 int main(int argc, char* argv[]){
     if(argc != 4){

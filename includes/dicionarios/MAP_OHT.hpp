@@ -11,7 +11,7 @@
  */
 #ifndef MAP_OHT_HPP
 #define MAP_OHT_HPP
-#include "..\estruturas\OHT.hpp"
+#include "../estruturas/OHT.hpp"
 #include <functional>
 
 /**
@@ -150,5 +150,5 @@ template <typename Key, typename Value, typename Hash = std::hash<Key>, typename
              */
             std::string metric() const;
 };
-#include "..\..\src\dicionarios\MAP_OHT.tpp"
+#include "../../src/dicionarios/MAP_OHT.tpp"
 #endif

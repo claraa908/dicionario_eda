@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
-#include "..\includes\estruturas\CHT.hpp"
+#include "../includes/estruturas/CHT.hpp"
 
 int main(){
     CHT<int, std::string> hash(3, 0.75);

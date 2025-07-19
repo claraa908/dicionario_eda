@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <stdexcept>
-#include "..\includes\estruturas\AVL.hpp"
+#include "../includes/estruturas/AVL.hpp"
 
 int main(){
     AVL<int, std::string> avl;

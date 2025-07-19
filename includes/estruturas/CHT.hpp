@@ -269,5 +269,5 @@ class CHT{
         int getCountRehash() const;
 };
 
-#include "..\..\src\estruturas\CHT.tpp"
+#include "../../src/estruturas/CHT.tpp"
 #endif

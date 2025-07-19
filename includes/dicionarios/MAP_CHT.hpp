@@ -11,7 +11,7 @@
  */
 #ifndef MAP_CHT_HPP
 #define MAP_CHT_HPP
-#include "..\estruturas\CHT.hpp"
+#include "../estruturas/CHT.hpp"
 #include <stdexcept>
 #include <functional>
 
@@ -150,5 +150,5 @@ template <typename Key, typename Value, typename Hash = std::hash<Key>, typename
              */
             std::string metric() const;
 };
-#include "..\..\src\dicionarios\MAP_CHT.tpp"
+#include "../../src/dicionarios/MAP_CHT.tpp"
 #endif

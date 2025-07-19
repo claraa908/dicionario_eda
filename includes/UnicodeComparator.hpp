@@ -36,30 +36,26 @@ class uniStringKey{
         /**
          * @brief Construtor Default.
          */
-        uniStringKey() = default;
+        uniStringKey();
 
         /**
          * @brief Construtor que define um valor para varíavel unicode da classe.
          * @param k Valor que será associada a variável unicode.
          */
-        uniStringKey(const icu::UnicodeString& k){
-            str = k;
-        }
+        uniStringKey(const icu::UnicodeString& k);
 
         /**
          * @brief Construtor que recebe uma string, converte e associa o valor para
          * a variável unicode da classe.
          * @param k string que será associada a variável unicode.
          */
-        uniStringKey(const std::string k){
-            str = icu::UnicodeString::fromUTF8(k);
-        }
+        uniStringKey(const std::string k);
 
         /**
          * @brief Método get que retorna a variável unicode contida na classe.
          * @return Variável unicode da classe.
          */
-        const icu::UnicodeString& getStr() const { return str; }
+        const icu::UnicodeString& getStr() const;
 
         /**
          * @brief Sobrecarga do operador de inserção (<<) para imprimir objetos 
@@ -73,12 +69,7 @@ class uniStringKey{
          * @param key Referência para o objeto uniStringKey.
          * @return Referência para o ostream.
          */
-        friend std::ostream& operator<<(std::ostream& os, const uniStringKey& key) {
-            std::string utf8_result;
-            key.str.toUTF8String(utf8_result);
-            os << utf8_result;
-            return os;
-        }
+        friend std::ostream& operator<<(std::ostream& os, const uniStringKey& key);
 };
 
 /**
@@ -93,22 +84,7 @@ class uniStringKey{
  * @return Um ponteiro para instancia de um collator em nível secundário. Ou
  * nullptr, em caso de falha na criação
  */
-static icu::Collator* getGlobalCollator(){
-    static icu::Collator* collator = nullptr;
-    static std::once_flag once_flag;
-
-    std::call_once(once_flag, []() {
-        UErrorCode status = U_ZERO_ERROR;
-        collator = icu::Collator::createInstance(icu::Locale::getDefault(), status);
-        if (U_FAILURE(status)) {
-            std::cerr << "Erro fatal ao criar Collator: " << u_errorName(status) << std::endl;
-            collator = nullptr;
-        } else {
-            collator->setStrength(icu::Collator::SECONDARY);
-        }
-    });
-    return collator;
-}
+icu::Collator* getGlobalCollator();
 
 /**
  * @brief Struct para comparação de variáveis uniStringKey quanto a igualdade.
@@ -129,13 +105,7 @@ struct uniStringEquals{
      * @return true se as chaves são consideradas iguais pelo Collator, 
      * false caso contrário.
      */
-    bool operator()(const uniStringKey& a, const uniStringKey& b) const {
-        icu::Collator* collator = getGlobalCollator();
-        if (!collator) {
-            return a.getStr() == b.getStr();
-        }
-        return collator->compare(a.getStr(), b.getStr()) == icu::Collator::EComparisonResult::EQUAL;
-    }
+    bool operator()(const uniStringKey& a, const uniStringKey& b) const;
 };
 
 /**
@@ -157,24 +127,14 @@ struct uniStringLess{
      * @return true se a variável "a" for considerada menor que a variável "b"  
      * pelo Collator, false caso contrário.
      */
-    bool operator()(const uniStringKey& a, const uniStringKey& b) const {
-        icu::Collator* collator = getGlobalCollator();
-        if (!collator) {
-            return a.getStr() < b.getStr();
-        }
-        return collator->compare(a.getStr(), b.getStr()) == icu::Collator::EComparisonResult::LESS;
-    }
+    bool operator()(const uniStringKey& a, const uniStringKey& b) const;
 };
 
 /**
  * @brief Struct que gera um valor hash para o objeto uniStringKey.
  */
 struct uniStringHasher {
-    size_t operator()(const uniStringKey& key) const {
-        std::string str;
-        key.getStr().toUTF8String(str);
-        return std::hash<std::string>{}(str);
-    }
+    size_t operator()(const uniStringKey& key) const;
 };
 
 /**
@@ -182,9 +142,7 @@ struct uniStringHasher {
  * par, no caso a chave.
  */
 struct uniStringPairLess {
-    bool operator()(const std::pair<uniStringKey, int>& a, const std::pair<uniStringKey, int>& b) const {
-        return uniStringLess()(a.first, b.first);
-    }
+    bool operator()(const std::pair<uniStringKey, int>& a, const std::pair<uniStringKey, int>& b) const;
 };
 
 #endif

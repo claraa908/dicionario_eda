@@ -11,7 +11,7 @@
  */
 #ifndef MAP_AVL_HPP
 #define MAP_AVL_HPP
-#include "..\estruturas\AVL.hpp"
+#include "../estruturas/AVL.hpp"
 #include <functional>
 #include <vector>
 
@@ -146,5 +146,5 @@ template <typename Key, typename Value, typename Compare = std::less<Key>,
              */
             std::string metric() const;
 }; 
-#include "..\..\src\dicionarios\MAP_AVL.tpp"
+#include "../../src/dicionarios/MAP_AVL.tpp"
 #endif

@@ -6,8 +6,8 @@ Total de palavras no dicionário: 12754
 ------------------------------ ESTATÍSTICAS DA AVL ------------------------------
 Contagem de comparacoes de chaves realizadas: 41588147
 Contagem de rotacoes realizadas: 9735
-Tempo médio de inserção: 4.57427366s
-Tempo médio de busca (existe): 0.00000124s
-Tempo médio de busca (inexistente): 0.00000348s
-Tempo médio de remoção: 0.00000510s
+Tempo médio de inserção: 3.62168402s
+Tempo médio de busca (existe): 0.00000089s
+Tempo médio de busca (inexistente): 0.00000356s
+Tempo médio de remoção: 0.00000507s
 =================================================================================

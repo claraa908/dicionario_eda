@@ -14,7 +14,7 @@
 #include "../includes/DictIO.hpp"
 
 #define INPUT_FILE "texts/"
-#define TIMES 5
+#define TIMES 100
 
 struct Results{
     double insertTime;
@@ -120,25 +120,25 @@ Results tests(std::string filename, uniStringKey& foundKey, uniStringKey& notFou
 }
 
 int main(){
-    std::string input =  "kjv-bible.txt";
-    std::string foundKey = "god", notFoundKey = "aisjda";
+    std::string input =  "sherlock_holmes.txt";
+    std::string foundKey = "london", notFoundKey = "aisjda";
     uniStringKey found(foundKey), notFound(notFoundKey);
     std::string metricsOutput = "tests_dictionary/";
 
     MAP_AVL<uniStringKey, int, uniStringLess, uniStringEquals> avl_test;
     auto avl_result = tests(INPUT_FILE + input, found, notFound, TIMES, avl_test);
-    saveResults(metricsOutput + "TestAVL.txt", "AVL", input, avl_result, avl_test);
+    saveResults(metricsOutput + "TestAVL-Sherlock.txt", "AVL", input, avl_result, avl_test);
     
     MAP_RBT<uniStringKey, int, uniStringLess, uniStringEquals> rbt_test;
     auto rbt_result = tests(INPUT_FILE + input, found, notFound, TIMES, rbt_test);
-    saveResults(metricsOutput + "TestRBT.txt", "RBT", input, rbt_result, rbt_test);
+    saveResults(metricsOutput + "TestRBT-Sherlock.txt", "RBT", input, rbt_result, rbt_test);
 
     MAP_CHT<uniStringKey, int, uniStringHasher, uniStringLess, uniStringEquals> cht_test;
     auto cht_result = tests(INPUT_FILE + input, found, notFound, TIMES, cht_test);
-    saveResults(metricsOutput + "TestCHT.txt", "CHT", input, cht_result, cht_test);
+    saveResults(metricsOutput + "TestCHT-Sherlock.txt", "CHT", input, cht_result, cht_test);
 
     MAP_OHT<uniStringKey, int, uniStringHasher, uniStringLess, uniStringEquals> oht_test;
     auto oht_result = tests(INPUT_FILE + input, found, notFound, TIMES, oht_test);
-    saveResults(metricsOutput + "TestOHT.txt", "OHT", input, oht_result, oht_test);
+    saveResults(metricsOutput + "TestOHT-Sherlock.txt", "OHT", input, oht_result, oht_test);
 
 }

@@ -11,7 +11,7 @@
  */
 #ifndef MAP_RBT_HPP
 #define MAP_RBT_HPP
-#include "..\estruturas\RBT.hpp"
+#include "../estruturas/RBT.hpp"
 
 /**
  * @brief Classe que implementa um dicionário baseado em uma Árvore Binária 
@@ -144,5 +144,5 @@ template <typename Key, typename Value,
              */
             std::string metric() const;
 };
-#include "..\..\src\dicionarios\MAP_RBT.tpp"
+#include "../../src/dicionarios/MAP_RBT.tpp"
 #endif

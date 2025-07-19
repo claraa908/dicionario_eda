@@ -384,5 +384,5 @@ class AVL{
         int getCountRotation() const;
 };
 
-#include "..\..\src\estruturas\AVL.tpp"
+#include "../../src/estruturas/AVL.tpp"
 #endif

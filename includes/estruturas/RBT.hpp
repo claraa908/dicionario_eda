@@ -16,6 +16,7 @@
 #include <utility>
 #include <stdexcept>
 #include <algorithm>
+#include <vector>
 
 /**
  *  @brief Define as cores padrões da rubro negra como booeleanos
@@ -405,5 +406,5 @@ class RBT{
          */
         int getCountRotation() const;
 };
-#include "..\..\src\estruturas\RBT.tpp"
+#include "../../src/estruturas/RBT.tpp"
 #endif
